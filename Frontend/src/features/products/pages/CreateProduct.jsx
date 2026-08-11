@@ -75,70 +75,63 @@ const CreateProduct = () => {
         }
     };
 
-    const inputClass = "w-full bg-transparent outline-none py-4 text-sm transition-colors duration-300 placeholder:text-[#d0c5b5]";
-    const inputStyle = { color: '#1b1c1a', borderBottom: '1px solid #d0c5b5', fontFamily: "'Inter', sans-serif" };
-    const handleFocus = (e) => { e.target.style.borderBottomColor = '#C9A96E'; };
-    const handleBlur = (e) => { e.target.style.borderBottomColor = '#d0c5b5'; };
+    const inputClass = "w-full bg-transparent border-0 border-b border-neutral-800 text-white text-[13px] py-2 outline-none transition-colors duration-300 placeholder:text-neutral-700 focus:border-[#ff6b6b]";
 
     return (
         <>
             {/* Google Fonts */}
             <link
-                href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap"
+                href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap"
                 rel="stylesheet"
             />
 
             <div
-                className="min-h-screen selection:bg-[#C9A96E]/30"
-                style={{ backgroundColor: '#fbf9f6', fontFamily: "'Inter', sans-serif" }}
+                className="min-h-screen w-full bg-black text-white selection:bg-[#ff6b6b]/30 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+                style={{ fontFamily: "'Inter', sans-serif" }}
             >
-                <div className="max-w-6xl mx-auto px-8 lg:px-16 xl:px-24">
+                <div className="max-w-5xl mx-auto px-6 lg:px-12 xl:px-20">
 
                     {/* ── Top Bar ── */}
-                    <div className="pt-10 pb-0 flex items-center gap-5">
+                    <div className="pt-6 pb-0 flex items-center gap-4">
                         <button
                             onClick={() => navigate(-1)}
-                            className="text-lg transition-colors duration-200 leading-none"
-                            style={{ color: '#B5ADA3' }}
+                            className="text-neutral-500 hover:text-[#ff6b6b] text-lg transition-colors duration-200 leading-none"
                             aria-label="Go back"
-                            onMouseEnter={e => e.currentTarget.style.color = '#C9A96E'}
-                            onMouseLeave={e => e.currentTarget.style.color = '#B5ADA3'}
                         >
                             ←
                         </button>
                         <span
-                            className="text-xs font-medium tracking-[0.32em] uppercase"
-                            style={{ fontFamily: "'Cormorant Garamond', serif", color: '#C9A96E' }}
+                            className="text-[10px] font-bold tracking-[0.32em] uppercase text-[#ff6b6b]"
+                            style={{ fontFamily: "Montserrat, sans-serif" }}
                         >
-                            Snitch.
+                            FYNIX
                         </span>
                     </div>
 
                     {/* ── Page Header ── */}
-                    <div className="pt-10 pb-0">
+                    <div className="pt-6 pb-0">
                         <h1
-                            className="text-4xl lg:text-5xl font-light leading-tight"
-                            style={{ fontFamily: "'Cormorant Garamond', serif", color: '#1b1c1a' }}
+                            className="text-3xl lg:text-4xl font-black uppercase tracking-[0.12em] leading-tight"
+                            style={{ fontFamily: "Montserrat, sans-serif" }}
                         >
                             New Listing
                         </h1>
-                        {/* Gold rule separator */}
-                        <div className="mt-4 w-14 h-px" style={{ backgroundColor: '#C9A96E' }} />
+                        <div className="mt-3 w-12 h-px bg-[#ff6b6b]" />
                     </div>
 
                     {/* ── Form ── */}
-                    <form onSubmit={handleSubmit} className="pt-14 pb-24">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 lg:items-start">
+                    <form onSubmit={handleSubmit} className="pt-8 pb-16">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 lg:items-start">
 
                             {/* ── LEFT COLUMN: Text Fields ── */}
-                            <div className="flex flex-col gap-12">
+                            <div className="flex flex-col gap-6">
 
                                 {/* Product Title */}
-                                <div className="flex flex-col gap-2">
+                                <div className="flex flex-col gap-1">
                                     <label
                                         htmlFor="cp-title"
-                                        className="text-[10px] uppercase tracking-[0.2em] font-medium"
-                                        style={{ color: '#7A6E63' }}
+                                        className="text-[10px] uppercase tracking-[0.2em] font-bold text-neutral-500"
+                                        style={{ fontFamily: "Montserrat, sans-serif" }}
                                     >
                                         Product Title
                                     </label>
@@ -151,18 +144,15 @@ const CreateProduct = () => {
                                         required
                                         placeholder="e.g. Oversized Linen Shirt"
                                         className={inputClass}
-                                        style={inputStyle}
-                                        onFocus={handleFocus}
-                                        onBlur={handleBlur}
                                     />
                                 </div>
 
                                 {/* Description */}
-                                <div className="flex flex-col gap-2">
+                                <div className="flex flex-col gap-1">
                                     <label
                                         htmlFor="cp-description"
-                                        className="text-[10px] uppercase tracking-[0.2em] font-medium"
-                                        style={{ color: '#7A6E63' }}
+                                        className="text-[10px] uppercase tracking-[0.2em] font-bold text-neutral-500"
+                                        style={{ fontFamily: "Montserrat, sans-serif" }}
                                     >
                                         Description
                                     </label>
@@ -171,24 +161,24 @@ const CreateProduct = () => {
                                         name="description"
                                         value={formData.description}
                                         onChange={handleChange}
-                                        rows={5}
+                                        rows={4}
                                         placeholder="Describe the product — material, fit, details..."
-                                        className="w-full bg-transparent outline-none py-4 text-sm transition-colors duration-300 resize-none leading-relaxed placeholder:text-[#d0c5b5]"
-                                        style={inputStyle}
-                                        onFocus={handleFocus}
-                                        onBlur={handleBlur}
+                                        className="w-full bg-transparent border-0 border-b border-neutral-800 text-white text-[13px] py-2 outline-none transition-colors duration-300 resize-none leading-relaxed placeholder:text-neutral-700 focus:border-[#ff6b6b]"
                                     />
                                 </div>
 
                                 {/* Price */}
-                                <div className="flex flex-col gap-3">
-                                    <label className="text-[10px] uppercase tracking-[0.2em] font-medium" style={{ color: '#7A6E63' }}>
+                                <div className="flex flex-col gap-2">
+                                    <label
+                                        className="text-[10px] uppercase tracking-[0.2em] font-bold text-neutral-500"
+                                        style={{ fontFamily: "Montserrat, sans-serif" }}
+                                    >
                                         Price
                                     </label>
-                                    <div className="flex gap-5 items-end">
+                                    <div className="flex gap-4 items-end">
                                         {/* Amount */}
                                         <div className="flex flex-col gap-1 flex-[3]">
-                                            <span className="text-[9px] uppercase tracking-[0.18em]" style={{ color: '#B5ADA3' }}>Amount</span>
+                                            <span className="text-[9px] uppercase tracking-[0.18em] text-neutral-600 font-bold">Amount</span>
                                             <input
                                                 id="cp-priceAmount"
                                                 type="number"
@@ -200,26 +190,20 @@ const CreateProduct = () => {
                                                 step="0.01"
                                                 placeholder="0.00"
                                                 className={inputClass}
-                                                style={inputStyle}
-                                                onFocus={handleFocus}
-                                                onBlur={handleBlur}
                                             />
                                         </div>
                                         {/* Currency */}
                                         <div className="flex flex-col gap-1 flex-[1]">
-                                            <span className="text-[9px] uppercase tracking-[0.18em]" style={{ color: '#B5ADA3' }}>Currency</span>
+                                            <span className="text-[9px] uppercase tracking-[0.18em] text-neutral-600 font-bold">Currency</span>
                                             <select
                                                 id="cp-priceCurrency"
                                                 name="priceCurrency"
                                                 value={formData.priceCurrency}
                                                 onChange={handleChange}
-                                                className="w-full bg-transparent outline-none py-4 text-sm cursor-pointer appearance-none transition-colors duration-300"
-                                                style={inputStyle}
-                                                onFocus={handleFocus}
-                                                onBlur={handleBlur}
+                                                className="w-full bg-transparent border-0 border-b border-neutral-800 text-white text-[13px] py-2 outline-none cursor-pointer appearance-none transition-colors duration-300 focus:border-[#ff6b6b]"
                                             >
                                                 {CURRENCIES.map(c => (
-                                                    <option key={c} value={c} style={{ backgroundColor: '#fbf9f6', color: '#1b1c1a' }}>{c}</option>
+                                                    <option key={c} value={c} className="bg-black text-white">{c}</option>
                                                 ))}
                                             </select>
                                         </div>
@@ -228,12 +212,15 @@ const CreateProduct = () => {
                             </div>
 
                             {/* ── RIGHT COLUMN: Images ── */}
-                            <div className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-3">
                                 <div className="flex items-center justify-between">
-                                    <label className="text-[10px] uppercase tracking-[0.2em] font-medium" style={{ color: '#7A6E63' }}>
+                                    <label
+                                        className="text-[10px] uppercase tracking-[0.2em] font-bold text-neutral-500"
+                                        style={{ fontFamily: "Montserrat, sans-serif" }}
+                                    >
                                         Images
                                     </label>
-                                    <span className="text-[10px]" style={{ color: '#B5ADA3' }}>
+                                    <span className="text-[10px] text-neutral-500 font-bold">
                                         {images.length}/{MAX_IMAGES}
                                     </span>
                                 </div>
@@ -245,29 +232,24 @@ const CreateProduct = () => {
                                         onDragOver={handleDragOver}
                                         onDragLeave={handleDragLeave}
                                         onClick={() => fileInputRef.current?.click()}
-                                        className="border border-dashed px-8 py-14 lg:py-20 flex flex-col items-center gap-4 cursor-pointer transition-all duration-300"
-                                        style={{
-                                            borderColor: isDragging ? '#C9A96E' : '#d0c5b5',
-                                            backgroundColor: isDragging ? 'rgba(201,169,110,0.04)' : 'transparent'
-                                        }}
+                                        className={`border border-dashed px-4 py-8 lg:py-10 flex flex-col items-center gap-3 cursor-pointer transition-all duration-300 ${isDragging ? 'border-[#ff6b6b] bg-[#ff6b6b]/10' : 'border-neutral-800 hover:border-neutral-600'}`}
                                     >
                                         {/* Upload icon */}
                                         <div
-                                            className="w-10 h-10 flex items-center justify-center border transition-colors duration-300"
-                                            style={{ borderColor: isDragging ? '#C9A96E' : '#d0c5b5', color: isDragging ? '#C9A96E' : '#B5ADA3' }}
+                                            className={`w-8 h-8 flex items-center justify-center border transition-colors duration-300 ${isDragging ? 'border-[#ff6b6b] text-[#ff6b6b]' : 'border-neutral-700 text-neutral-500'}`}
                                         >
-                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+                                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
                                             </svg>
                                         </div>
                                         <div className="text-center">
-                                            <p className="text-sm leading-relaxed" style={{ color: '#7A6E63' }}>
+                                            <p className="text-[12px] leading-relaxed text-neutral-400">
                                                 Drop images here or{' '}
-                                                <span style={{ color: '#C9A96E', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
+                                                <span className="text-[#ff6b6b] underline underline-offset-2">
                                                     tap to upload
                                                 </span>
                                             </p>
-                                            <p className="text-[10px] uppercase tracking-[0.15em] mt-2" style={{ color: '#B5ADA3' }}>
+                                            <p className="text-[9px] uppercase tracking-[0.15em] mt-1.5 text-neutral-600 font-bold">
                                                 Up to {MAX_IMAGES} images
                                             </p>
                                         </div>
@@ -284,12 +266,11 @@ const CreateProduct = () => {
 
                                 {/* Image Previews */}
                                 {images.length > 0 && (
-                                    <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-2 mt-1">
+                                    <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-4 xl:grid-cols-5 gap-2 mt-1">
                                         {images.map((img, index) => (
                                             <div
                                                 key={index}
-                                                className="relative aspect-square overflow-hidden group"
-                                                style={{ backgroundColor: '#eae8e5' }}
+                                                className="relative aspect-square overflow-hidden group bg-neutral-900 border border-neutral-800"
                                             >
                                                 <img
                                                     src={img.preview}
@@ -300,8 +281,7 @@ const CreateProduct = () => {
                                                 <button
                                                     type="button"
                                                     onClick={() => removeImage(index)}
-                                                    className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-xs font-medium tracking-widest uppercase"
-                                                    style={{ backgroundColor: 'rgba(27,24,20,0.55)', color: '#fbf9f6' }}
+                                                    className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-[9px] font-bold tracking-widest uppercase bg-black/70 text-white"
                                                     aria-label={`Remove image ${index + 1}`}
                                                 >
                                                     Remove
@@ -314,28 +294,12 @@ const CreateProduct = () => {
                         </div>
 
                         {/* ── Submit Button ── */}
-                        <div className="mt-16 lg:mt-20">
+                        <div className="mt-10 lg:mt-12">
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="w-full py-5 text-[11px] uppercase tracking-[0.3em] font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                                style={{
-                                    backgroundColor: isSubmitting ? '#7A6E63' : '#1b1c1a',
-                                    color: '#fbf9f6',
-                                    fontFamily: "'Inter', sans-serif"
-                                }}
-                                onMouseEnter={e => {
-                                    if (!isSubmitting) {
-                                        e.currentTarget.style.backgroundColor = '#C9A96E';
-                                        e.currentTarget.style.color = '#1b1c1a';
-                                    }
-                                }}
-                                onMouseLeave={e => {
-                                    if (!isSubmitting) {
-                                        e.currentTarget.style.backgroundColor = '#1b1c1a';
-                                        e.currentTarget.style.color = '#fbf9f6';
-                                    }
-                                }}
+                                className="w-full py-3 bg-[#ff6b6b] text-black text-[10px] font-black tracking-[0.3em] uppercase hover:bg-white transition-colors duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                                style={{ fontFamily: "Montserrat, sans-serif", borderRadius: 0 }}
                             >
                                 {isSubmitting ? 'Publishing...' : 'Publish Listing'}
                             </button>
