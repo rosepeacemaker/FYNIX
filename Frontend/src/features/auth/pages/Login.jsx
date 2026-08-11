@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from '../hook/useAuth';
 import { useNavigate } from "react-router";
-// import ContinueWithGoogle from "../components/ContinueWithGoogle";
+import ContinueWithGoogle from "../components/ContinueWithGoogle";
 
 export default function Login() {
     const { handleLogin } = useAuth();
@@ -38,25 +38,25 @@ export default function Login() {
         <div className="flex h-screen w-full bg-black overflow-hidden">
 
             {/* ── LEFT · FORM PANEL ── */}
-            <div className="w-full md:w-1/2 flex items-center justify-center px-10 md:px-16 lg:px-24 bg-black overflow-hidden">
-                <div className="w-full max-w-sm">
+            <div className="w-full md:w-1/2 flex items-center justify-center px-6 sm:px-10 md:px-16 lg:px-24 bg-black overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                <div className="w-full max-w-sm py-6 md:py-0">
 
                     {/* Brand */}
-                    <div className="mb-3 flex flex-col items-center justify-center md:items-start md:justify-start">
-                        <h1 className="text-5xl font-black uppercase tracking-[0.12em] text-white leading-none"
+                    <div className="mb-5 flex flex-col items-center justify-center md:items-start md:justify-start">
+                        <h1 className="text-3xl md:text-4xl font-black uppercase tracking-[0.12em] text-white leading-none"
                             style={{ fontFamily: "Montserrat, sans-serif" }}>
                             FYNIX
                         </h1>
-                        <p className="mt-3 text-[13px] text-neutral-500 tracking-wide leading-relaxed">
+                        <p className="mt-2 text-[12px] text-neutral-500 tracking-wide leading-relaxed">
                             Welcome back. Sign in to your account.
                         </p>
                     </div>
 
                     {/* Form */}
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                    <form onSubmit={handleSubmit} className="space-y-4">
 
                         {/* Email */}
-                        <div className="space-y-2">
+                        <div className="space-y-1">
                             <label
                                 htmlFor="email"
                                 className="block text-[10px] font-bold tracking-[0.2em] uppercase text-neutral-500"
@@ -73,13 +73,13 @@ export default function Login() {
                                 value={form.email}
                                 onChange={handleChange}
                                 placeholder="you@snitch.com"
-                                className="w-full bg-transparent border-0 border-b border-neutral-800 text-white text-[15px] py-3 placeholder:text-neutral-700 focus:outline-none focus:border-[#ff6b6b] transition-colors duration-300"
+                                className="w-full bg-transparent border-0 border-b border-neutral-800 text-white text-[13px] py-2 placeholder:text-neutral-700 focus:outline-none focus:border-[#ff6b6b] transition-colors duration-300"
                                 style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
                             />
                         </div>
 
                         {/* Password */}
-                        <div className="space-y-2">
+                        <div className="space-y-1">
                             <label
                                 htmlFor="password"
                                 className="block text-[10px] font-bold tracking-[0.2em] uppercase text-neutral-500"
@@ -97,7 +97,7 @@ export default function Login() {
                                     value={form.password}
                                     onChange={handleChange}
                                     placeholder="••••••••••"
-                                    className="w-full bg-transparent border-0 border-b border-neutral-800 text-white text-[15px] py-3 pr-14 placeholder:text-neutral-700 focus:outline-none focus:border-[#ff6b6b] transition-colors duration-300"
+                                    className="w-full bg-transparent border-0 border-b border-neutral-800 text-white text-[13px] py-2 pr-14 placeholder:text-neutral-700 focus:outline-none focus:border-[#ff6b6b] transition-colors duration-300"
                                     style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
                                 />
                                 <button
@@ -112,10 +112,10 @@ export default function Login() {
                         </div>
 
                         {/* Submit */}
-                        <div className="pt-4">
+                        <div className="pt-2">
                             <button
                                 type="submit"
-                                className="w-full py-4 bg-[#ff6b6b] text-black text-[10px] font-black tracking-[0.3em] uppercase hover:bg-white transition-colors duration-300 cursor-pointer"
+                                className="w-full py-2.5 bg-[#ff6b6b] text-black text-[10px] font-black tracking-[0.3em] uppercase hover:bg-white transition-colors duration-300 cursor-pointer"
                                 style={{ fontFamily: "Montserrat, sans-serif", borderRadius: 0 }}
                             >
                                 Log in
@@ -123,7 +123,7 @@ export default function Login() {
                         </div>
 
                         {/* Sign up */}
-                        <p className="text-center text-[11px] text-neutral-600 tracking-wide pt-1">
+                        <p className="text-center text-[11px] text-neutral-600 tracking-wide">
                             Don't have an account?{" "}
                             <a
                                 href="/register"
@@ -132,11 +132,11 @@ export default function Login() {
                                 Sign up
                             </a>
                         </p>
-                        {/* <ContinueWithGoogle /> */}
+                        <ContinueWithGoogle />
                     </form>
 
                     {/* Footer */}
-                    <p className="mt-16 text-[9px] tracking-[0.25em] uppercase text-neutral-800"
+                    <p className="mt-8 text-[9px] tracking-[0.25em] uppercase text-neutral-800 text-center md:text-left"
                         style={{ fontFamily: "Montserrat, sans-serif" }}>
                         © 2026 FYNIX. ALL RIGHTS RESERVED.
                     </p>
@@ -156,9 +156,9 @@ export default function Login() {
                 />
                 <div className="absolute bottom-0 inset-x-0 h-40 pointer-events-none z-10"
                     style={{ background: "linear-gradient(to top, rgba(255,107,107,0.06), transparent)" }} />
-                <div className="absolute bottom-10 right-8 z-20 pointer-events-none">
+                <div className="absolute bottom-10 right-8 md:right-12 lg:right-16 z-20 pointer-events-none">
                     <span
-                        className="text-5xl font-black uppercase tracking-[0.15em] text-white/[0.05] select-none leading-none"
+                        className="text-6xl lg:text-8xl font-black uppercase tracking-[0.15em] text-white/[0.05] select-none leading-none"
                         style={{ fontFamily: "Montserrat, sans-serif" }}
                     >
                         FYNIX

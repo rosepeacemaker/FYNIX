@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from '../hook/useAuth';
 import { useNavigate } from "react-router";
-// import ContinueWithGoogle from "../components/ContinueWithGoogle";
+import ContinueWithGoogle from "../components/ContinueWithGoogle";
 
 export default function Register() {
 
@@ -43,25 +43,25 @@ export default function Register() {
         <div className="flex h-screen w-full bg-black overflow-hidden">
 
             {/* ── LEFT · FORM PANEL ── */}
-            <div className="w-full md:w-1/2 flex items-center justify-center px-10 md:px-16 lg:px-24 bg-black overflow-hidden">
-                <div className="w-full max-w-sm">
+            <div className="w-full md:w-1/2 flex items-center justify-center px-6 sm:px-10 md:px-16 lg:px-24 bg-black overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                <div className="w-full max-w-sm py-6 md:py-0">
 
                     {/* Brand */}
-                    <div className="mb-3 flex flex-col items-center justify-center md:items-start md:justify-start">
-                        <h1 className="text-5xl font-black uppercase tracking-[0.12em] text-white leading-none"
+                    <div className="mb-5 flex flex-col items-center justify-center md:items-start md:justify-start">
+                        <h1 className="text-3xl md:text-4xl font-black uppercase tracking-[0.12em] text-white leading-none"
                             style={{ fontFamily: "Montserrat, sans-serif" }}>
-                            Snitch
+                            FYNIX
                         </h1>
-                        <p className="mt-3 text-[13px] text-neutral-500 tracking-wide leading-relaxed">
+                        <p className="mt-2 text-[12px] text-neutral-500 tracking-wide leading-relaxed text-center md:text-left">
                             Be the first to know about what's happening around you.
                         </p>
                     </div>
 
                     {/* Form */}
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                    <form onSubmit={handleSubmit} className="space-y-4">
 
                         {/* Full Name */}
-                        <div className="space-y-2">
+                        <div className="space-y-1">
                             <label
                                 htmlFor="fullname"
                                 className="block text-[10px] font-bold tracking-[0.2em] uppercase text-neutral-500"
@@ -78,13 +78,13 @@ export default function Register() {
                                 value={form.fullname}
                                 onChange={handleChange}
                                 placeholder="Jane Doe"
-                                className="w-full bg-transparent border-0 border-b border-neutral-800 text-white text-[15px] py-3 placeholder:text-neutral-700 focus:outline-none focus:border-[#ff6b6b] transition-colors duration-300"
+                                className="w-full bg-transparent border-0 border-b border-neutral-800 text-white text-[13px] py-2 placeholder:text-neutral-700 focus:outline-none focus:border-[#ff6b6b] transition-colors duration-300"
                                 style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
                             />
                         </div>
 
                         {/* Contact */}
-                        <div className="space-y-2">
+                        <div className="space-y-1">
                             <label
                                 htmlFor="contact"
                                 className="block text-[10px] font-bold tracking-[0.2em] uppercase text-neutral-500"
@@ -101,13 +101,13 @@ export default function Register() {
                                 value={form.contact}
                                 onChange={handleChange}
                                 placeholder="+1 555 000 0000"
-                                className="w-full bg-transparent border-0 border-b border-neutral-800 text-white text-[15px] py-3 placeholder:text-neutral-700 focus:outline-none focus:border-[#ff6b6b] transition-colors duration-300"
+                                className="w-full bg-transparent border-0 border-b border-neutral-800 text-white text-[13px] py-2 placeholder:text-neutral-700 focus:outline-none focus:border-[#ff6b6b] transition-colors duration-300"
                                 style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
                             />
                         </div>
 
                         {/* Email */}
-                        <div className="space-y-2">
+                        <div className="space-y-1">
                             <label
                                 htmlFor="email"
                                 className="block text-[10px] font-bold tracking-[0.2em] uppercase text-neutral-500"
@@ -123,14 +123,14 @@ export default function Register() {
                                 autoComplete="email"
                                 value={form.email}
                                 onChange={handleChange}
-                                placeholder="you@snitch.com"
-                                className="w-full bg-transparent border-0 border-b border-neutral-800 text-white text-[15px] py-3 placeholder:text-neutral-700 focus:outline-none focus:border-[#ff6b6b] transition-colors duration-300"
+                                placeholder="you@fynix.com"
+                                className="w-full bg-transparent border-0 border-b border-neutral-800 text-white text-[13px] py-2 placeholder:text-neutral-700 focus:outline-none focus:border-[#ff6b6b] transition-colors duration-300"
                                 style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
                             />
                         </div>
 
                         {/* Password */}
-                        <div className="space-y-2">
+                        <div className="space-y-1">
                             <label
                                 htmlFor="password"
                                 className="block text-[10px] font-bold tracking-[0.2em] uppercase text-neutral-500"
@@ -148,7 +148,7 @@ export default function Register() {
                                     value={form.password}
                                     onChange={handleChange}
                                     placeholder="••••••••••"
-                                    className="w-full bg-transparent border-0 border-b border-neutral-800 text-white text-[15px] py-3 pr-14 placeholder:text-neutral-700 focus:outline-none focus:border-[#ff6b6b] transition-colors duration-300"
+                                    className="w-full bg-transparent border-0 border-b border-neutral-800 text-white text-[13px] py-2 pr-14 placeholder:text-neutral-700 focus:outline-none focus:border-[#ff6b6b] transition-colors duration-300"
                                     style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
                                 />
                                 <button
@@ -195,10 +195,10 @@ export default function Register() {
                         </div>
 
                         {/* Submit  Button */}
-                        <div className="pt-4">
+                        <div className="pt-2">
                             <button
                                 type="submit"
-                                className="w-full py-4 bg-[#ff6b6b] text-black text-[10px] font-black tracking-[0.3em] uppercase hover:bg-white transition-colors duration-300 cursor-pointer"
+                                className="w-full py-2.5 bg-[#ff6b6b] text-black text-[10px] font-black tracking-[0.3em] uppercase hover:bg-white transition-colors duration-300 cursor-pointer"
                                 style={{ fontFamily: "Montserrat, sans-serif", borderRadius: 0 }}
                             >
                                 Sign up
@@ -207,10 +207,10 @@ export default function Register() {
                         <ContinueWithGoogle />
 
                         {/* Sign in */}
-                        <p className="text-center text-[11px] text-neutral-600 tracking-wide pt-1">
-                            Already have an account?
+                        <p className="text-center text-[11px] text-neutral-600 tracking-wide">
+                            Already have an account?{" "}
                             <a
-                                href="#"
+                                href="/login"
                                 className="text-neutral-300 hover:text-[#ff6b6b] transition-colors duration-200 font-semibold"
                             >
                                 Sign in
@@ -219,9 +219,9 @@ export default function Register() {
                     </form>
 
                     {/* Footer */}
-                    <p className="mt-16 text-[11px] tracking-[0.25em] uppercase text-neutral-800"
+                    <p className="mt-8 text-[11px] tracking-[0.25em] uppercase text-neutral-800 text-center md:text-left"
                         style={{ fontFamily: "Montserrat, sans-serif" }}>
-                        © 2024 Snitch
+                        © 2026 FYNIX
                     </p>
                 </div>
             </div>
@@ -241,7 +241,7 @@ export default function Register() {
                 {/* Model image — fashion editorial */}
                 <img
                     src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=1200&q=85&fit=crop&auto=format"
-                    alt="Snitch fashion model"
+                    alt="Fynix fashion model"
                     className="w-full h-full object-cover object-top"
                     style={{ filter: "contrast(1.08) saturate(0.9)" }}
                 />
@@ -251,12 +251,12 @@ export default function Register() {
                     style={{ background: "linear-gradient(to top, rgba(255,107,107,0.06), transparent)" }} />
 
                 {/* Ghost watermark */}
-                <div className="absolute bottom-10 right-8 z-20 pointer-events-none">
+                <div className="absolute bottom-10 right-8 md:right-12 lg:right-16 z-20 pointer-events-none">
                     <span
-                        className="text-5xl font-black uppercase tracking-[0.15em] text-white/[0.05] select-none leading-none"
+                        className="text-6xl lg:text-8xl font-black uppercase tracking-[0.15em] text-white/[0.05] select-none leading-none"
                         style={{ fontFamily: "Montserrat, sans-serif" }}
                     >
-                        SNITCH
+                        FYNIX
                     </span>
                 </div>
             </div>
