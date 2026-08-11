@@ -1,10 +1,12 @@
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import morgan from "morgan"
-// import passport  from 'passport';
+import passport  from 'passport';
 import authRouter from './routes/auth.route.js'
+import productRouter from './routes/product.routes.js'
 import cors from "cors"
-
+import { config } from './config/config.js';
+import { strategy as GoogleStrategy } from "passport-google-oauth20"
 
 const app = express();
 
@@ -19,6 +21,14 @@ app.use(cors({
 }),
 );
 
+app.use(passport.initialize());
+
+
+
+
+
+
+
 app.get("/" , (_req,res) => {
 res.status(200).json({message: "Server is running"})
 })
@@ -27,8 +37,8 @@ res.status(200).json({message: "Server is running"})
 
 
 
-
 app.use("/api/auth", authRouter)
+app.use("/api/products", productRouter);
 
 
 export default app;
