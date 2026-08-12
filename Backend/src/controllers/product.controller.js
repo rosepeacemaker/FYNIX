@@ -31,7 +31,7 @@ export async function createProduct(req, res) {
     });
 
     res.status(201).json({
-        message: "Product created successfully",
+        message: "Products created successfully",
         success: true,
         product
     });

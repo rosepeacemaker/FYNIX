@@ -7,11 +7,12 @@ export const useProduct = () => {
 
     const dispatch = useDispatch();
 
-    async function handleCreateProduct(fromData) {
-        const data = await createProduct(fromData)
+    async function handleCreateProduct(formData) {
+        const data = await createProduct(formData)
         if (data) {
             console.log("product created successfully");
-            return data.products;
+            console.log(data.product)
+            return data.product;
         }
     }
 
