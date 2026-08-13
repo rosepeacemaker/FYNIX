@@ -24,11 +24,16 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await handleLogin({
+            const user = await handleLogin({
                 email: form.email,
                 password: form.password,
             });
-            navigate("/");
+            if (user.role == "BUYER") {
+                navigate("/");
+            }
+            else if (user.role == "SELLER") {
+                navigate("/seller/dashboard");
+            }
         } catch (err) {
             console.error("Login failed", err);
         }
