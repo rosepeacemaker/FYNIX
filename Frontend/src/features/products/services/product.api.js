@@ -7,8 +7,8 @@ const productApiInstance = axios.create({
 
 })
 
-export async function createProduct(formData) {
-    const response = await productApiInstance.post("/", formData)
+export async function createProduct(form) {
+    const response = await productApiInstance.post("/", form)
     return response.data
 
 }

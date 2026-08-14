@@ -18,14 +18,18 @@ export const useProduct = () => {
 
     async function handleGetSellerProduct() {
         const data = await getSellerProduct()
+          console.log("GET ALL PRODUCTS RESPONSE:", data);
+    console.log("PRODUCTS TO REDUX:", data.products);
         dispatch(setSellerProducts(data.products))
-        return data.products
+      
+        return data.products;
     }
     async function handleGetAllProducts() {
+
         const data = await getAllProducts();
         dispatch(setProducts(data.products));
 
-        return data.products;
+       
     }
     return {
         handleCreateProduct,
