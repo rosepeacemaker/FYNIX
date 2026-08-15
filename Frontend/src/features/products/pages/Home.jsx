@@ -35,13 +35,14 @@ const Home = () => {
 
             <div
                 className="min-h-screen selection:bg-[#C9A96E]/30"
+
                 style={{ backgroundColor: '#fbf9f6', fontFamily: "'Inter', sans-serif" }}
             >
                
 
                 <div className="max-w-7xl mx-auto px-8 lg:px-16 xl:px-24">
                     {/* ── Hero / Header ── */}
-                    <div className="pt-20 pb-20 text-center flex flex-col items-center">
+                    <div className="pt-20 pb-16 text-center flex flex-col items-center">
                         <span className="text-[10px] uppercase tracking-[0.24em] font-medium mb-6" style={{ color: '#C9A96E' }}>
                             The Collection
                         </span>
@@ -60,9 +61,10 @@ const Home = () => {
                     {products && products.length > 0 ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16 pb-32">
                             {products.map(product => {
-                                const imageUrl = product.image && product.image.length > 0
-                                    ? product.image[ 0 ].url
-                                    : '/snitch_editorial_warm.png'; // Fallback
+                                const imageUrl = product.images && product.images.length > 0
+                                    ? product.images[ 0 ].url
+                                    : '/cart_img.jpg'; // Fallback
+                                   
 
                                 return (
                                     <div
@@ -84,6 +86,7 @@ const Home = () => {
                                                 style={{ fontFamily: "'Cormorant Garamond', serif", color: '#1b1c1a' }}
                                             >
                                                 {product.title}
+                                                
                                             </h3>
 
                                             <p
