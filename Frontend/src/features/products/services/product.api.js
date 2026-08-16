@@ -23,3 +23,11 @@ export async function getAllProducts() {
 
     return response.data
 }
+export async function getProductById(productId) {
+    const response = await productApiInstance.get(`/detail/${productId}`)
+    console.log("data of product by id", response.data);
+    return response.data
+
+}
+
+
