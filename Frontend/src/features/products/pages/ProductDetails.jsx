@@ -88,11 +88,10 @@ const ProductDetails = () => {
                       <button
                         key={idx}
                         onClick={() => setSelectedImage(idx)}
-                        className={`flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden border-2 transition-all duration-200 ${
-                          selectedImage === idx
-                            ? 'border-[#ff6b6b] shadow-[0_0_12px_rgba(255,107,107,0.5)]'
-                            : 'border-[#1f1f1f] hover:border-[#a78a88] opacity-60 hover:opacity-100'
-                        }`}
+                        className={`flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden border-2 transition-all duration-200 ${selectedImage === idx
+                          ? 'border-[#ff6b6b] shadow-[0_0_12px_rgba(255,107,107,0.5)]'
+                          : 'border-[#1f1f1f] hover:border-[#a78a88] opacity-60 hover:opacity-100'
+                          }`}
                       >
                         <img src={img} alt={`View ${idx + 1}`} className="w-full h-full object-cover" />
                       </button>

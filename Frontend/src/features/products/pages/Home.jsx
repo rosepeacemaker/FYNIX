@@ -4,25 +4,25 @@ import { useProduct } from '../hooks/useProduct';
 import { useNavigate } from 'react-router';
 
 const Home = () => {
-       console.log("🔥🔥 HOME COMPONENT RENDERED");
+    console.log("🔥🔥 HOME COMPONENT RENDERED");
     const products = useSelector(state => state.product.products);
     console.log("products in home page", products);
 
     const user = useSelector(state => state.auth.user);
-   
+
 
     const { handleGetAllProducts } = useProduct();
-    
+
 
     const navigate = useNavigate();
 
-  useEffect(() => {
-  console.log("useEffect triggered in Home component");
+    useEffect(() => {
+        console.log("useEffect triggered in Home component");
 
-    handleGetAllProducts();
+        handleGetAllProducts();
 
-    
-}, []);
+
+    }, []);
 
     return (
 
@@ -38,7 +38,7 @@ const Home = () => {
 
                 style={{ backgroundColor: '#fbf9f6', fontFamily: "'Inter', sans-serif" }}
             >
-               
+
 
                 <div className="max-w-7xl mx-auto px-8 lg:px-16 xl:px-24">
                     {/* ── Hero / Header ── */}
@@ -61,10 +61,12 @@ const Home = () => {
                     {products && products.length > 0 ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16 pb-32">
                             {products.map(product => {
-                                const imageUrl = product.images && product.images.length > 0
-                                    ? product.images[ 0 ].url
+                                const imageUrl = product.image?.length
+                                    ? product.image[0].url
                                     : '/cart_img.jpg'; // Fallback
-                                   
+                                console.log("FULL PRODUCT:", product);
+                                console.log("PRODUCT IMAGES:", product.image);
+
 
                                 return (
                                     <div
@@ -86,7 +88,7 @@ const Home = () => {
                                                 style={{ fontFamily: "'Cormorant Garamond', serif", color: '#1b1c1a' }}
                                             >
                                                 {product.title}
-                                                
+
                                             </h3>
 
                                             <p

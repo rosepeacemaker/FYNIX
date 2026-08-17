@@ -7,14 +7,14 @@ export async function createProduct(req, res) {
 
     const seller = req.user;
 
-    const images = await Promise.all(req.files.map(async (file) => {
+    const image = await Promise.all(req.files.map(async (file) => {
         const result = await uploadFile({
              buffer: file.buffer, 
              fileName: file.originalname, 
             
         
         })  
-        return result.url ||  result
+        return{ url: result.url ||  result}
 
     }))
 
@@ -23,10 +23,10 @@ export async function createProduct(req, res) {
         title,
         description,
         price:{
-            amount:priceAmount,
-            currency:priceCurrency || "USD"
+            amount: priceAmount,
+            currency: priceCurrency || "USD"
         },
-        images,
+        image: image,
         seller: seller._id
     });
 
@@ -79,7 +79,7 @@ export async function getProductDetails(req,res) {
 
 }
 
-export async function addProductVariants(req,res){
+export async function addProductVariant(req, res) {
 
     const productId = req.params.productId;
 
@@ -87,47 +87,48 @@ export async function addProductVariants(req,res){
         _id: productId,
         seller: req.user._id
     });
-        
-    if(!product){
+
+    if (!product) {
         return res.status(404).json({
-            message:"Products not found",
+            message: "Product not found",
             success: false
         })
     }
 
     const files = req.files;
     const images = [];
-    if(files || files.length !== 0 ){
-(await Promise.all(files.map(async (file) =>{
-    const image = await uploadFile({
-        buffer: file.buffer,
-        fileName: file.originalname
-    })
-    return image
-}))).map(image => images.push(image))
+    if (files || files.length !== 0) {
+        (await Promise.all(files.map(async (file) => {
+            const image = await uploadFile({
+                buffer: file.buffer,
+                fileName: file.originalname
+            })
+            return {url: image.url || image}
+        }))).map(image => images.push(image))
     }
 
     const price = req.body.priceAmount
     const stock = req.body.stock
     const attributes = JSON.parse(req.body.attributes || "{}")
 
+    console.log(price)
+
     product.variants.push({
-        image,
-        price:{
+        images,
+        price: {
             amount: Number(price) || product.price.amount,
-            currency:  req.body.priceCurrency || product.price.currency
+            currency: req.body.priceCurrency || product.price.currency
         },
         stock,
         attributes
     })
-     await product.save();
 
-     return res.status(200).json({
-        message: "Product Variants added successfully",
+    await product.save();
+
+    return res.status(200).json({
+        message: "Product variant added successfully",
         success: true,
         product
-     })
+    })
 
-
-   
 }

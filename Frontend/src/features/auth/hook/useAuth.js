@@ -27,15 +27,13 @@ export const useAuth = () => {
             dispatch(setLoading(true))
             const data = await getMe()
             dispatch(setUser(data.user))
-            dispatch(setLoading(false))
-            return data.user
-        } catch (error) {
-            console.log(error)
-
+        } catch (err) {
+            console.log(err)
         } finally {
             dispatch(setLoading(false))
         }
     }
+
     return {
         handleRegister,
         handleLogin,

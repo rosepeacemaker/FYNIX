@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import { useProduct } from '../hooks/useProduct';
 
 const CURRENCIES = ['INR', 'USD', 'EUR', 'GBP'];
-const MAX_IMAGES = 7;
+const MAX_IMAGE = 7;
 
 const CreateProduct = () => {
     const { handleCreateProduct } = useProduct();
@@ -15,7 +15,7 @@ const CreateProduct = () => {
         priceAmount: '',
         priceCurrency: 'USD',
     });
-    const [images, setImages] = useState([]);
+    const [image, setImage] = useState([]);
     const [isDragging, setIsDragging] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const fileInputRef = useRef(null);
@@ -26,11 +26,11 @@ const CreateProduct = () => {
     };
 
     const addFiles = (files) => {
-        const remaining = MAX_IMAGES - images.length;
+        const remaining = MAX_IMAGE - image.length;
         if (remaining <= 0) return;
         const toAdd = Array.from(files).slice(0, remaining);
-        const newImages = toAdd.map(file => ({ file, preview: URL.createObjectURL(file) }));
-        setImages(prev => [...prev, ...newImages]);
+        const newImage = toAdd.map(file => ({ file, preview: URL.createObjectURL(file) }));
+        setImage(prev => [...prev, ...newImage]);
     };
 
     const handleFileChange = (e) => {
@@ -42,13 +42,13 @@ const CreateProduct = () => {
         e.preventDefault();
         setIsDragging(false);
         if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
-    }, [images]);
+    }, [image]);
 
     const handleDragOver = (e) => { e.preventDefault(); setIsDragging(true); };
     const handleDragLeave = () => setIsDragging(false);
 
     const removeImage = (index) => {
-        setImages(prev => {
+        setImage(prev => {
             const updated = [...prev];
             URL.revokeObjectURL(updated[index].preview);
             updated.splice(index, 1);
@@ -65,7 +65,7 @@ const CreateProduct = () => {
             data.append('description', formData.description);
             data.append('priceAmount', formData.priceAmount);
             data.append('priceCurrency', formData.priceCurrency);
-            images.forEach(img => data.append('images', img.file));
+            image.forEach(img => data.append('image', img.file));
             await handleCreateProduct(data);
             navigate('/');
 
@@ -222,12 +222,12 @@ const CreateProduct = () => {
                                         Images
                                     </label>
                                     <span className="text-[10px] text-neutral-500 font-bold">
-                                        {images.length}/{MAX_IMAGES}
+                                        {image.length}/{MAX_IMAGE}
                                     </span>
                                 </div>
 
                                 {/* Drop Zone */}
-                                {images.length < MAX_IMAGES && (
+                                {image.length < MAX_IMAGE && (
                                     <div
                                         onDrop={handleDrop}
                                         onDragOver={handleDragOver}
@@ -251,7 +251,7 @@ const CreateProduct = () => {
                                                 </span>
                                             </p>
                                             <p className="text-[9px] uppercase tracking-[0.15em] mt-1.5 text-neutral-600 font-bold">
-                                                Up to {MAX_IMAGES} images
+                                                Up to {MAX_IMAGE} images
                                             </p>
                                         </div>
                                         <input
@@ -266,9 +266,9 @@ const CreateProduct = () => {
                                 )}
 
                                 {/* Image Previews */}
-                                {images.length > 0 && (
+                                {image.length > 0 && (
                                     <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-4 xl:grid-cols-5 gap-2 mt-1">
-                                        {images.map((img, index) => (
+                                        {image.map((img, index) => (
                                             <div
                                                 key={index}
                                                 className="relative aspect-square overflow-hidden group bg-neutral-900 border border-neutral-800"
