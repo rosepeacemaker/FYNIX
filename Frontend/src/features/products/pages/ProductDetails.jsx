@@ -99,6 +99,7 @@ const ProductDetails = () => {
                   </div>
                 )}
 
+
                 {/* Main Image */}
                 <div className="relative flex-1 rounded-2xl bg-[#0d0d0d] border border-[#1f1f1f] overflow-hidden flex items-center justify-center group"
                   style={{ aspectRatio: '1 / 1', maxHeight: '420px' }}

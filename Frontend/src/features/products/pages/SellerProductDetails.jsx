@@ -17,7 +17,7 @@ const SellerProductDetails = () => {
 
     // New variant state
     const [newVariant, setNewVariant] = useState({
-        images: [],
+        image: [],
         stock: 0,
         attributes: {}, // Strictly an object
         price: { amount: '', currency: 'INR' }
@@ -64,13 +64,13 @@ const SellerProductDetails = () => {
         }
 
         // Maps preview URL so the variant list can display the image locally
-        const cleanImages = newVariant.images.map(img => ({ url: img.previewUrl, file: img.file }));
+        const cleanImages = newVariant.image.map(img => ({ url: img.previewUrl, file: img.file }));
 
         // Attributes is already an object in newVariant, just use it safely
         const cleanAttributes = { ...newVariant.attributes };
 
         const variantToSave = {
-            images: cleanImages,
+            image: cleanImages,
             stock: Number(newVariant.stock),
             attributes: cleanAttributes,
             price: newVariant.price.amount
@@ -87,7 +87,7 @@ const SellerProductDetails = () => {
         // Note: should ideally revoke old object URLs as well to prevent memory leaks if it were a long-lived SPA
         setAttributeInputs([{ key: '', value: '' }]);
         setNewVariant({
-            images: [],
+            image: [],
             stock: 0,
             attributes: {},
             price: { amount: '', currency: 'INR' }
@@ -131,7 +131,7 @@ const SellerProductDetails = () => {
         const files = Array.from(e.target.files);
         if (!files.length) return;
 
-        const availableSlots = 7 - newVariant.images.length;
+        const availableSlots = 7 - newVariant.image.length;
         const filesToAdd = files.slice(0, availableSlots);
 
         if (files.length > availableSlots) {
@@ -145,7 +145,7 @@ const SellerProductDetails = () => {
 
         setNewVariant(prev => ({
             ...prev,
-            images: [...prev.images, ...newImageObjects]
+            image: [...prev.image, ...newImageObjects]
         }));
 
         // Clear the input so identical files can be selected again if needed
@@ -153,12 +153,12 @@ const SellerProductDetails = () => {
     };
 
     const handleRemoveImage = (index) => {
-        const imageToRemove = newVariant.images[index];
+        const imageToRemove = newVariant.image[index];
         if (imageToRemove?.previewUrl) {
             URL.revokeObjectURL(imageToRemove.previewUrl);
         }
-        const updatedImages = newVariant.images.filter((_, i) => i !== index);
-        setNewVariant(prev => ({ ...prev, images: updatedImages }));
+        const updatedImages = newVariant.image.filter((_, i) => i !== index);
+        setNewVariant(prev => ({ ...prev, image: updatedImages }));
     };
 
     if (loading) {
@@ -183,16 +183,16 @@ const SellerProductDetails = () => {
                     <div className="w-full md:w-1/2">
                         {/* Gallery placeholder */}
                         <div className="w-full aspect-[4/5] bg-[#f5f3f0] overflow-hidden">
-                            {product.images && product.images.length > 0 ? (
-                                <img src={product.images[0].url} alt={product.title} className="w-full h-full object-cover" />
+                            {product.image && product.image.length > 0 ? (
+                                <img src={product.image[0].url} alt={product.title} className="w-full h-full object-cover" />
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center text-[#7f7668]">No Image</div>
                             )}
                         </div>
                         {/* Thumbnails */}
-                        {product.images && product.images.length > 1 && (
+                        {product.image && product.image.length > 1 && (
                             <div className="flex gap-2 mt-2 overflow-x-auto">
-                                {product.images.slice(1).map((img, i) => (
+                                {product.image.slice(1).map((img, i) => (
                                     <img key={i} src={img.url} alt={`Thumb ${i}`} className="w-16 h-20 object-cover bg-[#f5f3f0] shrink-0" />
                                 ))}
                             </div>
@@ -303,12 +303,12 @@ const SellerProductDetails = () => {
                                 <div>
                                     <div className="flex justify-between items-end mb-3">
                                         <label className="block text-sm uppercase tracking-wider text-[#6e6258]">Image Upload (Max 7, Optional)</label>
-                                        <span className="text-xs text-[#7f7668]">{newVariant.images.length}/7</span>
+                                        <span className="text-xs text-[#7f7668]">{newVariant.image.length}/7</span>
                                     </div>
 
-                                    {newVariant.images.length > 0 && (
+                                    {newVariant.image.length > 0 && (
                                         <div className="grid grid-cols-3 gap-2 mb-4">
-                                            {newVariant.images.map((img, index) => (
+                                            {newVariant.image.map((img, index) => (
                                                 <div key={index} className="relative aspect-[4/5] bg-[#f5f3f0]">
                                                     <img src={img.previewUrl} alt="Preview" className="w-full h-full object-cover" />
                                                     <button
@@ -322,7 +322,7 @@ const SellerProductDetails = () => {
                                         </div>
                                     )}
 
-                                    {newVariant.images.length < 7 && (
+                                    {newVariant.image.length < 7 && (
                                         <div>
                                             <input
                                                 type="file"
@@ -363,8 +363,8 @@ const SellerProductDetails = () => {
                                     <div className="px-6 flex gap-4 h-24 mb-4">
                                         {/* Variant Thumb */}
                                         <div className="w-16 h-20 bg-[#f5f3f0] shrink-0">
-                                            {variant.images && variant.images.length > 0 ? (
-                                                <img src={variant.images[0].url} alt="Variant" className="w-full h-full object-cover" />
+                                            {variant.image && variant.image.length > 0 ? (
+                                                <img src={variant.image[0].url} alt="Variant" className="w-full h-full object-cover" />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center text-xs text-[#7f7668]">N/A</div>
                                             )}

@@ -37,7 +37,7 @@ currency: {
     ],
     variants:[
         {
-            images:[
+            image:[
                 {
                     url: {
                         type:String,
