@@ -4,6 +4,7 @@ import morgan from "morgan"
 import passport  from 'passport';
 import authRouter from './routes/auth.route.js'
 import productRouter from './routes/product.routes.js'
+import cartRouter from "./routes/cart.route.js"
 import cors from "cors"
 import { config } from './config/config.js';
 import pkg from 'passport-google-oauth20';
@@ -48,6 +49,7 @@ res.status(200).json({message: "Server is running"})
 
 app.use("/api/auth", authRouter)
 app.use("/api/products", productRouter);
+app.use("/api/cart", cartRouter)
 
 
 export default app;
