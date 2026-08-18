@@ -24,9 +24,11 @@ const Dashboard = () => {
                 className="min-h-screen selection:bg-[#C9A96E]/30"
                 style={{ backgroundColor: '#fbf9f6', fontFamily: "'Inter', sans-serif" }}
             >
-                <div className="max-w-7xl mx-auto px-8 lg:px-16 xl:px-24">
+                <div className="w-full max-w-[100rem] mx-auto px-6 lg:px-12 xl:px-16">
+
 
                     {/* ── Top Bar ── */}
+
                     <div className="pt-10 pb-0 flex items-center gap-5">
                         <button
                             onClick={() => navigate(-1)}
@@ -84,8 +86,8 @@ const Dashboard = () => {
                     {sellerProducts && sellerProducts.length > 0 ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16 pb-24">
                             {sellerProducts.map(product => {
-                                const imageUrl = product.images && product.images.length > 0
-                                    ? product.images[0].url
+                                const imageUrl = product.image && product.image.length > 0
+                                    ? product.image[0].url
                                     : '/cart_img.jpg'; // Fallback image
 
                                 return (

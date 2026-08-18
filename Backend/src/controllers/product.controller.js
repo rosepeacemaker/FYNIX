@@ -114,7 +114,7 @@ export async function addProductVariant(req, res) {
     console.log(price)
 
     product.variants.push({
-        images,
+        image,
         price: {
             amount: Number(price) || product.price.amount,
             currency: req.body.priceCurrency || product.price.currency

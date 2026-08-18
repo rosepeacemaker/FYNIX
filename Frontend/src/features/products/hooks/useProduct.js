@@ -37,6 +37,7 @@ export const useProduct = () => {
         return data;
 
     }
+
     return {
         handleCreateProduct,
         handleGetAllProducts,

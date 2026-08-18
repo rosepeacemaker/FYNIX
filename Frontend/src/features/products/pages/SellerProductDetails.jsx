@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useProduct } from '../hooks/useProduct';
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 
 // Helper icons
 const PlusIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>;
@@ -11,6 +11,7 @@ const SellerProductDetails = () => {
     const [localVariants, setLocalVariants] = useState([]);
     const [isAddingVariant, setIsAddingVariant] = useState(false);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     // UI state for inputs to maintain focus
     const [attributeInputs, setAttributeInputs] = useState([{ key: '', value: '' }]);
@@ -170,13 +171,40 @@ const SellerProductDetails = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#fbf9f6] text-[#1b1c1a] font-sans pb-24">
-            {/* Top Banner / Header */}
-            <header className="sticky top-0 z-10 bg-[#fbf9f6]/80 backdrop-blur-md px-6 py-4 flex items-center justify-between">
-                <h1 className="font-serif text-xl tracking-wide uppercase">{product.title?.substring(0, 20)}{product.title?.length > 20 ? '...' : ''}</h1>
-            </header>
+        <>
+            {/* Google Fonts */}
+            <link
+                href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap"
+                rel="stylesheet"
+            />
 
-            <main className="max-w-6xl mx-auto px-4 md:px-8 mt-8">
+            <div
+                className="min-h-screen selection:bg-[#C9A96E]/30 pb-24"
+                style={{ backgroundColor: '#fbf9f6', fontFamily: "'Inter', sans-serif" }}
+            >
+                <div className="w-full max-w-[100rem] mx-auto px-6 lg:px-12 xl:px-16">
+
+                    {/* ── Top Bar ── */}
+                    <div className="pt-10 pb-0 flex items-center gap-5">
+                        <button
+                            onClick={() => navigate(-1)}
+                            className="text-lg transition-colors duration-200 leading-none cursor-pointer"
+                            style={{ color: '#B5ADA3' }}
+                            aria-label="Go back"
+                            onMouseEnter={e => e.currentTarget.style.color = '#C9A96E'}
+                            onMouseLeave={e => e.currentTarget.style.color = '#B5ADA3'}
+                        >
+                            ←
+                        </button>
+                        <span
+                            className="text-xs font-medium tracking-[0.32em] uppercase"
+                            style={{ fontFamily: "'Cormorant Garamond', serif", color: '#C9A96E' }}
+                        >
+                            FYNIX.
+                        </span>
+                    </div>
+
+                    <main className="mt-10">
 
                 {/* Base Product Info */}
                 <section className="flex flex-col md:flex-row gap-8 mb-16">
@@ -200,7 +228,7 @@ const SellerProductDetails = () => {
                     </div>
 
                     <div className="w-full md:w-1/2 flex flex-col justify-center">
-                        <h2 className="font-serif text-4xl md:text-5xl leading-tight mb-4 uppercase">{product.title}</h2>
+                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-light leading-[1.05] mb-6 uppercase" style={{ fontFamily: "'Cormorant Garamond', serif", color: '#1b1c1a' }}>{product.title}</h2>
                         <p className="text-[#6e6258] text-lg mb-6 leading-relaxed max-w-md">{product.description}</p>
                         <div className="text-2xl tracking-wide font-light mb-8">
                             {product.price?.amount} {product.price?.currency}
@@ -211,7 +239,7 @@ const SellerProductDetails = () => {
                 {/* Variants & Inventory */}
                 <section className="bg-[#f5f3f0] p-6 md:p-12">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
-                        <h3 className="font-serif text-3xl uppercase">Variants & Inventory</h3>
+                        <h3 className="text-3xl uppercase font-light" style={{ fontFamily: "'Cormorant Garamond', serif", color: '#1b1c1a' }}>Variants & Inventory</h3>
                         {!isAddingVariant && (
                             <button
                                 onClick={() => setIsAddingVariant(true)}
@@ -226,7 +254,7 @@ const SellerProductDetails = () => {
                     {isAddingVariant && (
                         <div className="bg-[#ffffff] p-6 md:p-8 mb-12 shadow-[0_20px_40px_rgba(27,28,26,0.04)]">
                             <div className="flex justify-between items-center mb-6">
-                                <h4 className="font-serif text-xl uppercase">Create Variant</h4>
+                                <h4 className="text-xl uppercase font-light" style={{ fontFamily: "'Cormorant Garamond', serif", color: '#1b1c1a' }}>Create Variant</h4>
                                 <button
                                     onClick={() => setIsAddingVariant(false)}
                                     className="text-[#7f7668] hover:text-[#1b1c1a] text-sm uppercase tracking-wider cursor-pointer"
@@ -403,8 +431,10 @@ const SellerProductDetails = () => {
 
                 </section>
 
-            </main>
-        </div>
+                    </main>
+                </div>
+            </div>
+        </>
     )
 }
 
