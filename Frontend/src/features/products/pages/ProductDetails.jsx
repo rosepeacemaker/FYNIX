@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router';
 import { useProduct } from '../hooks/useProduct';
-// import { useCart } from '../../cart/hook/useCart';
+import { useCart } from '../../cart/hook/useCart';
 
 const ProductDetail = () => {
   const { productId } = useParams();
@@ -10,7 +10,7 @@ const ProductDetail = () => {
   const [selectedAttributes, setSelectedAttributes] = useState({});
   const navigate = useNavigate();
   const { handleGetProductById } = useProduct();
-  // const { handleAddItem } = useCart()
+  const { handleAddItem } = useCart()
 
 
 
