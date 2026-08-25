@@ -5,11 +5,11 @@ import { Link } from 'react-router'
 
 /* ─── Design tokens (FYNIX "High-Contrast Noir" from Google Stitch) ──────── */
 const CORAL = '#FF6B6B'
-const BG    = '#131313'
-const SURF  = '#1b1b1b'
+const BG = '#131313'
+const SURF = '#1b1b1b'
 const SURF2 = '#2a2a2a'
-const GRAY  = '#c8c6c5'
-const TEXT  = '#e2e2e2'
+const GRAY = '#c8c6c5'
+const TEXT = '#e2e2e2'
 
 /* ─── Quantity stepper ────────────────────────────────────────────────────── */
 const QuantityStepper = ({ qty, onDecrement, onIncrement }) => (
@@ -116,7 +116,8 @@ const EmptyCart = () => (
 /* ─── Main Cart page ──────────────────────────────────────────────────────── */
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart.items)
-  const { handleGetCart } = useCart()
+  const user = useSelector((state) => state.auth.user)
+  const { handleGetCart, handleIncrementCartItem } = useCart()
   const [quantities, setQuantities] = useState({})
 
   useEffect(() => { handleGetCart() }, [])
@@ -158,9 +159,11 @@ const Cart = () => {
                   onMouseLeave={e => (e.currentTarget.style.color = TEXT)}
                 >{label}</Link>
               ))}
-              <Link to="/cart" style={{ color: CORAL, borderBottom: `2px solid ${CORAL}`, paddingBottom: '2px', fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '12px', letterSpacing: '0.12em', textDecoration: 'none' }}>
-                🛍 {itemCount > 0 && `(${itemCount})`}
-              </Link>
+              {user && (
+                <Link to="/cart" style={{ color: CORAL, borderBottom: `2px solid ${CORAL}`, paddingBottom: '2px', fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '12px', letterSpacing: '0.12em', textDecoration: 'none' }}>
+                  🛍 {itemCount > 0 && `(${itemCount})`}
+                </Link>
+              )}
             </nav>
           </div>
         </header>
@@ -266,4 +269,4 @@ const Cart = () => {
   )
 }
 
-export default Cart
+export default Cart
