@@ -87,7 +87,7 @@ const CreateProduct = () => {
             />
 
             <div
-                className="min-h-screen w-full bg-black text-white selection:bg-[#ff6b6b]/30 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+                className="min-h-screen w-full text-white selection:bg-[#ff6b6b]/30 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                 style={{ fontFamily: "'Inter', sans-serif" }}
             >
                 <div className="max-w-5xl mx-auto px-6 lg:px-12 xl:px-20">

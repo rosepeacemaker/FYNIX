@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux'
 import { useCart } from '../hook/useCart'
 import { Link } from 'react-router'
 
-/* ─── Design tokens (FYNIX "High-Contrast Noir" from Google Stitch) ──────── */
+/* ─── Design tokens (FYNIX "Coral Noir" Palette) ─────────────────────────── */
 const CORAL = '#FF6B6B'
-const BG = '#131313'
+const BG = 'transparent'
 const SURF = '#1b1b1b'
 const SURF2 = '#2a2a2a'
 const GRAY = '#c8c6c5'
@@ -34,12 +34,61 @@ const QuantityStepper = ({ qty, onDecrement, onIncrement }) => (
   </div>
 )
 
+/* ─── Helper to extract item details ─────────────────────────────────────── */
+const getItemDetails = (item) => {
+  const product = item?.product || item?.productId || (typeof item === 'object' ? item : {})
+  const variant = item?.variant || item?.variantId
+
+  const title = product?.title || item?.title || 'Untitled Piece'
+  const description = product?.description || item?.description || ''
+
+  // Price resolution: variant price -> product price -> item price
+  const priceObj = (typeof variant === 'object' && variant?.price)
+    ? variant.price
+    : (product?.price || item?.price)
+
+  const price = typeof priceObj === 'number'
+    ? priceObj
+    : (priceObj?.amount ?? (typeof product?.price === 'number' ? product.price : 0))
+
+  const currency = (typeof priceObj === 'object' && priceObj?.currency)
+    ? priceObj.currency
+    : (product?.price?.currency || product?.currency || item?.currency || 'USD')
+
+  // Image resolution
+  const getUrl = (img) => {
+    if (!img) return null
+    if (typeof img === 'string') return img
+    if (typeof img === 'object') return img.url || img.secure_url || img.previewUrl || img.preview || null
+    return null
+  }
+
+  let imageUrl = null
+  const imgSources = [
+    variant?.image, variant?.images,
+    product?.image, product?.images,
+    item?.image, item?.images
+  ]
+
+  for (const src of imgSources) {
+    if (!src) continue
+    if (typeof src === 'string') { imageUrl = src; break }
+    if (Array.isArray(src) && src.length > 0) {
+      const url = getUrl(src[0])
+      if (url) { imageUrl = url; break }
+    }
+  }
+
+  if (!imageUrl) imageUrl = '/cart_img.jpg'
+
+  return { title, description, price, currency, imageUrl, product, variant }
+}
+
 /* ─── Single cart item card ───────────────────────────────────────────────── */
 const CartItemCard = ({ item, qty, onRemove, onDecrement, onIncrement }) => {
   const [hovered, setHovered] = useState(false)
-  const imageUrl = item?.image?.[0]?.url || 'https://placehold.co/200x200/1f1f1f/ff6b6b?text=FYNIX'
-  const price = item?.price?.amount ?? 0
-  const currency = item?.price?.currency ?? item?.currency ?? 'USD'
+  const { title, description, price, currency, imageUrl } = getItemDetails(item)
+  const itemId = item._id || item.product?._id || item.id
 
   return (
     <div
@@ -54,8 +103,9 @@ const CartItemCard = ({ item, qty, onRemove, onDecrement, onIncrement }) => {
       <div style={{ width: '160px', minWidth: '160px', height: '200px', overflow: 'hidden', backgroundColor: SURF2, flexShrink: 0 }}>
         <img
           src={imageUrl}
-          alt={item.title}
+          alt={title}
           style={{ width: '100%', height: '100%', objectFit: 'cover', transform: hovered ? 'scale(1.05)' : 'scale(1)', transition: 'transform 0.5s cubic-bezier(0.4,0,0.2,1)' }}
+          onError={(e) => { e.currentTarget.src = '/cart_img.jpg' }}
         />
       </div>
 
@@ -64,23 +114,25 @@ const CartItemCard = ({ item, qty, onRemove, onDecrement, onIncrement }) => {
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
             <h3 style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '18px', letterSpacing: '0.05em', textTransform: 'uppercase', color: TEXT, margin: 0 }}>
-              {item.title}
+              {title}
             </h3>
             <button
-              onClick={() => onRemove(item._id)}
+              onClick={() => onRemove(itemId)}
               aria-label="Remove item"
               style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#555', fontSize: '18px', lineHeight: 1, padding: '2px 4px', transition: 'color 0.3s' }}
               onMouseEnter={e => (e.currentTarget.style.color = CORAL)}
               onMouseLeave={e => (e.currentTarget.style.color = '#555')}
             >✕</button>
           </div>
-          <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', color: GRAY, letterSpacing: '0.01em', margin: '0 0 4px' }}>
-            {item.description}
-          </p>
+          {description && (
+            <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', color: GRAY, letterSpacing: '0.01em', margin: '0 0 4px' }}>
+              {description}
+            </p>
+          )}
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px' }}>
-          <QuantityStepper qty={qty} onDecrement={() => onDecrement(item._id)} onIncrement={() => onIncrement(item._id)} />
+          <QuantityStepper qty={qty} onDecrement={() => onDecrement(itemId)} onIncrement={() => onIncrement(itemId)} />
           <span style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '22px', letterSpacing: '0.03em', color: CORAL }}>
             {currency} {(price * qty).toLocaleString()}
           </span>
@@ -117,7 +169,7 @@ const EmptyCart = () => (
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart.items)
   const user = useSelector((state) => state.auth.user)
-  const { handleGetCart, handleIncrementCartItem } = useCart()
+  const { handleGetCart, } = useCart()
   const [quantities, setQuantities] = useState({})
 
   useEffect(() => { handleGetCart() }, [])
@@ -126,18 +178,28 @@ const Cart = () => {
     if (cartItems?.length) {
       setQuantities(prev => {
         const next = { ...prev }
-        cartItems.forEach(item => { if (!next[item._id]) next[item._id] = 1 })
+        cartItems.forEach(item => {
+          const itemId = item._id || item.product?._id || item.id
+          if (itemId && !next[itemId]) next[itemId] = item.quantity || 1
+        })
         return next
       })
     }
   }, [cartItems])
 
+
   const handleIncrement = (id) => setQuantities(prev => ({ ...prev, [id]: (prev[id] || 1) + 1 }))
   const handleDecrement = (id) => setQuantities(prev => ({ ...prev, [id]: Math.max(1, (prev[id] || 1) - 1) }))
   const handleRemove = (id) => console.log('Remove item', id)
 
-  const currency = cartItems?.[0]?.price?.currency ?? cartItems?.[0]?.currency ?? 'USD'
-  const subtotal = cartItems?.reduce((sum, item) => sum + (item?.price?.amount ?? 0) * (quantities[item._id] || 1), 0) || 0
+  const firstItemDetails = cartItems?.[0] ? getItemDetails(cartItems[0]) : null
+  const currency = firstItemDetails?.currency || 'USD'
+  const subtotal = cartItems?.reduce((sum, item) => {
+    const { price } = getItemDetails(item)
+    const itemId = item._id || item.product?._id || item.id
+    const qty = quantities[itemId] || item.quantity || 1
+    return sum + price * qty
+  }, 0) || 0
   const itemCount = cartItems?.length || 0
 
   return (
@@ -186,16 +248,19 @@ const Cart = () => {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '48px', alignItems: 'start' }}>
               {/* Left: items */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                {cartItems.map(item => (
-                  <CartItemCard
-                    key={item._id}
-                    item={item}
-                    qty={quantities[item._id] || 1}
-                    onRemove={handleRemove}
-                    onDecrement={handleDecrement}
-                    onIncrement={handleIncrement}
-                  />
-                ))}
+                {cartItems.map((item, index) => {
+                  const itemId = item._id || item.product?._id || item.id || index
+                  return (
+                    <CartItemCard
+                      key={itemId}
+                      item={item}
+                      qty={quantities[itemId] || item.quantity || 1}
+                      onRemove={handleRemove}
+                      onDecrement={handleDecrement}
+                      onIncrement={handleIncrement}
+                    />
+                  )
+                })}
               </div>
 
               {/* Right: summary */}

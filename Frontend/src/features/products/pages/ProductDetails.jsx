@@ -125,8 +125,8 @@ const ProductDetail = () => {
       />
 
       <div
-        className="min-h-screen selection:bg-[#C9A96E]/30 pb-24"
-        style={{ backgroundColor: '#fbf9f6', fontFamily: "'Inter', sans-serif" }}
+        className="min-h-screen selection:bg-[#FF6B6B]/30 pb-24"
+        style={{ fontFamily: "'Inter', sans-serif" }}
       >
 
         <div className="max-w-7xl mx-auto px-8 lg:px-16 xl:px-24 pt-12 lg:pt-20">
@@ -142,43 +142,38 @@ const ProductDetail = () => {
                     <button
                       key={idx}
                       onClick={() => setSelectedImage(idx)}
-                      className={`flex-shrink-0 w-20 md:w-full aspect-[4/5] overflow-hidden transition-all duration-300 ${selectedImage === idx ? 'opacity-100 ring-1 ring-[#C9A96E] ring-offset-2' : 'opacity-50 hover:opacity-100'}`}
-                      style={{ backgroundColor: '#f5f3f0', '--tw-ring-offset-color': '#fbf9f6' }}
+                      className={`flex-shrink-0 w-20 md:w-full aspect-[4/5] overflow-hidden transition-all duration-300 ${selectedImage === idx ? 'opacity-100 ring-2 ring-[#FF6B6B]' : 'opacity-50 hover:opacity-100'}`}
+                      style={{ backgroundColor: '#1B1B1B' }}
                     >
                       <img
-
-                        src={img.url} alt={`View ${idx + 1}`} className="w-full h-full object-cover" />
+                        src={img.url || img} alt={`View ${idx + 1}`} className="w-full h-full object-cover"
+                        onError={(e) => { e.currentTarget.src = '/cart_img.jpg' }}
+                      />
                     </button>
                   ))}
                 </div>
               )}
 
               {/* Main Image */}
-              <div className="relative w-full aspect-4/5 overflow-hidden group" style={{ backgroundColor: '#f5f3f0' }}>
+              <div className="relative w-full aspect-4/5 overflow-hidden group bg-[#1B1B1B] border border-[#2A2A2A]">
                 <img
-                  src={displayImages[selectedImage]?.url || displayImages[0].url}
+                  src={displayImages[selectedImage]?.url || displayImages[0]?.url || displayImages[0]}
                   alt={product.title}
                   className="w-full h-full object-cover transition-opacity duration-500"
-
+                  onError={(e) => { e.currentTarget.src = '/cart_img.jpg' }}
                 />
                 {displayImages.length > 1 && (
                   <>
                     <button
                       onClick={() => setSelectedImage(prev => prev === 0 ? displayImages.length - 1 : prev - 1)}
-                      className="absolute left-4 lg:left-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 border"
-                      style={{ backgroundColor: 'rgba(251,249,246,0.8)', borderColor: '#e4e2df', color: '#1b1c1a' }}
-                      onMouseEnter={e => e.currentTarget.style.backgroundColor = '#fbf9f6'}
-                      onMouseLeave={e => e.currentTarget.style.backgroundColor = 'rgba(251,249,246,0.8)'}
+                      className="absolute left-4 lg:left-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 border bg-[#1B1B1B]/80 border-[#3A3A3A] text-white hover:border-[#FF6B6B]"
                       aria-label="Previous image"
                     >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" d="M15 19l-7-7 7-7" /></svg>
                     </button>
                     <button
                       onClick={() => setSelectedImage(prev => prev === displayImages.length - 1 ? 0 : prev + 1)}
-                      className="absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 border"
-                      style={{ backgroundColor: 'rgba(251,249,246,0.8)', borderColor: '#e4e2df', color: '#1b1c1a' }}
-                      onMouseEnter={e => e.currentTarget.style.backgroundColor = '#fbf9f6'}
-                      onMouseLeave={e => e.currentTarget.style.backgroundColor = 'rgba(251,249,246,0.8)'}
+                      className="absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 border bg-[#1B1B1B]/80 border-[#3A3A3A] text-white hover:border-[#FF6B6B]"
                       aria-label="Next image"
                     >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" d="M9 5l7 7-7 7" /></svg>
@@ -189,30 +184,30 @@ const ProductDetail = () => {
             </div>
 
             {/* ── RIGHT: Product Details ── */}
-            <div className="w-full lg:w-[30%] lg:sticky lg:top-24 flex flex-col pt-4">
+            <div className="w-full lg:w-[30%] lg:sticky lg:top-24 flex flex-col pt-4 bg-[#2A2A2A]/40 p-6 border border-[#3A3A3A]">
 
               <h1
-                className="text-4xl md:text-5xl lg:text-6xl font-light leading-[1.05] mb-6"
-                style={{ fontFamily: "'Cormorant Garamond', serif", color: '#1b1c1a' }}
+                className="text-3xl md:text-4xl lg:text-5xl font-bold uppercase tracking-tight leading-tight mb-4"
+                style={{ fontFamily: "'Montserrat', sans-serif", color: '#E2E2E2' }}
               >
                 {product.title}
               </h1>
 
-              <div className="mb-8">
+              <div className="mb-6">
                 <span
-                  className="text-sm uppercase tracking-[0.2em] font-medium"
-                  style={{ color: '#1b1c1a' }}
+                  className="text-lg uppercase tracking-[0.2em] font-bold"
+                  style={{ color: '#FF6B6B' }}
                 >
-                  {displayPrice?.currency} {displayPrice?.amount?.toLocaleString()}
+                  {displayPrice?.currency || 'USD'} {displayPrice?.amount?.toLocaleString()}
                 </span>
               </div>
 
-              <div className="h-px w-full mb-8" style={{ backgroundColor: '#e4e2df' }} />
+              <div className="h-px w-full mb-6 bg-[#3A3A3A]" />
 
               {/* Options/Variants */}
               {Object.entries(availableAttributes).map(([attrName, values]) => (
                 <div key={attrName} className="mb-6">
-                  <h3 className="text-[10px] uppercase tracking-[0.24em] font-medium mb-3" style={{ color: '#C9A96E' }}>
+                  <h3 className="text-[10px] uppercase tracking-[0.24em] font-bold mb-3" style={{ color: '#FF6B6B' }}>
                     {attrName}
                   </h3>
                   <div className="flex flex-wrap gap-2">
@@ -222,8 +217,7 @@ const ProductDetail = () => {
                         <button
                           key={val}
                           onClick={() => handleAttributeChange(attrName, val)}
-                          className={`px-4 py-2 text-[11px] uppercase tracking-[0.15em] font-medium transition-all duration-300 border ${isSelected ? 'border-[#1b1c1a] bg-[#1b1c1a] text-[#fbf9f6]' : 'border-[#d0c5b5] text-[#1b1c1a] hover:border-[#1b1c1a]'}`}
-                          style={isSelected ? {} : { backgroundColor: 'transparent' }}
+                          className={`px-4 py-2 text-[11px] uppercase tracking-[0.15em] font-bold transition-all duration-300 border ${isSelected ? 'border-[#FF6B6B] bg-[#FF6B6B] text-black' : 'border-[#3A3A3A] bg-[#1B1B1B] text-[#E2E2E2] hover:border-[#FF6B6B]'}`}
                         >
                           {val}
                         </button>
@@ -236,17 +230,17 @@ const ProductDetail = () => {
               {/* Stock Information */}
               {activeVariant && activeVariant.stock !== undefined && (
                 <div className="mb-6">
-                  <span className={`text-[10px] uppercase tracking-[0.2em] font-medium ${activeVariant.stock > 0 ? 'text-green-700' : 'text-red-700'}`}>
+                  <span className={`text-[10px] uppercase tracking-[0.2em] font-bold ${activeVariant.stock > 0 ? 'text-emerald-400' : 'text-rose-500'}`}>
                     {activeVariant.stock > 0 ? `${activeVariant.stock} in stock` : 'Out of stock'}
                   </span>
                 </div>
               )}
 
-              <div className="mb-12">
-                <h3 className="text-[10px] uppercase tracking-[0.24em] font-medium mb-4" style={{ color: '#C9A96E' }}>
+              <div className="mb-8">
+                <h3 className="text-[10px] uppercase tracking-[0.24em] font-bold mb-3" style={{ color: '#FF6B6B' }}>
                   The Details
                 </h3>
-                <p className="text-sm leading-relaxed" style={{ color: '#7A6E63' }}>
+                <p className="text-sm leading-relaxed" style={{ color: '#C8C6C5' }}>
                   {product.description}
                 </p>
               </div>
@@ -254,44 +248,29 @@ const ProductDetail = () => {
               {/* Actions */}
               <div className="flex flex-col gap-4 mt-auto">
                 <button
-                  className="w-full py-4 text-[11px] uppercase tracking-[0.25em] font-medium transition-all duration-300"
+                  className="w-full py-4 text-[11px] uppercase tracking-[0.25em] font-bold transition-all duration-300 cursor-pointer shadow-[0_0_15px_rgba(255,107,107,0.3)] hover:shadow-[0_0_25px_rgba(255,107,107,0.6)]"
                   style={{
-                    backgroundColor: '#1b1c1a',
-                    color: '#fbf9f6',
-                    fontFamily: "'Inter', sans-serif"
-                  }}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.backgroundColor = '#C9A96E';
-                    e.currentTarget.style.color = '#1b1c1a';
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.backgroundColor = '#1b1c1a';
-                    e.currentTarget.style.color = '#fbf9f6';
+                    backgroundColor: '#FF6B6B',
+                    color: '#000000',
+                    fontFamily: "'Montserrat', sans-serif"
                   }}
                   onClick={() => {
                     handleAddItem({
                       productId: productId,
                       variantId: activeVariant?._id
                     })
-
                   }}
                 >
                   Add to Cart
                 </button>
 
                 <button
-                  className="w-full py-4 text-[11px] uppercase tracking-[0.25em] font-medium transition-all duration-300 border"
+                  className="w-full py-4 text-[11px] uppercase tracking-[0.25em] font-bold transition-all duration-300 border cursor-pointer hover:bg-[#FF6B6B]/10"
                   style={{
                     backgroundColor: 'transparent',
-                    borderColor: '#d0c5b5',
-                    color: '#1b1c1a',
-                    fontFamily: "'Inter', sans-serif"
-                  }}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.borderColor = '#C9A96E';
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.borderColor = '#d0c5b5';
+                    borderColor: '#FF6B6B',
+                    color: '#FF6B6B',
+                    fontFamily: "'Montserrat', sans-serif"
                   }}
                 >
                   Buy Now
@@ -299,16 +278,16 @@ const ProductDetail = () => {
               </div>
 
               {/* Extra elegant details */}
-              <div className="mt-14 space-y-4 text-[10px] uppercase tracking-[0.1em]" style={{ color: '#B5ADA3' }}>
-                <div className="flex justify-between border-b pb-3" style={{ borderColor: '#e4e2df' }}>
+              <div className="mt-10 space-y-3 text-[10px] uppercase tracking-[0.1em]" style={{ color: '#C8C6C5' }}>
+                <div className="flex justify-between border-b pb-3 border-[#3A3A3A]">
                   <span>Shipping</span>
-                  <span>Complimentary over INR 15,000</span>
+                  <span>Complimentary over USD 150</span>
                 </div>
-                <div className="flex justify-between border-b pb-3" style={{ borderColor: '#e4e2df' }}>
+                <div className="flex justify-between border-b pb-3 border-[#3A3A3A]">
                   <span>Returns</span>
                   <span>Within 14 days of delivery</span>
                 </div>
-                <div className="flex justify-between border-b pb-3" style={{ borderColor: '#e4e2df' }}>
+                <div className="flex justify-between border-b pb-3 border-[#3A3A3A]">
                   <span>Authenticity</span>
                   <span>100% Guaranteed</span>
                 </div>

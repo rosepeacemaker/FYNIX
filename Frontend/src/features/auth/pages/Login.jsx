@@ -38,10 +38,10 @@ export default function Login() {
     };
 
     return (
-        <div className="flex h-screen w-full bg-black overflow-hidden">
+        <div className="flex h-screen w-full overflow-hidden">
 
             {/* ── LEFT · FORM PANEL ── */}
-            <div className="w-full md:w-1/2 flex items-center justify-center px-6 sm:px-10 md:px-16 lg:px-24 bg-black overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            <div className="w-full md:w-1/2 flex items-center justify-center px-6 sm:px-10 md:px-16 lg:px-24 bg-[#1B1B1B]/70 backdrop-blur-lg overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 <div className="w-full max-w-sm py-6 md:py-0">
 
                     {/* Brand */}

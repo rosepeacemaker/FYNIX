@@ -179,8 +179,8 @@ const SellerProductDetails = () => {
             />
 
             <div
-                className="min-h-screen selection:bg-[#C9A96E]/30 pb-24"
-                style={{ backgroundColor: '#fbf9f6', fontFamily: "'Inter', sans-serif" }}
+                className="min-h-screen selection:bg-[#FF6B6B]/30 pb-24"
+                style={{ fontFamily: "'Inter', sans-serif" }}
             >
                 <div className="w-full max-w-[100rem] mx-auto px-6 lg:px-12 xl:px-16">
 
@@ -188,17 +188,14 @@ const SellerProductDetails = () => {
                     <div className="pt-10 pb-0 flex items-center gap-5">
                         <button
                             onClick={() => navigate(-1)}
-                            className="text-lg transition-colors duration-200 leading-none cursor-pointer"
-                            style={{ color: '#B5ADA3' }}
+                            className="text-lg transition-colors duration-200 leading-none cursor-pointer text-[#C8C6C5] hover:text-[#FF6B6B]"
                             aria-label="Go back"
-                            onMouseEnter={e => e.currentTarget.style.color = '#C9A96E'}
-                            onMouseLeave={e => e.currentTarget.style.color = '#B5ADA3'}
                         >
                             ←
                         </button>
                         <span
-                            className="text-xs font-medium tracking-[0.32em] uppercase"
-                            style={{ fontFamily: "'Cormorant Garamond', serif", color: '#C9A96E' }}
+                            className="text-xs font-bold tracking-[0.32em] uppercase"
+                            style={{ fontFamily: "'Montserrat', sans-serif", color: '#FF6B6B' }}
                         >
                             FYNIX.
                         </span>
@@ -210,40 +207,40 @@ const SellerProductDetails = () => {
                         <section className="flex flex-col md:flex-row gap-8 mb-16">
                             <div className="w-full md:w-1/2">
                                 {/* Gallery placeholder */}
-                                <div className="w-full aspect-[4/5] bg-[#f5f3f0] overflow-hidden">
+                                <div className="w-full aspect-[4/5] bg-[#1B1B1B] border border-[#3A3A3A] overflow-hidden">
                                     {product.image && product.image.length > 0 ? (
-                                        <img src={product.image[0].url} alt={product.title} className="w-full h-full object-cover" />
+                                        <img src={typeof product.image[0] === 'string' ? product.image[0] : (product.image[0].url || product.image[0].secure_url)} alt={product.title} className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = '/cart_img.jpg' }} />
                                     ) : (
-                                        <div className="w-full h-full flex items-center justify-center text-[#7f7668]">No Image</div>
+                                        <div className="w-full h-full flex items-center justify-center text-[#C8C6C5]">No Image</div>
                                     )}
                                 </div>
                                 {/* Thumbnails */}
                                 {product.image && product.image.length > 1 && (
                                     <div className="flex gap-2 mt-2 overflow-x-auto">
                                         {product.image.slice(1).map((img, i) => (
-                                            <img key={i} src={img.url} alt={`Thumb ${i}`} className="w-16 h-20 object-cover bg-[#f5f3f0] shrink-0" />
+                                            <img key={i} src={typeof img === 'string' ? img : (img.url || img.secure_url)} alt={`Thumb ${i}`} className="w-16 h-20 object-cover bg-[#1B1B1B] border border-[#3A3A3A] shrink-0" onError={(e) => { e.currentTarget.src = '/cart_img.jpg' }} />
                                         ))}
                                     </div>
                                 )}
                             </div>
 
-                            <div className="w-full md:w-1/2 flex flex-col justify-center">
-                                <h2 className="text-4xl md:text-5xl lg:text-6xl font-light leading-[1.05] mb-6 uppercase" style={{ fontFamily: "'Cormorant Garamond', serif", color: '#1b1c1a' }}>{product.title}</h2>
-                                <p className="text-[#6e6258] text-lg mb-6 leading-relaxed max-w-md">{product.description}</p>
-                                <div className="text-2xl tracking-wide font-light mb-8">
-                                    {product.price?.amount} {product.price?.currency}
+                            <div className="w-full md:w-1/2 flex flex-col justify-center bg-[#2A2A2A]/40 p-8 border border-[#3A3A3A]">
+                                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-4 uppercase" style={{ fontFamily: "'Montserrat', sans-serif", color: '#E2E2E2' }}>{product.title}</h2>
+                                <p className="text-[#C8C6C5] text-base mb-6 leading-relaxed max-w-md">{product.description}</p>
+                                <div className="text-2xl tracking-wide font-bold mb-8" style={{ color: '#FF6B6B' }}>
+                                    {product.price?.amount || product.price} {product.price?.currency || 'USD'}
                                 </div>
                             </div>
                         </section>
 
                         {/* Variants & Inventory */}
-                        <section className="bg-[#f5f3f0] p-6 md:p-12">
+                        <section className="bg-[#2A2A2A]/60 border border-[#3A3A3A] p-6 md:p-12">
                             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
-                                <h3 className="text-3xl uppercase font-light" style={{ fontFamily: "'Cormorant Garamond', serif", color: '#1b1c1a' }}>Variants & Inventory</h3>
+                                <h3 className="text-2xl uppercase font-bold tracking-wide" style={{ fontFamily: "'Montserrat', sans-serif", color: '#E2E2E2' }}>Variants & Inventory</h3>
                                 {!isAddingVariant && (
                                     <button
                                         onClick={() => setIsAddingVariant(true)}
-                                        className="bg-[#745a27] text-[#ffffff] px-6 py-3 uppercase tracking-wider text-sm hover:bg-[#5a4312] transition-colors flex items-center gap-2 cursor-pointer"
+                                        className="bg-[#FF6B6B] text-black px-6 py-3 uppercase tracking-wider text-sm font-bold hover:bg-white transition-colors flex items-center gap-2 cursor-pointer shadow-[0_0_15px_rgba(255,107,107,0.3)]"
                                     >
                                         <PlusIcon /> Add New Variant
                                     </button>

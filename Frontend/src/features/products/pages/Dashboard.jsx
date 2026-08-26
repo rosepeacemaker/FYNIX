@@ -28,21 +28,17 @@ const Dashboard = () => {
 
 
                     {/* ── Top Bar ── */}
-
                     <div className="pt-10 pb-0 flex items-center gap-5">
                         <button
                             onClick={() => navigate(-1)}
-                            className="text-lg transition-colors duration-200 leading-none"
-                            style={{ color: '#B5ADA3' }}
+                            className="text-lg transition-colors duration-200 leading-none text-[#C8C6C5] hover:text-[#FF6B6B]"
                             aria-label="Go back"
-                            onMouseEnter={e => e.currentTarget.style.color = '#C9A96E'}
-                            onMouseLeave={e => e.currentTarget.style.color = '#B5ADA3'}
                         >
                             ←
                         </button>
                         <span
-                            className="text-xs font-medium tracking-[0.32em] uppercase"
-                            style={{ fontFamily: "'Cormorant Garamond', serif", color: '#C9A96E' }}
+                            className="text-xs font-bold tracking-[0.32em] uppercase"
+                            style={{ fontFamily: "'Montserrat', sans-serif", color: '#FF6B6B' }}
                         >
                             FYNIX.
                         </span>
@@ -52,30 +48,20 @@ const Dashboard = () => {
                     <div className="pt-10 pb-10 flex flex-col md:flex-row md:items-end justify-between gap-6 overflow-hidden">
                         <div>
                             <h1
-                                className="text-4xl lg:text-5xl font-light leading-tight"
-                                style={{ fontFamily: "'Cormorant Garamond', serif", color: '#1b1c1a' }}
+                                className="text-4xl lg:text-5xl font-bold uppercase tracking-tight leading-tight"
+                                style={{ fontFamily: "'Montserrat', sans-serif", color: '#E2E2E2' }}
                             >
                                 Your Vault
                             </h1>
-                            {/* Gold rule separator */}
-                            <div className="mt-4 w-14 h-px" style={{ backgroundColor: '#C9A96E' }} />
+                            {/* Coral rule separator */}
+                            <div className="mt-4 w-14 h-1 bg-[#FF6B6B]" />
                         </div>
 
                         <button
                             onClick={() => navigate('/seller/create-product')}
-                            className="py-4 px-8 text-[11px] uppercase tracking-[0.3em] font-medium transition-all duration-300 w-full md:w-auto text-center"
+                            className="py-4 px-8 text-[11px] uppercase tracking-[0.3em] font-bold transition-all duration-300 w-full md:w-auto text-center bg-[#FF6B6B] text-black hover:bg-white cursor-pointer shadow-[0_0_15px_rgba(255,107,107,0.3)]"
                             style={{
-                                backgroundColor: '#1b1c1a',
-                                color: '#fbf9f6',
-                                fontFamily: "'Inter', sans-serif"
-                            }}
-                            onMouseEnter={e => {
-                                e.currentTarget.style.backgroundColor = '#C9A96E';
-                                e.currentTarget.style.color = '#1b1c1a';
-                            }}
-                            onMouseLeave={e => {
-                                e.currentTarget.style.backgroundColor = '#1b1c1a';
-                                e.currentTarget.style.color = '#fbf9f6';
+                                fontFamily: "'Montserrat', sans-serif"
                             }}
                         >
                             New Listing
@@ -84,50 +70,54 @@ const Dashboard = () => {
 
                     {/* ── Product Grid ── */}
                     {sellerProducts && sellerProducts.length > 0 ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16 pb-24">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 pb-24">
                             {sellerProducts.map(product => {
                                 const imageUrl = product.image && product.image.length > 0
-                                    ? product.image[0].url
-                                    : '/cart_img.jpg'; // Fallback image
+                                    ? (typeof product.image[0] === 'string' ? product.image[0] : (product.image[0].url || product.image[0].secure_url))
+                                    : '/cart_img.jpg';
 
                                 return (
                                     <div
                                         onClick={() => { navigate(`/seller/product/${product._id}`) }}
-                                        key={product._id} className="group cursor-pointer flex flex-col">
+                                        key={product._id}
+                                        className="group cursor-pointer flex flex-col bg-[#2A2A2A]/80 backdrop-blur-sm border border-[#3A3A3A] p-4 hover:border-[#FF6B6B] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(255,107,107,0.15)]"
+                                    >
                                         {/* Image Container */}
-                                        <div className="aspect-[4/5] overflow-hidden mb-6" style={{ backgroundColor: '#f5f3f0' }}>
+                                        <div className="aspect-[4/5] overflow-hidden mb-5 bg-[#1B1B1B]">
                                             <img
                                                 src={imageUrl}
                                                 alt={product.title}
                                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                                onError={(e) => { e.currentTarget.src = '/cart_img.jpg' }}
                                             />
                                         </div>
 
                                         {/* Product Details */}
-                                        <div className="flex flex-col gap-2">
-                                            <div className="flex items-start justify-between gap-4">
+                                        <div className="flex flex-col gap-2 flex-grow justify-between">
+                                            <div>
                                                 <h3
-                                                    className="text-xl leading-snug transition-colors duration-300 group-hover:text-[#C9A96E]"
-                                                    style={{ fontFamily: "'Cormorant Garamond', serif", color: '#1b1c1a' }}
+                                                    className="text-lg font-bold leading-snug transition-colors duration-300 group-hover:text-[#FF6B6B] uppercase tracking-wide"
+                                                    style={{ fontFamily: "'Montserrat', sans-serif", color: '#E2E2E2' }}
                                                 >
                                                     {product.title}
                                                 </h3>
+
+                                                <p
+                                                    className="text-[12px] line-clamp-2 leading-relaxed mt-1"
+                                                    style={{ color: '#C8C6C5' }}
+                                                >
+                                                    {product.description}
+                                                </p>
                                             </div>
 
-                                            <p
-                                                className="text-[12px] line-clamp-2 leading-relaxed"
-                                                style={{ color: '#7A6E63' }}
-                                            >
-                                                {product.description}
-                                            </p>
-
-                                            <div className="mt-2">
+                                            <div className="mt-4 pt-3 border-t border-[#3A3A3A] flex justify-between items-center">
                                                 <span
-                                                    className="text-[10px] uppercase tracking-[0.2em] font-medium"
-                                                    style={{ color: '#1b1c1a' }}
+                                                    className="text-[12px] uppercase tracking-[0.2em] font-bold"
+                                                    style={{ color: '#FF6B6B' }}
                                                 >
-                                                    {product.price?.currency} {product.price?.amount?.toLocaleString()}
+                                                    {product.price?.currency || 'USD'} {product.price?.amount?.toLocaleString()}
                                                 </span>
+                                                <span className="text-[10px] text-[#C8C6C5] group-hover:text-[#FF6B6B] transition-colors">Manage →</span>
                                             </div>
                                         </div>
                                     </div>
@@ -135,9 +125,9 @@ const Dashboard = () => {
                             })}
                         </div>
                     ) : (
-                        <div className="py-24 text-center flex flex-col items-center">
-                            <span className="text-[10px] uppercase tracking-[0.2em] font-medium mb-4" style={{ color: '#C9A96E' }}>Empty Vault</span>
-                            <p className="max-w-md mx-auto text-lg leading-relaxed" style={{ fontFamily: "'Cormorant Garamond', serif", color: '#7A6E63' }}>
+                        <div className="py-24 text-center flex flex-col items-center bg-[#2A2A2A]/40 border border-[#3A3A3A] p-12">
+                            <span className="text-[11px] uppercase tracking-[0.25em] font-bold mb-4" style={{ color: '#FF6B6B' }}>Empty Vault</span>
+                            <p className="max-w-md mx-auto text-base leading-relaxed" style={{ color: '#C8C6C5' }}>
                                 You haven't added any curated pieces to your archive yet. Begin by creating a new listing.
                             </p>
                         </div>
