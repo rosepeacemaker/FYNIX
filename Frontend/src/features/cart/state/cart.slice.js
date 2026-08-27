@@ -18,7 +18,7 @@ const cartSlice = createSlice({
             const { variantId, productId } = action.payload;
 
             state.items = state.items.map((item) => {
-                if (item.product._id === productId && item.variant === variantId) {
+                if (item.product._id === productId && item.variant._id === variantId) {
                     return { ...item, quantity: item.quantity + 1 }
                 } else {
                     return item
