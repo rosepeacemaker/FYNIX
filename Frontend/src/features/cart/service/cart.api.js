@@ -10,6 +10,7 @@ export const addItem = async ({ productId, variantId }) => {
         quantity: 1
     })
 
+    console.log(response.data.cart)
     return response.data
 }
 
