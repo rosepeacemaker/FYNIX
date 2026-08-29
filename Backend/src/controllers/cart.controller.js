@@ -133,6 +133,31 @@ export const getCart = async (req, res) => {
         success: true
     })
 }
+export const decrementCartItemQuantity = async ( req,res ) => {
+    const { productId, variantId } = req.params
+
+    const product = await productModel.findOne(
+    _id = productId,
+    "variant._id"= variantId
+    )
+
+    if(!product)
+        return 
+    res.status(404).json({
+    message:"Product not found",
+    success: false
+})
+
+const cart = cartModel.findOne({
+    user :  req.user._id
+}
+)
+if(!cart)
+    return res.status(404).json({
+message: "Cart not found",
+success: false
+})
+}
 
 // export const createOrderController = async (req, res) => {
 

@@ -4,8 +4,10 @@ import { createSlice } from "@reduxjs/toolkit";
 const cartSlice = createSlice({
     name: "cart",
     initialState: {
-        items: [],
+        totalPrice: null,
 
+        currency: null,
+        items: [],
     },
     reducers: {
         setCart: (state, action) => {
@@ -14,23 +16,39 @@ const cartSlice = createSlice({
             state.currency = action.payload.currency;
         },
         addItem: (state, action) => {
-            state.items.push(action.payload);
+            state.items.push(action.payload)
         },
         incrementCartItem: (state, action) => {
-            const { variantId, productId } = action.payload;
+            const { productId, variantId } = action.payload
 
-            state.items = state.items.map((item) => {
-                if (item.product._id === productId && item.variant._id === variantId) {
+            state.items = state.items.map(item => {
+                if (item.product._id === productId && item.variant === variantId) {
                     return { ...item, quantity: item.quantity + 1 }
                 } else {
                     return item
                 }
             })
+        },
+        decrementCartItem: (state, action) => {
+            const { productId, variantId } = action.payload
 
+            state.items = state.items.map(item => {
+                if (item.product._id === productId && item.variant === variantId) {
+                    return { ...item, quantity: item.quantity - 1 }
+                } else {
+                    return item
+                }
+            })
+        },
+        removeCartItem: (state, action) => {
+            const { variantId } = action.payload
+
+            state.items = state.items.filter(item => {
+                return !(item.variant === variantId)
+            })
         }
-
     }
 })
 
-export const { setCart, addItem, incrementCartItem } = cartSlice.actions;
-export default cartSlice.reducer;
+export const { setCart, addItem, incrementCartItem, decrementCartItem, removeCartItem } = cartSlice.actions
+export default cartSlice.reducer

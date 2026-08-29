@@ -81,14 +81,17 @@ const getItemDetails = (item) => {
 
   if (!imageUrl) imageUrl = '/cart_img.jpg'
 
-  return { title, description, price, currency, imageUrl, product, variant }
+  const productId = product?._id || (typeof item?.product === 'string' ? item.product : item?.productId)
+  const variantId = variant?._id || (typeof item?.variant === 'string' ? item.variant : item?.variantId)
+
+  return { title, description, price, currency, imageUrl, product, variant, productId, variantId }
 }
 
 /* ─── Single cart item card ───────────────────────────────────────────────── */
-const CartItemCard = ({ item, qty, onRemove, onDecrement, onIncrement }) => {
+const CartItemCard = ({ item, onRemove, onDecrement, onIncrement }) => {
   const [hovered, setHovered] = useState(false)
-  const { title, description, price, currency, imageUrl } = getItemDetails(item)
-  const itemId = item._id || item.product?._id || item.id
+  const { title, description, price, currency, imageUrl, productId, variantId } = getItemDetails(item)
+  const qty = item?.quantity || 1
 
   return (
     <div
@@ -117,7 +120,7 @@ const CartItemCard = ({ item, qty, onRemove, onDecrement, onIncrement }) => {
               {title}
             </h3>
             <button
-              onClick={() => onRemove(itemId)}
+              onClick={() => onRemove({ productId, variantId })}
               aria-label="Remove item"
               style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#555', fontSize: '18px', lineHeight: 1, padding: '2px 4px', transition: 'color 0.3s' }}
               onMouseEnter={e => (e.currentTarget.style.color = CORAL)}
@@ -132,7 +135,11 @@ const CartItemCard = ({ item, qty, onRemove, onDecrement, onIncrement }) => {
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px' }}>
-          <QuantityStepper qty={qty} onDecrement={() => onDecrement(itemId)} onIncrement={() => onIncrement(itemId)} />
+          <QuantityStepper
+            qty={qty}
+            onDecrement={() => onDecrement({ productId, variantId, qty })}
+            onIncrement={() => onIncrement({ productId, variantId })}
+          />
           <span style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '22px', letterSpacing: '0.03em', color: CORAL }}>
             {currency} {(price * qty).toLocaleString()}
           </span>
@@ -165,39 +172,41 @@ const EmptyCart = () => (
   </div>
 )
 
+
 /* ─── Main Cart page ──────────────────────────────────────────────────────── */
 const Cart = () => {
-  const cartItems = useSelector((state) => state.cart.items)
-  const user = useSelector((state) => state.auth.user)
-  const { handleGetCart, } = useCart()
-  const [quantities, setQuantities] = useState({})
-
-  useEffect(() => { handleGetCart() }, [])
+  const cartItems = useSelector((state) => state.cart.items || [])
+  const user = useSelector((state) => state.auth?.user)
+  const {
+    handleGetCart,
+    handleIncrementCartItem,
+    handleDecrementCartItem,
+    handleRemoveCartItem
+  } = useCart()
 
   useEffect(() => {
-    if (cartItems?.length) {
-      setQuantities(prev => {
-        const next = { ...prev }
-        cartItems.forEach(item => {
-          const itemId = item._id || item.product?._id || item.id
-          if (itemId && !next[itemId]) next[itemId] = item.quantity || 1
-        })
-        return next
-      })
+    handleGetCart()
+  }, [])
+
+  const handleIncrement = ({ productId, variantId }) => {
+    handleIncrementCartItem({ productId, variantId })
+  }
+
+  const handleDecrement = ({ productId, variantId, qty }) => {
+    if (qty > 1) {
+      handleDecrementCartItem({ variantId, productId })
     }
-  }, [cartItems])
+  }
 
-
-  const handleIncrement = (id) => setQuantities(prev => ({ ...prev, [id]: (prev[id] || 1) + 1 }))
-  const handleDecrement = (id) => setQuantities(prev => ({ ...prev, [id]: Math.max(1, (prev[id] || 1) - 1) }))
-  const handleRemove = (id) => console.log('Remove item', id)
+  const handleRemove = ({ productId, variantId }) => {
+    handleRemoveCartItem({ variantId, productId })
+  }
 
   const firstItemDetails = cartItems?.[0] ? getItemDetails(cartItems[0]) : null
   const currency = firstItemDetails?.currency || 'USD'
   const subtotal = cartItems?.reduce((sum, item) => {
     const { price } = getItemDetails(item)
-    const itemId = item._id || item.product?._id || item.id
-    const qty = quantities[itemId] || item.quantity || 1
+    const qty = item.quantity || 1
     return sum + price * qty
   }, 0) || 0
   const itemCount = cartItems?.length || 0
@@ -247,14 +256,14 @@ const Cart = () => {
           {itemCount === 0 ? <EmptyCart /> : (
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '48px', alignItems: 'start' }}>
               {/* Left: items */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxHeight: 'calc(100vh - 220px)', overflowY: 'auto', paddingRight: '8px' }}>
                 {cartItems.map((item, index) => {
-                  const itemId = item._id || item.product?._id || item.id || index
+                  const { productId, variantId } = getItemDetails(item)
+                  const itemKey = item._id || `${productId}-${variantId || index}`
                   return (
                     <CartItemCard
-                      key={itemId}
+                      key={itemKey}
                       item={item}
-                      qty={quantities[itemId] || item.quantity || 1}
                       onRemove={handleRemove}
                       onDecrement={handleDecrement}
                       onIncrement={handleIncrement}
