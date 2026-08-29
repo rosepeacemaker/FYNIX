@@ -21,11 +21,11 @@ export const incrementCartItemApi = async ({ productId, variantId }) => {
     const response = await cartApiInstance.patch(`/quantity/increment/${productId}/${variantId}`)
     return response.data
 }
-export const decrementCartItem = async ({ variantId }) => {
-    const response = await cartApiInstance.patch(`/quantity/decrement/${variantId}`)
+export const decrementCartItemApi = async ({ productId, variantId }) => {
+    const response = await cartApiInstance.patch(`/quantity/decrement/${productId}/${variantId}`)
     return response.data
 }
-export const removeCartItem = async ({ variantId }) => {
-    const response = await cartApiInstance.delete(`/quantity/delete/${variantId}`)
+export const removeCartItemApi = async ({ productId, variantId }) => {
+    const response = await cartApiInstance.delete(`/quantity/delete/${productId}/${variantId}`)
     return response.data
 }

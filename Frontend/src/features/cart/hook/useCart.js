@@ -1,4 +1,4 @@
-import { addItem, getCart, incrementCartItemApi, } from "../service/cart.api"
+import { addItem, getCart, incrementCartItemApi, decrementCartItemApi } from "../service/cart.api"
 import { useDispatch } from "react-redux"
 import { setCart, incrementCartItem, decrementCartItem, removeCartItem } from "../state/cart.slice"
 
@@ -42,6 +42,6 @@ export const useCart = () => {
     //     return data.success
     // }
 
-    return { handleAddItem, handleGetCart, handleIncrementCartItem, }
+    return { handleAddItem, handleGetCart, handleIncrementCartItem, handleDecrementCartItem }
 
 }
