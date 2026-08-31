@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useAuth } from '../hook/useAuth';
 import { useNavigate } from "react-router";
 import ContinueWithGoogle from "../components/ContinueWithGoogle";
+import FunkyFiberLogo from "../../shared/Components/FunkyFiberLogo";
 
 export default function Register() {
 
@@ -46,12 +47,9 @@ export default function Register() {
             <div className="w-full md:w-1/2 flex items-center justify-center px-6 sm:px-10 md:px-16 lg:px-24 bg-[#1B1B1B]/70 backdrop-blur-lg overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 <div className="w-full max-w-sm py-6 md:py-0">
 
-                    {/* Brand */}
+                    {/* Brand Logo */}
                     <div className="mb-5 flex flex-col items-center justify-center md:items-start md:justify-start">
-                        <h1 className="text-3xl md:text-4xl font-black uppercase tracking-[0.12em] text-white leading-none"
-                            style={{ fontFamily: "Montserrat, sans-serif" }}>
-                            FYNIX
-                        </h1>
+                        <FunkyFiberLogo className="h-14 sm:h-16 w-auto" />
                         <p className="mt-2 text-[12px] text-neutral-500 tracking-wide leading-relaxed text-center md:text-left">
                             Be the first to know about what's happening around you.
                         </p>
@@ -221,7 +219,7 @@ export default function Register() {
                     {/* Footer */}
                     <p className="mt-8 text-[11px] tracking-[0.25em] uppercase text-neutral-800 text-center md:text-left"
                         style={{ fontFamily: "Montserrat, sans-serif" }}>
-                        © 2026 FYNIX
+                        © 2026 FUNKY FIBER. ALL RIGHTS RESERVED.
                     </p>
                 </div>
             </div>
@@ -240,8 +238,8 @@ export default function Register() {
 
                 {/* Model image — fashion editorial */}
                 <img
-                    src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=1200&q=85&fit=crop&auto=format"
-                    alt="Fynix fashion model"
+                    src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    alt="Funky Fiber fashion model"
                     className="w-full h-full object-cover object-top"
                     style={{ filter: "contrast(1.08) saturate(0.9)" }}
                 />
@@ -253,10 +251,10 @@ export default function Register() {
                 {/* Ghost watermark */}
                 <div className="absolute bottom-10 right-8 md:right-12 lg:right-16 z-20 pointer-events-none">
                     <span
-                        className="text-6xl lg:text-8xl font-black uppercase tracking-[0.15em] text-white/[0.05] select-none leading-none"
+                        className="text-4xl lg:text-6xl font-black uppercase tracking-[0.15em] text-white/[0.05] select-none leading-none whitespace-nowrap"
                         style={{ fontFamily: "Montserrat, sans-serif" }}
                     >
-                        FYNIX
+                        FUNKY FIBER
                     </span>
                 </div>
             </div>

@@ -152,7 +152,7 @@ export default function Login() {
                 <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/60 to-transparent z-10 pointer-events-none" />
                 <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/70 to-transparent z-10 pointer-events-none" />
                 <img
-                    src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=1200&q=85&fit=crop&auto=format"
+                    src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                     alt="FYNIX fashion model"
                     className="w-full h-full object-cover object-top"
                     style={{ filter: "contrast(1.08) saturate(0.9)" }}
