@@ -181,7 +181,8 @@ const Cart = () => {
     handleGetCart,
     handleIncrementCartItem,
     handleDecrementCartItem,
-    handleRemoveCartItem
+    handleRemoveCartItem,
+
   } = useCart()
 
   useEffect(() => {

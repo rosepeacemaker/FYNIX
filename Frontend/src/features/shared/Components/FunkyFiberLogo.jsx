@@ -44,7 +44,7 @@ export default function FunkyFiberLogo({ className = "h-14 w-auto" }) {
             {/* Green Pebble Fill */}
             <path
                 d="M 20 50 C 14 30, 36 14, 70 14 C 102 14, 118 32, 114 50 C 108 70, 58 74, 28 68 C 20 65, 14 58, 20 50 Z"
-                fill="#9DCC00"
+                fill="#FF6B6B"
             />
 
             {/* "FUNKY" text inside pebble */}

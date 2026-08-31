@@ -255,6 +255,11 @@ const ProductDetail = () => {
                     fontFamily: "'Montserrat', sans-serif"
                   }}
                   onClick={() => {
+                    console.log("ADDING:", {
+                      productId,
+                      variantId: activeVariant?._id,
+                    })
+
                     handleAddItem({
                       productId: productId,
                       variantId: activeVariant?._id
