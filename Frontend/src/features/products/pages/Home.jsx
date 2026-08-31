@@ -44,13 +44,13 @@ const Home = () => {
                             The Collection
                         </span>
                         <h1
-                            className="text-5xl lg:text-7xl font-bold leading-tight mb-6 tracking-tight"
+                            className="text-3xl lg:text-5xl font-bold leading-tight mb-6 tracking-tight"
                             style={{ fontFamily: "'Montserrat', sans-serif", color: '#E2E2E2' }}
                         >
-                            Curated Archive
+                            Redefining Everyday Style
                         </h1>
                         <p className="max-w-xl mx-auto text-sm leading-relaxed" style={{ color: '#C8C6C5' }}>
-                            Discover our latest curation of premium minimalist pieces, meticulously designed for effortless elegance and enduring quality.
+                            Discover the newest from FunkyFiber modern silhouettes, expressive details, and effortless style designed for the way you dress today.
                         </p>
                     </div>
 

@@ -13,7 +13,7 @@ const Nav = () => {
                 className="text-lg font-black tracking-[0.35em] uppercase hover:opacity-80 transition-opacity"
                 style={{ fontFamily: "'Montserrat', sans-serif", color: '#FF6B6B' }}
             >
-                FYNIX
+                Funky Fiber
             </Link>
             <div className="flex gap-6 items-center text-[11px] uppercase tracking-[0.2em] font-bold" style={{ color: '#E2E2E2' }}>
                 {user ? (

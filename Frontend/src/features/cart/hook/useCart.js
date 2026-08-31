@@ -1,4 +1,4 @@
-import { addItem, getCart, incrementCartItemApi, decrementCartItemApi } from "../service/cart.api"
+import { addItem, getCart, incrementCartItemApi, decrementCartItemApi, removeCartItemApi } from "../service/cart.api"
 import { useDispatch } from "react-redux"
 import { setCart, incrementCartItem, decrementCartItem, removeCartItem } from "../state/cart.slice"
 
@@ -10,6 +10,8 @@ export const useCart = () => {
     async function handleAddItem({ productId, variantId }) {
         console.log(productId, variantId)
         const data = await addItem({ productId, variantId })
+        // Refresh full cart from server so Redux state is always in sync
+        await handleGetCart()
         return data;
     }
 
@@ -42,6 +44,6 @@ export const useCart = () => {
     //     return data.success
     // }
 
-    return { handleAddItem, handleGetCart, handleIncrementCartItem, handleDecrementCartItem }
+    return { handleAddItem, handleGetCart, handleIncrementCartItem, handleDecrementCartItem, handleRemoveCartItem }
 
 }

@@ -20,31 +20,32 @@ const cartSlice = createSlice({
         },
         incrementCartItem: (state, action) => {
             const { productId, variantId } = action.payload
-
             state.items = state.items.map(item => {
-                if (item.product._id === productId && item.variant === variantId) {
+                // variant may be a populated object or a raw string ID
+                const itemVariantId = typeof item.variant === 'object' ? item.variant?._id : item.variant
+                const itemProductId = typeof item.product === 'object' ? item.product?._id : item.product
+                if (itemProductId === productId && itemVariantId === variantId) {
                     return { ...item, quantity: item.quantity + 1 }
-                } else {
-                    return item
                 }
+                return item
             })
         },
         decrementCartItem: (state, action) => {
             const { productId, variantId } = action.payload
-
             state.items = state.items.map(item => {
-                if (item.product._id === productId && item.variant === variantId) {
+                const itemVariantId = typeof item.variant === 'object' ? item.variant?._id : item.variant
+                const itemProductId = typeof item.product === 'object' ? item.product?._id : item.product
+                if (itemProductId === productId && itemVariantId === variantId) {
                     return { ...item, quantity: item.quantity - 1 }
-                } else {
-                    return item
                 }
+                return item
             })
         },
         removeCartItem: (state, action) => {
             const { variantId } = action.payload
-
             state.items = state.items.filter(item => {
-                return !(item.variant === variantId)
+                const itemVariantId = typeof item.variant === 'object' ? item.variant?._id : item.variant
+                return itemVariantId !== variantId
             })
         }
     }
