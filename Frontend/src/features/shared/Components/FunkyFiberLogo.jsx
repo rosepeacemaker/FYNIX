@@ -43,9 +43,14 @@ export default function FunkyFiberLogo({ className = "h-11 w-auto" }) {
                 x="26"
                 y="18"
                 width="114"
-                height="40"
+                height="38"
                 rx="20"
-                fill="#1B1B1B"
+                fill="#ed6363ff"
+                stroke="#4e3a3aff"
+                strokeWidth="1"
+                strokeOpacity="0.85"
+
+
             />
 
             {/* "FUNKY" text inside inner dark badge */}
@@ -65,9 +70,12 @@ export default function FunkyFiberLogo({ className = "h-11 w-auto" }) {
             <text
                 x="154"
                 y="46"
-                fill="#1B1B1B"
+                fill="#3f3b3bff"
                 className="fiber-text"
                 fontSize="26"
+                fontFamily="sans-serif"
+                fontWeight="semibold"
+
             >
                 FIBER
             </text>

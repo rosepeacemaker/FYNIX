@@ -104,7 +104,7 @@ export async function addProductVariant(req, res) {
                 fileName: file.originalname
             })
             return {url: image.url || image}
-        }))).map(image => images.push(image))
+        }))).map(images => images.push(images))
     }
 
     const price = req.body.priceAmount
@@ -114,7 +114,7 @@ export async function addProductVariant(req, res) {
     console.log(price)
 
     product.variants.push({
-        image,
+        images,
         price: {
             amount: Number(price) || product.price.amount,
             currency: req.body.priceCurrency || product.price.currency

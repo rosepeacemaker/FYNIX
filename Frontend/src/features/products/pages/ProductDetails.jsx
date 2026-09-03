@@ -44,6 +44,12 @@ const ProductDetail = () => {
       const isMatch = vKeys.every(k => v.attributes[k] === selectedAttributes[k]);
       // If they don't have exactly the same keys, they shouldn't perfectly match, 
       // but we might only care about matching what's available.
+      console.log("========== VARIANT DEBUG ==========");
+      console.log("selectedAttributes:", selectedAttributes);
+      console.log("all variants:", product?.variants);
+      console.log("activeVariant:", activeVariant);
+      console.log("activeVariant ID:", activeVariant?._id);
+      console.log("==================================");
       return vKeys.length === sKeys.length && isMatch;
     });
   }, [product, selectedAttributes]);
