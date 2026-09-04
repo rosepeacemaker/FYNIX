@@ -20,26 +20,45 @@ export const getCart = async () => {
 }
 
 export const incrementCartItemApi = async ({ productId, variantId }) => {
-    const vId = variantId || 'none';
+    const vId = (variantId && variantId !== 'undefined') ? variantId : 'none';
     const response = await cartApiInstance.patch(`/quantity/increment/${productId}/${vId}`);
     return response.data;
 }
+
 export const decrementCartItemApi = async ({ productId, variantId }) => {
-    const vId = variantId || 'none';
+    const vId = (variantId && variantId !== 'undefined') ? variantId : 'none';
     const response = await cartApiInstance.patch(`/quantity/decrement/${productId}/${vId}`);
     return response.data;
 }
+
 export const removeCartItemApi = async ({ productId, variantId }) => {
-    const vId = variantId || 'none';
-    try {
-        const response = await cartApiInstance.delete(`/quantity/delete/${productId}/${vId}`);
-        return response.data;
-    } catch (err) {
-        if (productId) {
-            const response = await cartApiInstance.delete(`/quantity/delete/${productId}`);
+    const vId = (variantId && variantId !== 'undefined') ? variantId : 'none';
+    const endpoints = [
+        `/quantity/delete/${productId}/${vId}`,
+        `/quantity/delete/${productId}`,
+        `/remove/${productId}/${vId}`,
+        `/remove/${productId}`,
+        `/delete/${productId}/${vId}`,
+        `/delete/${productId}`,
+        `/item/${productId}/${vId}`,
+        `/item/${productId}`
+    ];
+
+    let lastError;
+    for (const endpoint of endpoints) {
+        try {
+            console.log("TRYING REMOVE ENDPOINT:", endpoint);
+            const response = await cartApiInstance.delete(endpoint);
             return response.data;
+        } catch (err) {
+            lastError = err;
+            if (err?.response && err.response.status !== 404) {
+                // If endpoint exists but returned a 400 or 500, break loop and throw
+                break;
+            }
         }
-        throw err;
     }
+    throw lastError;
 }
+
 

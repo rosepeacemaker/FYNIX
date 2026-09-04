@@ -36,11 +36,13 @@ const QuantityStepper = ({ qty, onDecrement, onIncrement }) => (
 
 /* ─── Helper to extract item details ─────────────────────────────────────── */
 const getItemDetails = (item) => {
-  const rawP = item?.product || item?.productId || (typeof item === 'object' ? item : {})
-  const rawV = item?.variant || item?.variantId
+  if (!item) return { title: 'Untitled', price: 0, currency: 'USD', imageUrl: '/cart_img.jpg', productId: '', variantId: '', cartItemId: '' }
 
-  const product = typeof rawP === 'object' ? rawP : {}
-  const variant = typeof rawV === 'object' ? rawV : {}
+  const rawP = item.product || item.productId || item
+  const rawV = item.variant || item.variantId
+
+  const product = (rawP && typeof rawP === 'object') ? rawP : {}
+  const variant = (rawV && typeof rawV === 'object') ? rawV : {}
 
   const title = product?.title || item?.title || 'Untitled Piece'
   const description = product?.description || item?.description || ''
@@ -82,13 +84,18 @@ const getItemDetails = (item) => {
 
   if (!imageUrl) imageUrl = '/cart_img.jpg'
 
-  const productId = typeof rawP === 'object' 
-    ? rawP?._id 
-    : (typeof item?.product === 'string' ? item.product : (item?.productId?._id || item?.productId || (item?._id && typeof item?.product === 'undefined' ? item._id : undefined)))
+  let productId = ''
+  if (typeof item.product === 'string') productId = item.product
+  else if (item.product && typeof item.product === 'object' && item.product._id) productId = item.product._id
+  else if (typeof item.productId === 'string') productId = item.productId
+  else if (item.productId && typeof item.productId === 'object' && item.productId._id) productId = item.productId._id
+  else if (item._id) productId = item._id
 
-  const variantId = typeof rawV === 'object' 
-    ? rawV?._id 
-    : (typeof item?.variant === 'string' ? item.variant : (item?.variantId?._id || item?.variantId || undefined))
+  let variantId = ''
+  if (typeof item.variant === 'string') variantId = item.variant
+  else if (item.variant && typeof item.variant === 'object' && item.variant._id) variantId = item.variant._id
+  else if (typeof item.variantId === 'string') variantId = item.variantId
+  else if (item.variantId && typeof item.variantId === 'object' && item.variantId._id) variantId = item.variantId._id
 
   return { title, description, price, currency, imageUrl, product, variant, productId, variantId, cartItemId: item?._id }
 }
