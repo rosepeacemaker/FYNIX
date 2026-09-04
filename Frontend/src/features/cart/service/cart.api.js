@@ -20,14 +20,26 @@ export const getCart = async () => {
 }
 
 export const incrementCartItemApi = async ({ productId, variantId }) => {
-    const response = await cartApiInstance.patch(`/quantity/increment/${productId}/${variantId}`)
-    return response.data
+    const vId = variantId || 'none';
+    const response = await cartApiInstance.patch(`/quantity/increment/${productId}/${vId}`);
+    return response.data;
 }
 export const decrementCartItemApi = async ({ productId, variantId }) => {
-    const response = await cartApiInstance.patch(`/quantity/decrement/${productId}/${variantId}`)
-    return response.data
+    const vId = variantId || 'none';
+    const response = await cartApiInstance.patch(`/quantity/decrement/${productId}/${vId}`);
+    return response.data;
 }
 export const removeCartItemApi = async ({ productId, variantId }) => {
-    const response = await cartApiInstance.delete(`/quantity/delete/${productId}/${variantId}`)
-    return response.data
+    const vId = variantId || 'none';
+    try {
+        const response = await cartApiInstance.delete(`/quantity/delete/${productId}/${vId}`);
+        return response.data;
+    } catch (err) {
+        if (productId) {
+            const response = await cartApiInstance.delete(`/quantity/delete/${productId}`);
+            return response.data;
+        }
+        throw err;
+    }
 }
+

@@ -134,6 +134,8 @@ export const getCart = async (req, res) => {
     })
 }
 export const decrementCartItemQuantity = async ( req,res ) => {
+        console.log("🔥 DECREMENT CONTROLLER HIT")
+    console.log("PARAMS:", req.params)
     const { productId, variantId } = req.params
 
   const product = await productModel.findOne({
@@ -147,7 +149,7 @@ export const decrementCartItemQuantity = async ( req,res ) => {
     success: false
 })
 
-const cart = cartModel.findOne({
+const cart = await cartModel.findOne({
     user :  req.user._id
 }
 )

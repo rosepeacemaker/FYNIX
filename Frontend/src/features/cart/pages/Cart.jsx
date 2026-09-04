@@ -13,20 +13,20 @@ const TEXT = '#e2e2e2'
 
 /* ─── Quantity stepper ────────────────────────────────────────────────────── */
 const QuantityStepper = ({ qty, onDecrement, onIncrement }) => (
-  <div style={{ display: 'flex', alignItems: 'center', border: `1px solid ${SURF2}`, backgroundColor: BG }}>
+  <div style={{ display: 'inline-flex', alignItems: 'center', border: `1px solid ${SURF2}`, backgroundColor: BG, flexShrink: 0 }}>
     <button
       onClick={onDecrement}
-      style={{ padding: '8px 14px', color: TEXT, cursor: 'pointer', background: 'none', border: 'none', fontSize: '20px', lineHeight: 1, transition: 'color 0.3s' }}
+      style={{ padding: '8px 14px', color: TEXT, cursor: 'pointer', background: 'none', border: 'none', fontSize: '18px', lineHeight: 1, transition: 'color 0.3s' }}
       onMouseEnter={e => (e.currentTarget.style.color = CORAL)}
       onMouseLeave={e => (e.currentTarget.style.color = TEXT)}
       aria-label="Decrease quantity"
     >−</button>
-    <span style={{ padding: '8px 18px', fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '12px', letterSpacing: '0.1em', color: TEXT, borderLeft: `1px solid ${SURF2}`, borderRight: `1px solid ${SURF2}`, minWidth: '44px', textAlign: 'center' }}>
+    <span style={{ padding: '8px 14px', fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '12px', letterSpacing: '0.1em', color: TEXT, borderLeft: `1px solid ${SURF2}`, borderRight: `1px solid ${SURF2}`, minWidth: '36px', textAlign: 'center' }}>
       {qty}
     </span>
     <button
       onClick={onIncrement}
-      style={{ padding: '8px 14px', color: TEXT, cursor: 'pointer', background: 'none', border: 'none', fontSize: '20px', lineHeight: 1, transition: 'color 0.3s' }}
+      style={{ padding: '8px 14px', color: TEXT, cursor: 'pointer', background: 'none', border: 'none', fontSize: '18px', lineHeight: 1, transition: 'color 0.3s' }}
       onMouseEnter={e => (e.currentTarget.style.color = CORAL)}
       onMouseLeave={e => (e.currentTarget.style.color = TEXT)}
       aria-label="Increase quantity"
@@ -36,15 +36,17 @@ const QuantityStepper = ({ qty, onDecrement, onIncrement }) => (
 
 /* ─── Helper to extract item details ─────────────────────────────────────── */
 const getItemDetails = (item) => {
-  const product = item?.product || item?.productId || (typeof item === 'object' ? item : {})
-  const variant = item?.variant || item?.variantId
+  const rawP = item?.product || item?.productId || (typeof item === 'object' ? item : {})
+  const rawV = item?.variant || item?.variantId
+
+  const product = typeof rawP === 'object' ? rawP : {}
+  const variant = typeof rawV === 'object' ? rawV : {}
 
   const title = product?.title || item?.title || 'Untitled Piece'
   const description = product?.description || item?.description || ''
 
-  // Price resolution: variant price -> product price -> item price
-  const priceObj = (typeof variant === 'object' && variant?.price)
-    ? variant.price
+  const priceObj = (variant && typeof variant === 'object' && variant?.price) 
+    ? variant.price 
     : (product?.price || item?.price)
 
   const price = typeof priceObj === 'number'
@@ -55,7 +57,6 @@ const getItemDetails = (item) => {
     ? priceObj.currency
     : (product?.price?.currency || product?.currency || item?.currency || 'USD')
 
-  // Image resolution
   const getUrl = (img) => {
     if (!img) return null
     if (typeof img === 'string') return img
@@ -81,21 +82,27 @@ const getItemDetails = (item) => {
 
   if (!imageUrl) imageUrl = '/cart_img.jpg'
 
-  const productId = product?._id || (typeof item?.product === 'string' ? item.product : item?.productId)
-  const variantId = variant?._id || (typeof item?.variant === 'string' ? item.variant : item?.variantId)
+  const productId = typeof rawP === 'object' 
+    ? rawP?._id 
+    : (typeof item?.product === 'string' ? item.product : (item?.productId?._id || item?.productId || (item?._id && typeof item?.product === 'undefined' ? item._id : undefined)))
 
-  return { title, description, price, currency, imageUrl, product, variant, productId, variantId }
+  const variantId = typeof rawV === 'object' 
+    ? rawV?._id 
+    : (typeof item?.variant === 'string' ? item.variant : (item?.variantId?._id || item?.variantId || undefined))
+
+  return { title, description, price, currency, imageUrl, product, variant, productId, variantId, cartItemId: item?._id }
 }
 
 /* ─── Single cart item card ───────────────────────────────────────────────── */
 const CartItemCard = ({ item, onRemove, onDecrement, onIncrement }) => {
   const [hovered, setHovered] = useState(false)
-  const { title, description, price, currency, imageUrl, productId, variantId } = getItemDetails(item)
+  const { title, description, price, currency, imageUrl, productId, variantId, cartItemId } = getItemDetails(item)
   const qty = item?.quantity || 1
 
   return (
     <div
-      style={{ display: 'flex', flexDirection: 'row', gap: '24px', padding: '20px', backgroundColor: SURF, border: `1px solid ${SURF2}`, position: 'relative', overflow: 'hidden', borderBottomColor: hovered ? CORAL : SURF2, transition: 'border-color 0.3s ease' }}
+      className="fynix-cart-item-card"
+      style={{ display: 'flex', flexDirection: 'row', gap: '20px', padding: '20px', backgroundColor: SURF, border: `1px solid ${SURF2}`, position: 'relative', borderBottomColor: hovered ? CORAL : SURF2, transition: 'border-color 0.3s ease', boxSizing: 'border-box' }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -103,7 +110,7 @@ const CartItemCard = ({ item, onRemove, onDecrement, onIncrement }) => {
       <div style={{ position: 'absolute', bottom: 0, left: 0, height: '2px', width: '100%', backgroundColor: CORAL, transform: hovered ? 'scaleX(1)' : 'scaleX(0)', transformOrigin: 'left', transition: 'transform 0.5s cubic-bezier(0.4,0,0.2,1)' }} />
 
       {/* Image */}
-      <div style={{ width: '160px', minWidth: '160px', height: '200px', overflow: 'hidden', backgroundColor: SURF2, flexShrink: 0 }}>
+      <div className="fynix-cart-item-img" style={{ width: '140px', minWidth: '140px', height: '160px', overflow: 'hidden', backgroundColor: SURF2, flexShrink: 0 }}>
         <img
           src={imageUrl}
           alt={title}
@@ -113,34 +120,34 @@ const CartItemCard = ({ item, onRemove, onDecrement, onIncrement }) => {
       </div>
 
       {/* Details */}
-      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flexGrow: 1 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flexGrow: 1, minWidth: 0 }}>
         <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
-            <h3 style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '18px', letterSpacing: '0.05em', textTransform: 'uppercase', color: TEXT, margin: 0 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px', marginBottom: '8px' }}>
+            <h3 style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '16px', letterSpacing: '0.05em', textTransform: 'uppercase', color: TEXT, margin: 0, wordBreak: 'break-word' }}>
               {title}
             </h3>
             <button
-              onClick={() => onRemove({ productId, variantId })}
+              onClick={() => onRemove({ productId, variantId, cartItemId })}
               aria-label="Remove item"
-              style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#555', fontSize: '18px', lineHeight: 1, padding: '2px 4px', transition: 'color 0.3s' }}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#777', fontSize: '18px', lineHeight: 1, padding: '4px 8px', transition: 'color 0.3s', flexShrink: 0 }}
               onMouseEnter={e => (e.currentTarget.style.color = CORAL)}
-              onMouseLeave={e => (e.currentTarget.style.color = '#555')}
+              onMouseLeave={e => (e.currentTarget.style.color = '#777')}
             >✕</button>
           </div>
           {description && (
-            <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', color: GRAY, letterSpacing: '0.01em', margin: '0 0 4px' }}>
+            <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', color: GRAY, letterSpacing: '0.01em', margin: '0 0 8px', wordBreak: 'break-word' }}>
               {description}
             </p>
           )}
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginTop: '16px' }}>
           <QuantityStepper
             qty={qty}
-            onDecrement={() => onDecrement({ productId, variantId, qty })}
-            onIncrement={() => onIncrement({ productId, variantId })}
+            onDecrement={() => onDecrement({ productId, variantId, cartItemId, qty })}
+            onIncrement={() => onIncrement({ productId, variantId, cartItemId })}
           />
-          <span style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '22px', letterSpacing: '0.03em', color: CORAL }}>
+          <span style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '20px', letterSpacing: '0.03em', color: CORAL, whiteSpace: 'nowrap' }}>
             {currency} {(price * qty).toLocaleString()}
           </span>
         </div>
@@ -172,7 +179,6 @@ const EmptyCart = () => (
   </div>
 )
 
-
 /* ─── Main Cart page ──────────────────────────────────────────────────────── */
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart.items || [])
@@ -182,7 +188,6 @@ const Cart = () => {
     handleIncrementCartItem,
     handleDecrementCartItem,
     handleRemoveCartItem,
-
   } = useCart()
 
   useEffect(() => {
@@ -193,14 +198,16 @@ const Cart = () => {
     handleIncrementCartItem({ productId, variantId })
   }
 
-  const handleDecrement = ({ productId, variantId, qty }) => {
+  const handleDecrement = ({ productId, variantId, cartItemId, qty }) => {
     if (qty > 1) {
-      handleDecrementCartItem({ variantId, productId })
+      handleDecrementCartItem({ productId, variantId })
+    } else {
+      handleRemoveCartItem({ productId, variantId, cartItemId })
     }
   }
 
-  const handleRemove = ({ productId, variantId }) => {
-    handleRemoveCartItem({ variantId, productId })
+  const handleRemove = ({ productId, variantId, cartItemId }) => {
+    handleRemoveCartItem({ productId, variantId, cartItemId })
   }
 
   const firstItemDetails = cartItems?.[0] ? getItemDetails(cartItems[0]) : null
@@ -215,10 +222,39 @@ const Cart = () => {
   return (
     <>
       <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+      <style>{`
+        @media (max-width: 1024px) {
+          .fynix-cart-grid {
+            grid-template-columns: 1fr !important;
+            gap: 32px !important;
+          }
+          .fynix-cart-main {
+            padding: 32px 24px !important;
+          }
+          .fynix-cart-header {
+            padding: 14px 24px !important;
+          }
+        }
+        @media (max-width: 640px) {
+          .fynix-cart-item-card {
+            flex-direction: column !important;
+          }
+          .fynix-cart-item-img {
+            width: 100% !important;
+            height: 200px !important;
+          }
+          .fynix-cart-main {
+            padding: 24px 16px !important;
+          }
+          .fynix-cart-header {
+            padding: 14px 16px !important;
+          }
+        }
+      `}</style>
       <div style={{ minHeight: '100vh', backgroundColor: BG, color: TEXT, fontFamily: 'Inter, sans-serif' }}>
 
         {/* ── Navbar ── */}
-        <header style={{ backgroundColor: '#0e0e0e', borderBottom: `1px solid ${SURF2}`, position: 'sticky', top: 0, zIndex: 50 }}>
+        <header className="fynix-cart-header" style={{ backgroundColor: '#0e0e0e', borderBottom: `1px solid ${SURF2}`, position: 'sticky', top: 0, zIndex: 50 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1440px', margin: '0 auto', padding: '14px 64px' }}>
             <Link to="/" style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 800, fontSize: '26px', letterSpacing: '0.1em', textTransform: 'uppercase', color: TEXT, textDecoration: 'none', transition: 'transform 0.3s' }}
               onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.05)')}
@@ -241,7 +277,7 @@ const Cart = () => {
         </header>
 
         {/* ── Main ── */}
-        <main style={{ maxWidth: '1440px', margin: '0 auto', padding: '56px 64px' }}>
+        <main className="fynix-cart-main" style={{ maxWidth: '1440px', margin: '0 auto', padding: '56px 64px' }}>
           {/* Title row */}
           <div style={{ marginBottom: '40px', borderBottom: `1px solid ${SURF2}`, paddingBottom: '20px' }}>
             <h1 style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '32px', letterSpacing: '0.08em', textTransform: 'uppercase', color: TEXT, margin: 0 }}>
@@ -255,11 +291,11 @@ const Cart = () => {
           </div>
 
           {itemCount === 0 ? <EmptyCart /> : (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '48px', alignItems: 'start' }}>
+            <div className="fynix-cart-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '48px', alignItems: 'start' }}>
               {/* Left: items */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxHeight: 'calc(100vh - 220px)', overflowY: 'auto', paddingRight: '8px' }}>
+              <div className="fynix-cart-items-container" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 {cartItems.map((item, index) => {
-                  const { productId, variantId } = getItemDetails(item)
+                  const { productId, variantId, cartItemId } = getItemDetails(item)
                   const itemKey = item._id || `${productId}-${variantId || index}`
                   return (
                     <CartItemCard

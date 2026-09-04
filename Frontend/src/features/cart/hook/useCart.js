@@ -22,17 +22,42 @@ export const useCart = () => {
     }
 
     async function handleIncrementCartItem({ productId, variantId }) {
-        await incrementCartItemApi({ productId, variantId })
+        console.log("INCREMENT CLICK:", { productId, variantId })
         dispatch(incrementCartItem({ productId, variantId }))
+        try {
+            await incrementCartItemApi({ productId, variantId })
+            await handleGetCart()
+        } catch (error) {
+            console.error("Failed to increment cart item", error)
+            await handleGetCart()
+        }
     }
+
     async function handleDecrementCartItem({ productId, variantId }) {
-        await decrementCartItemApi({ productId, variantId })
+        console.log("DECREMENT CLICK:", { productId, variantId })
         dispatch(decrementCartItem({ productId, variantId }))
+        try {
+            const data = await decrementCartItemApi({ productId, variantId })
+            console.log("DECREMENT API RESPONSE:", data)
+            await handleGetCart()
+        } catch (error) {
+            console.error("Failed to decrement cart item", error)
+            await handleGetCart()
+        }
     }
-    async function handleRemoveCartItem({ productId, variantId }) {
-        await removeCartItemApi({ productId, variantId })
-        dispatch(removeCartItem({ productId, variantId }))
+
+    async function handleRemoveCartItem({ productId, variantId, cartItemId }) {
+        console.log("REMOVE CLICK:", { productId, variantId, cartItemId })
+        dispatch(removeCartItem({ productId, variantId, cartItemId }))
+        try {
+            await removeCartItemApi({ productId, variantId })
+        } catch (error) {
+            console.error("Failed to remove cart item on server", error)
+        }
+        await handleGetCart()
     }
+
+
 
     // async function handleCreateCartOrder() {
     //     const data = await createCartOrder()

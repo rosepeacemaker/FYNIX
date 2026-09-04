@@ -43,7 +43,7 @@ router.patch("/quantity/increment/:productId/:variantId", authenticateUser, vali
 
 router.patch("/quantity/decrement/:productId/:variantId", authenticateUser,validateDecrementCartItemQuantity, decrementCartItemQuantity)
 
+console.log("CART ROUTES LOADED")
 
-
-
+ 
 export default router;
