@@ -47,8 +47,8 @@ const getItemDetails = (item) => {
   const title = product?.title || item?.title || 'Untitled Piece'
   const description = product?.description || item?.description || ''
 
-  const priceObj = (variant && typeof variant === 'object' && variant?.price) 
-    ? variant.price 
+  const priceObj = (variant && typeof variant === 'object' && variant?.price)
+    ? variant.price
     : (product?.price || item?.price)
 
   const price = typeof priceObj === 'number'
@@ -209,13 +209,14 @@ const Cart = () => {
     if (qty > 1) {
       handleDecrementCartItem({ productId, variantId })
     } else {
-      handleRemoveCartItem({ productId, variantId, cartItemId })
+      handleRemoveCartItem({ productId, variantId })
     }
   }
 
-  const handleRemove = ({ productId, variantId, cartItemId }) => {
-    handleRemoveCartItem({ productId, variantId, cartItemId })
+  const handleRemove = ({ productId, variantId }) => {
+    handleRemoveCartItem({ productId, variantId })
   }
+
 
   const firstItemDetails = cartItems?.[0] ? getItemDetails(cartItems[0]) : null
   const currency = firstItemDetails?.currency || 'USD'
@@ -225,6 +226,7 @@ const Cart = () => {
     return sum + price * qty
   }, 0) || 0
   const itemCount = cartItems?.length || 0
+
 
   return (
     <>

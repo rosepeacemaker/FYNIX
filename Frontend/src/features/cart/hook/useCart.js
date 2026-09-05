@@ -46,15 +46,12 @@ export const useCart = () => {
         }
     }
 
-    async function handleRemoveCartItem({ productId, variantId, cartItemId }) {
-        console.log("REMOVE CLICK:", { productId, variantId, cartItemId })
-        dispatch(removeCartItem({ productId, variantId, cartItemId }))
-        try {
-            await removeCartItemApi({ productId, variantId })
-        } catch (error) {
-            console.error("Failed to remove cart item on server", error)
-        }
-        await handleGetCart()
+    async function handleRemoveCartItem({ productId, variantId }) {
+
+        await removeCartItemApi({ productId, variantId })
+
+        dispatch(removeCartItem({ productId, variantId }))
+
     }
 
 

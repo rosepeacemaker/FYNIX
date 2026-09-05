@@ -1,6 +1,6 @@
 import express from "express";
 import { authenticateUser } from  "../middleware/auth.middleware.js"
-import { addToCart, decrementCartItemQuantity, getCart,incrementCartItemQuantity } from "../controllers/cart.controller.js";
+import { addToCart, decrementCartItemQuantity, getCart,incrementCartItemQuantity, removeCartItem } from "../controllers/cart.controller.js";
 import { validateAddToCart, validateIncrementCartItemQuantity ,validateDecrementCartItemQuantity} from "../validators/cart.validator.js";
 
 
@@ -44,6 +44,16 @@ router.patch("/quantity/increment/:productId/:variantId", authenticateUser, vali
 router.patch("/quantity/decrement/:productId/:variantId", authenticateUser,validateDecrementCartItemQuantity, decrementCartItemQuantity)
 
 console.log("CART ROUTES LOADED")
+
+/**
+ * @route DELETE /api/cart/item/:productId/:variantId
+ * @desc Remove item from cart
+ * @access Private
+ * @argument productId - ID of the product to remove
+ * @argument variantId - ID of the variant to remove
+ */
+
+ router.delete("/remove/:productId/:variantId", authenticateUser, removeCartItem)
 
  
 export default router;

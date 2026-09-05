@@ -54,21 +54,15 @@ const cartSlice = createSlice({
             });
         },
         removeCartItem: (state, action) => {
-            const targetP = action.payload?.productId ? String(action.payload.productId) : '';
-            const targetV = action.payload?.variantId ? String(action.payload.variantId) : '';
-            const targetCartItemId = action.payload?.cartItemId ? String(action.payload.cartItemId) : '';
+            const { productId, variantId } = action.payload;
+
             state.items = state.items.filter(item => {
-                if (targetCartItemId && item?._id && String(item._id) === targetCartItemId) {
-                    return false;
-                }
-                const { productId, variantId } = extractIds(item);
-                const matchProduct = Boolean(productId && targetP && productId === targetP);
-                const matchVariant = targetV ? (variantId === targetV) : (!variantId || variantId === 'none' || variantId === 'undefined');
-                if (matchProduct && matchVariant) {
-                    return false;
-                }
-                return true;
-            });
+                return !(
+                    String(item.product) === String(productId) &&
+                    String(item.variant) === String(variantId)
+                )
+            })
+
         }
 
     }

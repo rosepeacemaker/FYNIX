@@ -189,6 +189,54 @@ success: false
         success: true
     })
 }
+export const removeCartItem = async (req, res) => {
+
+    const { productId, variantId }  = req.params;
+
+    // 1.find user cart
+
+    const cart = await cartModel.findOne({
+        user: req.user._id
+    });
+
+    // 2.if cart not found
+    if(!cart){
+        return res.status(404).json({
+            message: "Cart not found",
+            success: false
+        });
+
+    }
+    //3. remove the matching items
+console.log("REMOVE PARAMS:", {
+    productId,
+    variantId
+});
+
+
+    cart.items = cart.items.filter(item => {
+
+    console.log("CHECKING ITEM:", {
+        product: item.product.toString(),
+        variant: item.variant.toString(),
+        productId,
+        variantId
+    });
+
+    return !(
+        item.product.toString() === productId &&
+        item.variant.toString() === variantId
+    );
+});
+    //.4 save update cart
+    await cart.save();
+    return res.status(200).json({
+        message: "Cart item removed successfully",
+        success: true, 
+        cart
+    });
+}
+
 
 // export const createOrderController = async (req, res) => {
 
