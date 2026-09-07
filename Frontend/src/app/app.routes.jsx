@@ -9,9 +9,14 @@ import ProductDetails from "../features/products/pages/ProductDetails";
 import SellerProductDetails from "../features/products/pages/SellerProductDetails";
 import Cart from "../features/cart/pages/Cart";
 import AppLayout from "./AppLayout";
+import Landing from "../features/landing/pages/Landing";
 
 export const router = createBrowserRouter([
     // Auth Routes
+    {
+        path: "/",
+        element: <Landing />
+    },
     {
         path: "/register",
         element: <Register />,
