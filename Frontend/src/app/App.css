@@ -98,7 +98,7 @@ input:-webkit-autofill:focus {
 
 .landing-content {
     position: relative;
-    z-index: 20;
+    z-index: 10;
 
     text-align: center;
 
@@ -127,7 +127,7 @@ input:-webkit-autofill:focus {
     object-fit: cover;
 
     /* Slight blur only */
-    filter: blur(1.5px);
+    filter: blur(1px);
 
     transform: scale(1.04);
 }
@@ -140,6 +140,20 @@ input:-webkit-autofill:focus {
     background:
         linear-gradient(rgba(20, 16, 13, 0.38),
             rgba(20, 16, 13, 0.48));
+}
+
+
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .landing-title {
@@ -157,8 +171,7 @@ input:-webkit-autofill:focus {
 
     color: #fffaf1;
 
-    text-shadow:
-        0 4px 25px rgba(0, 0, 0, 0.35);
+    text-shadow: 0 4px 25px rgba(0, 0, 0, 0.35);
 
     animation: titleReveal 1.2s ease forwards;
 
@@ -180,4 +193,140 @@ input:-webkit-autofill:focus {
     animation: fadeUp 0.9s ease forwards;
 
     opacity: 0;
+}
+
+.landing-tagline {
+    font-family: "Montserrat", sans-serif;
+
+    font-size: clamp(16px, 2vw, 22px);
+
+    font-weight: 400;
+
+    letter-spacing: 2px;
+
+    color: #f3eadc;
+
+    margin-top: 25px;
+    margin-bottom: 40px;
+
+    animation: fadeUp 1s ease 0.45s forwards;
+
+    opacity: 0;
+}
+
+/* buttons */
+.landing-buttons {
+    display: flex;
+    gap: 16px;
+
+    animation: fadeUp 1s ease 0.75s forwards;
+
+    opacity: 0;
+}
+
+.landing-btn {
+    font-family: "Montserrat", sans-serif;
+
+    min-width: 135px;
+
+    padding: 15px 28px;
+
+    border-radius: 2px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.3s ease,
+        background 0.3s ease,
+        color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.primary-btn {
+    background: #f4eee4;
+    color: #181512;
+
+    border: 1px solid #f4eee4;
+}
+
+.secondary-btn {
+    background: transparent;
+    color: #f8f3ea;
+
+    border: 1px solid rgba(248, 243, 234, 0.8);
+}
+
+.primary-btn:hover {
+    background: #c9a96e;
+    border-color: #c9a96e;
+
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+.secondary-btn:hover {
+    background: #f4eee4;
+    color: #181512;
+
+    border-color: #f4eee4;
+
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes titleReveal {
+    from {
+        opacity: 0;
+        transform: translateY(60px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(35px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* for Mobile */
+@media (max-width: 600px) {
+
+    .landing-title {
+        font-size: 60px;
+        letter-spacing: 3px;
+    }
+
+    .landing-tagline {
+        font-size: 14px;
+        letter-spacing: 1px;
+    }
+
+    .landing-buttons {
+        flex-direction: column;
+        width: 100%;
+        max-width: 220px;
+    }
+
+    .landing-btn {
+        width: 100%;
+    }
 }

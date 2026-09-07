@@ -15,15 +15,16 @@ const Landing = () => {
                 <h1 className="landing-title">
                     FUNKY FIBER</h1>
 
-                <p className="text-3xl font-semibold text-[#FF6B6B]">Fashion that moves with you.</p>
+                <p className="landing-tagline">Fashion that moves with you.</p>
 
                 <div className="landing-buttons">
-                    <button onClick={() => { navigate("/login") }}>Login</button>
-                    <button onClick={() => { navigate("/register") }}>Register</button>
+                    <button className="landing-btn primary-btn" onClick={() => { navigate("/login") }}>Login</button>
+                    <button className="landing-btn secondary-btn" onClick={() => { navigate("/register") }}>Register</button>
                 </div>
             </div>
         </main>
     );
+
 };
 
 export default Landing;
