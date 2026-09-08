@@ -232,16 +232,21 @@ const Cart = () => {
     <>
       <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
       <style>{`
+        * { box-sizing: border-box; }
+        html, body { overflow-y: auto !important; height: auto !important; }
         @media (max-width: 1024px) {
           .fynix-cart-grid {
             grid-template-columns: 1fr !important;
-            gap: 32px !important;
+            gap: 24px !important;
+          }
+          .fynix-cart-summary {
+            position: static !important;
           }
           .fynix-cart-main {
-            padding: 32px 24px !important;
+            padding: 28px 20px !important;
           }
           .fynix-cart-header {
-            padding: 14px 24px !important;
+            padding: 12px 20px !important;
           }
         }
         @media (max-width: 640px) {
@@ -250,17 +255,21 @@ const Cart = () => {
           }
           .fynix-cart-item-img {
             width: 100% !important;
-            height: 200px !important;
+            height: 180px !important;
+            min-width: unset !important;
           }
           .fynix-cart-main {
-            padding: 24px 16px !important;
+            padding: 20px 12px !important;
           }
           .fynix-cart-header {
-            padding: 14px 16px !important;
+            padding: 12px 12px !important;
+          }
+          .fynix-cart-nav {
+            display: none !important;
           }
         }
       `}</style>
-      <div style={{ minHeight: '100vh', backgroundColor: BG, color: TEXT, fontFamily: 'Inter, sans-serif' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: BG, color: TEXT, fontFamily: 'Inter, sans-serif', overflowY: 'auto' }}>
 
         {/* ── Navbar ── */}
         <header className="fynix-cart-header" style={{ backgroundColor: '#0e0e0e', borderBottom: `1px solid ${SURF2}`, position: 'sticky', top: 0, zIndex: 50 }}>
@@ -286,7 +295,7 @@ const Cart = () => {
         </header>
 
         {/* ── Main ── */}
-        <main className="fynix-cart-main" style={{ maxWidth: '1440px', margin: '0 auto', padding: '56px 64px' }}>
+        <main className="fynix-cart-main" style={{ maxWidth: '1440px', margin: '0 auto', padding: '40px 48px' }}>
           {/* Title row */}
           <div style={{ marginBottom: '40px', borderBottom: `1px solid ${SURF2}`, paddingBottom: '20px' }}>
             <h1 style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '32px', letterSpacing: '0.08em', textTransform: 'uppercase', color: TEXT, margin: 0 }}>
@@ -319,7 +328,7 @@ const Cart = () => {
               </div>
 
               {/* Right: summary */}
-              <div style={{ position: 'sticky', top: '88px', backgroundColor: SURF, border: `1px solid ${SURF2}`, padding: '32px' }}>
+              <div className="fynix-cart-summary" style={{ position: 'sticky', top: '88px', backgroundColor: SURF, border: `1px solid ${SURF2}`, padding: '28px' }}>
                 <h2 style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '18px', letterSpacing: '0.1em', textTransform: 'uppercase', color: TEXT, marginBottom: '28px', paddingBottom: '16px', borderBottom: `1px solid ${SURF2}` }}>
                   Order Summary
                 </h2>
@@ -369,7 +378,7 @@ const Cart = () => {
 
         {/* ── Footer ── */}
         <footer style={{ backgroundColor: '#0e0e0e', borderTop: `1px solid ${SURF2}`, marginTop: '80px' }}>
-          <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '24px 64px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+          <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '20px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
             <div style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 800, fontSize: '18px', letterSpacing: '0.1em', textTransform: 'uppercase', color: TEXT }}>FYNIX</div>
             <nav style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
               {['Privacy Policy', 'Terms of Service', 'Shipping & Returns', 'Contact'].map(label => (

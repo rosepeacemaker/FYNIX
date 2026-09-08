@@ -3,6 +3,7 @@ import "../../../app/App.css";
 import { useNavigate } from "react-router";
 import BackgroundVideo from "../../../components/backgroundvideo/BackgroundVideo";
 
+
 const Landing = () => {
 
     const navigate = useNavigate();

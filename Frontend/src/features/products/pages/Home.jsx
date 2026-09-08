@@ -56,7 +56,7 @@ const Home = () => {
 
                     {/* ── Product Grid ── */}
                     {products && products.length > 0 ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 pb-32">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 pb-20">
                             {products.map(product => {
                                 const imageUrl = product.image?.length
                                     ? (typeof product.image[0] === 'string' ? product.image[0] : (product.image[0].url || product.image[0].secure_url))
@@ -66,10 +66,10 @@ const Home = () => {
                                     <div
                                         onClick={() => navigate(`/product/${product._id}`)}
                                         key={product._id}
-                                        className="group cursor-pointer flex flex-col bg-[#2A2A2A]/80 backdrop-blur-sm border border-[#3A3A3A] p-4 rounded-none hover:border-[#FF6B6B] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(255,107,107,0.15)]"
+                                        className="group cursor-pointer flex flex-col bg-[#2A2A2A]/80 backdrop-blur-sm border border-[#3A3A3A] p-3 rounded-none hover:border-[#FF6B6B] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(255,107,107,0.15)]"
                                     >
                                         {/* Image Container */}
-                                        <div className="aspect-[4/5] overflow-hidden mb-5 bg-[#1B1B1B]">
+                                        <div className="aspect-[3/4] overflow-hidden mb-3 bg-[#1B1B1B]">
                                             <img
                                                 src={imageUrl}
                                                 alt={product.title}

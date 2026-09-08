@@ -10,25 +10,27 @@ const SLIDES = [
         url: "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1920&auto=format&fit=crop",
         tagline: "VANGUARD SILHOUETTE",
         category: "COLLECTION 01"
+
     },
     {
-        url: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1920&auto=format&fit=crop",
-        tagline: "NEON & HIGH FIBER",
+        url: "https://i.pinimg.com/736x/c8/57/05/c857053418069917859115da2d33bdc7.jpg",
+
+        tagline: "HAUTE COUTURE",
         category: "EDITORIAL"
     },
     {
-        url: "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=1920&auto=format&fit=crop",
-        tagline: "AVANT-GARDE TEXTURES",
+        url: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=1920&auto=format&fit=crop",
+        tagline: "RUNWAY ROYALTY",
         category: "COLLECTION 02"
     },
     {
-        url: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=1920&auto=format&fit=crop",
-        tagline: "FUTURE COUTURE",
-        category: "RUNWAY"
+        url: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=1920&auto=format&fit=crop",
+        tagline: "STREET LUXE",
+        category: "STREET STYLE"
     },
     {
-        url: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1920&auto=format&fit=crop",
-        tagline: "LUMINOUS DRAPE",
+        url: "https://i.pinimg.com/1200x/6f/e2/48/6fe2489b4383494aa33f8bd9b69472bf.jpg",
+        tagline: "BOLD SILHOUETTE",
         category: "LIMITED EDITION"
     }
 ];
@@ -74,7 +76,7 @@ export default function Login() {
             const user = await handleLogin({ email: form.email, password: form.password });
             console.log(user);
             if (user.role === "buyer") {
-                navigate("/");
+                navigate("/home");
             } else if (user.role === "seller") {
                 navigate("/seller/dashboard");
             }
@@ -92,27 +94,27 @@ export default function Login() {
                 {SLIDES.map((slide, index) => (
                     <div
                         key={`blur-${index}`}
-                        className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-                            index === currentSlide ? "opacity-80 scale-110" : "opacity-0 scale-100"
-                        }`}
+                        className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? "opacity-80 scale-110" : "opacity-0 scale-100"
+                            }`}
                     >
                         <img
                             src={slide.url}
                             alt=""
-                            className="w-full h-full object-cover object-center filter blur-3xl saturate-150 brightness-90"
+                            className="w-full h-full object-contain object-center filter  scale-[0.85] blur-2xl saturate-150 brightness-90"
                         />
                     </div>
+
+
                 ))}
 
                 {/* Sharp High-Res Foreground Slider Images */}
                 {SLIDES.map((slide, index) => (
                     <div
                         key={`slide-${index}`}
-                        className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
-                            index === currentSlide
-                                ? "opacity-100 scale-100"
-                                : "opacity-0 scale-105"
-                        }`}
+                        className={`absolute inset-0 transition-all duration-1000 ease-in-out ${index === currentSlide
+                            ? "opacity-100 scale-100"
+                            : "opacity-0 scale-105"
+                            }`}
                     >
                         <img
                             src={slide.url}
@@ -123,9 +125,9 @@ export default function Login() {
                 ))}
 
                 {/* Ambient Soft Glow & Gradient Overlays */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/20 pointer-events-none" />
-                <div className="absolute inset-0 bg-gradient-to-tr from-[#FF6B6B]/25 via-transparent to-[#FF6B6B]/10 pointer-events-none" />
-                <div className="absolute bottom-0 inset-x-0 h-96 bg-gradient-to-t from-black/90 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-black/10 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-tr from-[#ff6b6b]/20 via-transparent to-[#ffb347]/10 pointer-events-none" />
+                <div className="absolute bottom-0 inset-x-0 h-96 bg-gradient-to-t from-black/85 via-transparent to-transparent pointer-events-none" />
             </div>
 
             {/* ── LEFT SIDE: TRANSLUCENT FROSTED GLASS LOGIN FORM (30% WIDTH) ── */}
@@ -257,7 +259,7 @@ export default function Login() {
 
                 {/* Bottom Right Slider Navigation Controls */}
                 <div className="relative z-10 flex items-end justify-between backdrop-blur-xl bg-black/45 border border-white/20 p-4 rounded-xl shadow-2xl pointer-events-auto">
-                    
+
                     {/* Slide Number Counter */}
                     <div className="flex items-baseline space-x-1" style={{ fontFamily: "Montserrat, sans-serif" }}>
                         <span className="text-xl font-black text-white">
@@ -275,11 +277,10 @@ export default function Login() {
                                 key={`dot-${idx}`}
                                 onClick={() => setCurrentSlide(idx)}
                                 aria-label={`Go to slide ${idx + 1}`}
-                                className={`h-1.5 rounded-full transition-all duration-500 cursor-pointer ${
-                                    idx === currentSlide
-                                        ? "w-8 bg-[#ff6b6b] shadow-[0_0_12px_#ff6b6b]"
-                                        : "w-2 bg-white/30 hover:bg-white/60"
-                                }`}
+                                className={`h-1.5 rounded-full transition-all duration-500 cursor-pointer ${idx === currentSlide
+                                    ? "w-8 bg-[#ff6b6b] shadow-[0_0_12px_#ff6b6b]"
+                                    : "w-2 bg-white/30 hover:bg-white/60"
+                                    }`}
                             />
                         ))}
                     </div>

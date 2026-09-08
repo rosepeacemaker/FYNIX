@@ -26,6 +26,16 @@ export const router = createBrowserRouter([
         path: "/login",
         element: <Login />,
     },
+    {
+        element: <AppLayout />,
+        children: [
+            {
+                path: "/home",
+                element: <Home />
+            }
+        ]
+    },
+
 
     // Cart Route
     // AppLayout se bahar hai because Cart has its own Navbar
