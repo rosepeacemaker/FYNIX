@@ -163,7 +163,7 @@ export default function Login() {
                                 value={form.email}
                                 onChange={handleChange}
                                 placeholder="you@snitch.com"
-                                className="w-full bg-transparent border-0 border-b border-white/30 text-white text-[13px] py-1.5 placeholder:text-neutral-400 focus:outline-none focus:border-[#ff6b6b] transition-colors duration-300"
+                                className="w-full bg-transparent p-1 border-0 border-b border-white/30 text-white text-[13px] py-1.5 placeholder:text-neutral-400 focus:outline-none focus:border-[#ff6b6b] transition-colors duration-300"
                                 style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
                             />
                         </div>
@@ -187,7 +187,7 @@ export default function Login() {
                                     value={form.password}
                                     onChange={handleChange}
                                     placeholder="••••••••••"
-                                    className="w-full bg-transparent border-0 border-b border-white/30 text-white text-[13px] py-1.5 pr-14 placeholder:text-neutral-400 focus:outline-none focus:border-[#ff6b6b] transition-colors duration-300"
+                                    className="w-full bg-transparent p-1 border-0 border-b border-white/30 text-white text-[13px] py-1.5 pr-14 placeholder:text-neutral-400 focus:outline-none focus:border-[#ff6b6b] transition-colors duration-300"
                                     style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
                                 />
                                 <button

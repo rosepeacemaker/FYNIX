@@ -188,7 +188,7 @@ const EmptyCart = () => (
 
 /* ─── Main Cart page ──────────────────────────────────────────────────────── */
 const Cart = () => {
-  const cartItems = useSelector((state) => state.cart.items || [])
+  const cartItems = useSelector((state) => state.cart?.items || [])
   const user = useSelector((state) => state.auth?.user)
   const {
     handleGetCart,

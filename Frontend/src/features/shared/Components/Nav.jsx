@@ -9,7 +9,7 @@ const Nav = () => {
 
     return (
         <nav className="px-8 lg:px-16 xl:px-24 py-6 flex items-center justify-between border-b backdrop-blur-md bg-[#1b1b1b]/80 sticky top-0 z-50" style={{ borderColor: '#2A2A2A' }}>
-            <Link to="/"
+            <Link to="/home"
                 className="text-lg font-black tracking-[0.35em] uppercase hover:opacity-80 transition-opacity"
                 style={{ fontFamily: "'Montserrat', sans-serif", color: '#FF6B6B' }}
             >
