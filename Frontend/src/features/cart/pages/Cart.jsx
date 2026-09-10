@@ -35,30 +35,40 @@ const QuantityStepper = ({ qty, onDecrement, onIncrement }) => (
 )
 
 /* ─── Helper to extract item details ─────────────────────────────────────── */
+// After the aggregation pipeline:
+//   item.product  → full populated product doc
+//   item.product.variants → the single matched variant object (unwound + matched)
+//   item.variant  → raw variant ObjectId (string after JSON serialisation)
+//   item.quantity → number
 const getItemDetails = (item) => {
   if (!item) return { title: 'Untitled', price: 0, currency: 'USD', imageUrl: '/cart_img.jpg', productId: '', variantId: '', cartItemId: '' }
 
-  const rawP = item.product || item.productId || item
-  const rawV = item.variant || item.variantId
+  // product is always a populated object from the aggregation
+  const product = (item.product && typeof item.product === 'object') ? item.product : {}
 
-  const product = (rawP && typeof rawP === 'object') ? rawP : {}
-  const variant = (rawV && typeof rawV === 'object') ? rawV : {}
+  // variant data lives in product.variants (the pipeline unwinds & matches it)
+  const variant = (product.variants && typeof product.variants === 'object' && !Array.isArray(product.variants))
+    ? product.variants
+    : {}
 
   const title = product?.title || item?.title || 'Untitled Piece'
   const description = product?.description || item?.description || ''
 
-  const priceObj = (variant && typeof variant === 'object' && variant?.price)
-    ? variant.price
-    : (product?.price || item?.price)
+  // Price: prefer variant price, fall back to stored item price
+  const variantPrice = variant?.price          // { amount, currency }
+  const itemPrice    = item?.price             // { amount, currency } stored at add-time
+  const priceSource  = variantPrice || itemPrice || product?.price || {}
 
-  const price = typeof priceObj === 'number'
-    ? priceObj
-    : (priceObj?.amount ?? (typeof product?.price === 'number' ? product.price : 0))
+  const price = typeof priceSource === 'number'
+    ? priceSource
+    : (priceSource?.amount ?? 0)
 
-  const currency = (typeof priceObj === 'object' && priceObj?.currency)
-    ? priceObj.currency
-    : (product?.price?.currency || product?.currency || item?.currency || 'USD')
+  const currency = priceSource?.currency
+    || product?.price?.currency
+    || item?.currency
+    || 'USD'
 
+  // Image resolution: variant images first, then product images
   const getUrl = (img) => {
     if (!img) return null
     if (typeof img === 'string') return img
@@ -68,9 +78,12 @@ const getItemDetails = (item) => {
 
   let imageUrl = null
   const imgSources = [
-    variant?.image, variant?.images,
-    product?.image, product?.images,
-    item?.image, item?.images
+    variant?.images,
+    variant?.image,
+    product?.images,
+    product?.image,
+    item?.image,
+    item?.images,
   ]
 
   for (const src of imgSources) {
@@ -80,22 +93,24 @@ const getItemDetails = (item) => {
       const url = getUrl(src[0])
       if (url) { imageUrl = url; break }
     }
+    if (typeof src === 'object' && !Array.isArray(src)) {
+      const url = getUrl(src)
+      if (url) { imageUrl = url; break }
+    }
   }
 
   if (!imageUrl) imageUrl = '/cart_img.jpg'
 
-  let productId = ''
-  if (typeof item.product === 'string') productId = item.product
-  else if (item.product && typeof item.product === 'object' && item.product._id) productId = item.product._id
-  else if (typeof item.productId === 'string') productId = item.productId
-  else if (item.productId && typeof item.productId === 'object' && item.productId._id) productId = item.productId._id
-  else if (item._id) productId = item._id
+  // productId: from populated product object
+  const productId = product?._id
+    ? String(product._id)
+    : (typeof item.product === 'string' ? item.product : '')
 
-  let variantId = ''
-  if (typeof item.variant === 'string') variantId = item.variant
-  else if (item.variant && typeof item.variant === 'object' && item.variant._id) variantId = item.variant._id
-  else if (typeof item.variantId === 'string') variantId = item.variantId
-  else if (item.variantId && typeof item.variantId === 'object' && item.variantId._id) variantId = item.variantId._id
+  // variantId: item.variant holds the raw ObjectId (string after JSON)
+  const variantId = variant?._id
+    ? String(variant._id)
+    : (typeof item.variant === 'string' ? item.variant
+      : (item.variant?._id ? String(item.variant._id) : ''))
 
   return { title, description, price, currency, imageUrl, product, variant, productId, variantId, cartItemId: item?._id }
 }
@@ -185,6 +200,7 @@ const EmptyCart = () => (
     >Explore Collection</Link>
   </div>
 )
+
 
 /* ─── Main Cart page ──────────────────────────────────────────────────────── */
 const Cart = () => {
