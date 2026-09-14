@@ -46,12 +46,15 @@ export const useCart = () => {
         }
     }
 
-    async function handleRemoveCartItem({ productId, variantId }) {
-
-        await removeCartItemApi({ productId, variantId })
-
-        dispatch(removeCartItem({ productId, variantId }))
-
+    async function handleRemoveCartItem({ productId, variantId, cartItemId }) {
+        dispatch(removeCartItem({ productId, variantId, cartItemId }))
+        try {
+            await removeCartItemApi({ productId, variantId })
+            await handleGetCart()
+        } catch (error) {
+            console.error("Failed to remove cart item", error)
+            await handleGetCart()
+        }
     }
 
 

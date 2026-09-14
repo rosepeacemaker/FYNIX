@@ -32,10 +32,8 @@ export const decrementCartItemApi = async ({ productId, variantId }) => {
 }
 
 export const removeCartItemApi = async ({ productId, variantId }) => {
-
-    const response = await cartApiInstance.delete(`/remove/${productId}/${variantId}`)
-
-
+    const vId = (variantId && variantId !== 'undefined') ? variantId : 'none';
+    const response = await cartApiInstance.delete(`/remove/${productId}/${vId}`)
     return response.data
 }
 

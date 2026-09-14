@@ -4,8 +4,6 @@ import { stockOfVariant } from "../dao/product.dao.js";
 import mongoose from "mongoose";
 
 
-
-
 export const addToCart = async (req, res) => {
 
     const { productId, variantId } = req.params

@@ -1,5 +1,5 @@
 import { createProduct, getSellerProduct, getAllProducts, getProductById, addProductVariant } from "../services/product.api";
-import { setSellerProducts, setProducts } from "../state/product.slice";
+import { setSellerProducts, setProducts, removeProduct, addProduct, updateProduct } from "../state/product.slice";
 import { useDispatch } from "react-redux";
 
 
@@ -38,12 +38,27 @@ export const useProduct = () => {
 
     }
 
+    function handleRemoveProduct(productId) {
+        dispatch(removeProduct(productId));
+    }
+
+    function handleLocalAddProduct(newProduct) {
+        dispatch(addProduct(newProduct));
+    }
+
+    function handleLocalUpdateProduct(updatedProduct) {
+        dispatch(updateProduct(updatedProduct));
+    }
+
     return {
         handleCreateProduct,
         handleGetAllProducts,
         handleGetSellerProduct,
         handleGetProductById,
-        handleAddProductVariant
+        handleAddProductVariant,
+        handleRemoveProduct,
+        handleLocalAddProduct,
+        handleLocalUpdateProduct,
     }
 
 }   

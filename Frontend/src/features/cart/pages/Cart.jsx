@@ -225,12 +225,12 @@ const Cart = () => {
     if (qty > 1) {
       handleDecrementCartItem({ productId, variantId })
     } else {
-      handleRemoveCartItem({ productId, variantId })
+      handleRemoveCartItem({ productId, variantId, cartItemId })
     }
   }
 
-  const handleRemove = ({ productId, variantId }) => {
-    handleRemoveCartItem({ productId, variantId })
+  const handleRemove = ({ productId, variantId, cartItemId }) => {
+    handleRemoveCartItem({ productId, variantId, cartItemId })
   }
 
 
