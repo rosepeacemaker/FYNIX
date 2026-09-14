@@ -62,6 +62,7 @@ const Home = () => {
                                     ? (typeof product.image[0] === 'string' ? product.image[0] : (product.image[0].url || product.image[0].secure_url))
                                     : '/cart_img.jpg';
 
+
                                 return (
                                     <div
                                         onClick={() => navigate(`/product/${product._id}`)}

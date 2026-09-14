@@ -131,7 +131,7 @@ export default function Login() {
             </div>
 
             {/* ── LEFT SIDE: TRANSLUCENT FROSTED GLASS LOGIN FORM (30% WIDTH) ── */}
-            <div className="w-full md:w-[30%] h-full flex items-center justify-center px-6 sm:px-8 md:px-8 lg:px-10 bg-black/45 backdrop-blur-2xl border-r border-white/10 z-10 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            <div className="w-full md:w-[30%] h-[80] flex items-center justify-center px-6 sm:px-8 md:px-8 lg:px-10 bg-black/45 backdrop-blur-2xl border-r border-white/10 z-10 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 <div className="w-full max-w-xs py-4 md:py-0">
 
                     {/* Brand */}
