@@ -197,7 +197,7 @@ const SellerProductDetails = () => {
                             className="text-xs font-bold tracking-[0.32em] uppercase"
                             style={{ fontFamily: "'Montserrat', sans-serif", color: '#FF6B6B' }}
                         >
-                            FYNIX.
+                            Funky Fiber.
                         </span>
                     </div>
 
