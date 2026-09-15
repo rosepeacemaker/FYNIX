@@ -56,8 +56,8 @@ const getItemDetails = (item) => {
 
   // Price: prefer variant price, fall back to stored item price
   const variantPrice = variant?.price          // { amount, currency }
-  const itemPrice    = item?.price             // { amount, currency } stored at add-time
-  const priceSource  = variantPrice || itemPrice || product?.price || {}
+  const itemPrice = item?.price             // { amount, currency } stored at add-time
+  const priceSource = variantPrice || itemPrice || product?.price || {}
 
   const price = typeof priceSource === 'number'
     ? priceSource
@@ -290,13 +290,13 @@ const Cart = () => {
         {/* ── Navbar ── */}
         <header className="fynix-cart-header" style={{ backgroundColor: '#0e0e0e', borderBottom: `1px solid ${SURF2}`, position: 'sticky', top: 0, zIndex: 50 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1440px', margin: '0 auto', padding: '14px 64px' }}>
-            <Link to="/" style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 800, fontSize: '26px', letterSpacing: '0.1em', textTransform: 'uppercase', color: TEXT, textDecoration: 'none', transition: 'transform 0.3s' }}
+            <Link to="/home" style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 800, fontSize: '26px', letterSpacing: '0.1em', textTransform: 'uppercase', color: TEXT, textDecoration: 'none', transition: 'transform 0.3s' }}
               onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.05)')}
               onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
-            >FYNIX</Link>
+            >Funky Fiber</Link>
             <nav style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
               {['SHOP', 'COLLECTIONS', 'NEW ARRIVALS'].map(label => (
-                <Link key={label} to="/" style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: TEXT, textDecoration: 'none', transition: 'color 0.3s' }}
+                <Link key={label} to="/home" style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: TEXT, textDecoration: 'none', transition: 'color 0.3s' }}
                   onMouseEnter={e => (e.currentTarget.style.color = CORAL)}
                   onMouseLeave={e => (e.currentTarget.style.color = TEXT)}
                 >{label}</Link>
