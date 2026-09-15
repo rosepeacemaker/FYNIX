@@ -1,6 +1,6 @@
 import express from "express";
 import { authenticateUser } from  "../middleware/auth.middleware.js"
-import { addToCart, decrementCartItemQuantity, getCart,incrementCartItemQuantity, removeCartItem } from "../controllers/cart.controller.js";
+import { addToCart, createOrderController, decrementCartItemQuantity, getCart,incrementCartItemQuantity, removeCartItem,verifyPaymentController } from "../controllers/cart.controller.js";
 import { validateAddToCart, validateIncrementCartItemQuantity ,validateDecrementCartItemQuantity} from "../validators/cart.validator.js";
 
 
@@ -54,6 +54,17 @@ console.log("CART ROUTES LOADED")
  */
 
  router.delete("/remove/:productId/:variantId", authenticateUser, removeCartItem)
+/**
+ * @route POST /api/cart/payment/create/order
+ * @desc Create a new order for the items in the user's cart
+ * @access Private
+ */
+
+ router.post("/payment/create/order", authenticateUser, createOrderController)
+
+
+
+ router.post("/payment/verify", authenticateUser ,verifyPaymentController)
 
  
 export default router;
