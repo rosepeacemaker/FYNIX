@@ -156,6 +156,27 @@ const CartItemCard = ({ item, onRemove, onDecrement, onIncrement }) => {
               onMouseLeave={e => (e.currentTarget.style.color = '#777')}
             >✕</button>
           </div>
+          {variant?.attributes && Object.keys(variant.attributes).length > 0 && (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '8px' }}>
+              {Object.entries(variant.attributes).map(([key, val]) => (
+                <span
+                  key={key}
+                  style={{
+                    backgroundColor: '#242424',
+                    border: '1px solid #383838',
+                    padding: '2px 6px',
+                    fontSize: '9px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.08em',
+                    fontWeight: 700,
+                    color: '#E2E2E2'
+                  }}
+                >
+                  <span style={{ color: '#888' }}>{key}:</span> {val}
+                </span>
+              ))}
+            </div>
+          )}
           {description && (
             <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', color: GRAY, letterSpacing: '0.01em', margin: '0 0 8px', wordBreak: 'break-word' }}>
               {description}

@@ -32,16 +32,25 @@ export async function getProductById(productId) {
 export async function addProductVariant(productId, newProductVariant) {
     const formData = new FormData()
 
-    newProductVariant.image.forEach((image) => {
-        formData.append(`image`, image.file)
-    })
-    formData.append("stock", newProductVariant.stock)
-    formData.append("priceAmount", newProductVariant.price)
-    formData.append("attributes", JSON.stringify(newProductVariant.attributes))
+    if (newProductVariant.image && Array.isArray(newProductVariant.image)) {
+        newProductVariant.image.forEach((image) => {
+            if (image.file) {
+                formData.append(`image`, image.file)
+            }
+        })
+    }
+    if (newProductVariant.stock !== undefined && newProductVariant.stock !== null) {
+        formData.append("stock", newProductVariant.stock)
+    }
+    if (newProductVariant.price !== undefined && newProductVariant.price !== null && newProductVariant.price !== '') {
+        formData.append("priceAmount", newProductVariant.price)
+    }
+    if (newProductVariant.attributes) {
+        formData.append("attributes", JSON.stringify(newProductVariant.attributes))
+    }
 
     const response = await productApiInstance.post(`/${productId}/variants`, formData)
     return response.data
-
 }
 
 
