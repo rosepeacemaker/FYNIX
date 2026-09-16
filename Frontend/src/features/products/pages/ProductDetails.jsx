@@ -3,19 +3,56 @@ import { useParams, useNavigate } from 'react-router';
 import { useProduct } from '../hooks/useProduct';
 import { useCart } from '../../cart/hook/useCart';
 
-// Helper to normalize attributes from various backend serialization formats
+// Helper to normalize attributes from various backend serialization formats (Objects, Maps, Arrays, JSON strings)
 const getNormalizedAttributes = (variant) => {
-  if (!variant?.attributes) return {};
-  if (typeof variant.attributes === 'string') {
+  if (!variant) return {};
+  let attrs = variant.attributes;
+  if (!attrs) return {};
+
+  if (typeof attrs === 'string') {
     try {
-      return JSON.parse(variant.attributes);
+      attrs = JSON.parse(attrs);
     } catch {
       return {};
     }
   }
-  if (typeof variant.attributes === 'object' && !Array.isArray(variant.attributes)) {
-    return variant.attributes;
+
+  if (Array.isArray(attrs)) {
+    const result = {};
+    attrs.forEach(item => {
+      if (item && typeof item === 'object') {
+        const k = item.key || item.name || item.attribute || item.title || item.type;
+        const v = item.value || item.val || item.name;
+        if (k && v !== undefined && v !== null) {
+          result[String(k)] = String(v);
+        }
+      }
+    });
+    return result;
   }
+
+  if (attrs instanceof Map || (typeof attrs === 'object' && typeof attrs.entries === 'function' && !Object.keys(attrs).length)) {
+    const result = {};
+    try {
+      attrs.forEach((value, key) => {
+        if (key && value !== undefined && value !== null) {
+          result[String(key)] = String(value);
+        }
+      });
+      return result;
+    } catch {}
+  }
+
+  if (typeof attrs === 'object') {
+    const result = {};
+    Object.entries(attrs).forEach(([key, value]) => {
+      if (key && value !== undefined && value !== null) {
+        result[String(key)] = String(value);
+      }
+    });
+    return result;
+  }
+
   return {};
 };
 

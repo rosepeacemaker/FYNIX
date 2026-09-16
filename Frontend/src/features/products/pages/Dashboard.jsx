@@ -365,9 +365,15 @@ const Dashboard = () => {
                                                 >
                                                     {product.price?.currency || 'USD'} {Number(product.price?.amount || 0).toLocaleString()}
                                                 </span>
-                                                <span className="text-[11px] text-[#A0A0A0] group-hover:text-[#FF6B6B] transition-colors font-medium">
-                                                    Manage Variants →
-                                                </span>
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        navigate(`/seller/product/${product._id}`);
+                                                    }}
+                                                    className="py-1 px-2.5 bg-[#FF6B6B]/15 border border-[#FF6B6B] text-[#FF6B6B] hover:bg-[#FF6B6B] hover:text-black text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer"
+                                                >
+                                                    + Variants ({product.variants?.length || 0}) →
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

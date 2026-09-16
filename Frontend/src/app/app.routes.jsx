@@ -10,6 +10,7 @@ import SellerProductDetails from "../features/products/pages/SellerProductDetail
 import Cart from "../features/cart/pages/Cart";
 import AppLayout from "./AppLayout";
 import Landing from "../features/landing/pages/Landing";
+import OrderSuccess from "../features/cart/pages/OrderSuccess";
 
 export const router = createBrowserRouter([
     // Auth Routes
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
     {
         path: "/login",
         element: <Login />,
+    },
+    {
+        path: "/order-success",
+        element: <OrderSuccess />
     },
     {
         element: <AppLayout />,
@@ -60,6 +65,10 @@ export const router = createBrowserRouter([
             {
                 path: "/product/:productId",
                 element: <ProductDetails />,
+            },
+            {
+                path: "/order-success",
+                element: <OrderSuccess />,
             },
 
             // Seller Routes

@@ -6,6 +6,59 @@ import { useParams, useNavigate } from 'react-router';
 const PlusIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>;
 const TrashIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>;
 
+// Helper to normalize attributes from various backend serialization formats (Objects, Maps, Arrays, JSON strings)
+const getNormalizedAttributes = (variant) => {
+  if (!variant) return {};
+  let attrs = variant.attributes;
+  if (!attrs) return {};
+
+  if (typeof attrs === 'string') {
+    try {
+      attrs = JSON.parse(attrs);
+    } catch {
+      return {};
+    }
+  }
+
+  if (Array.isArray(attrs)) {
+    const result = {};
+    attrs.forEach(item => {
+      if (item && typeof item === 'object') {
+        const k = item.key || item.name || item.attribute || item.title || item.type;
+        const v = item.value || item.val || item.name;
+        if (k && v !== undefined && v !== null) {
+          result[String(k)] = String(v);
+        }
+      }
+    });
+    return result;
+  }
+
+  if (attrs instanceof Map || (typeof attrs === 'object' && typeof attrs.entries === 'function' && !Object.keys(attrs).length)) {
+    const result = {};
+    try {
+      attrs.forEach((value, key) => {
+        if (key && value !== undefined && value !== null) {
+          result[String(key)] = String(value);
+        }
+      });
+      return result;
+    } catch {}
+  }
+
+  if (typeof attrs === 'object') {
+    const result = {};
+    Object.entries(attrs).forEach(([key, value]) => {
+      if (key && value !== undefined && value !== null) {
+        result[String(key)] = String(value);
+      }
+    });
+    return result;
+  }
+
+  return {};
+};
+
 const ATTRIBUTE_PRESETS = [
     { label: 'Size', key: 'Size', suggestions: ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', 'Free Size'] },
     { label: 'Color', key: 'Color', suggestions: ['Black', 'White', 'Coral', 'Grey', 'Navy', 'Beige', 'Brown', 'Olive', 'Red'] },
@@ -627,7 +680,7 @@ const SellerProductDetails = () => {
                                                     {/* Attributes & Price */}
                                                     <div className="flex-1 min-w-0">
                                                         <div className="flex flex-wrap gap-1.5 mb-2">
-                                                            {Object.entries(variant.attributes || {}).map(([key, val]) => (
+                                                            {Object.entries(getNormalizedAttributes(variant)).map(([key, val]) => (
                                                                 <span
                                                                     key={key}
                                                                     className="bg-[#1E1E1E] border border-[#383838] px-2 py-0.5 text-[10px] uppercase tracking-wider font-bold text-[#E2E2E2]"
