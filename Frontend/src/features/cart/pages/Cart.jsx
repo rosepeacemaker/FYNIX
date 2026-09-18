@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useCart } from '../hook/useCart'
 import { Link } from 'react-router'
+import { useTheme } from '../../../context/ThemeContext'
 
-/* ─── Design tokens (FYNIX "Coral Noir" Palette) ─────────────────────────── */
-const CORAL = '#FF6B6B'
-const BG = 'transparent'
-const SURF = '#1b1b1b'
-const SURF2 = '#2a2a2a'
-const GRAY = '#c8c6c5'
-const TEXT = '#e2e2e2'
+/* ─── Design tokens (FYNIX Dynamic Palette) ─────────────────────────── */
+const CORAL = 'var(--accent-primary)'
+const BG = 'var(--bg-main)'
+const SURF = 'var(--bg-surface)'
+const SURF2 = 'var(--border-color)'
+const GRAY = 'var(--text-secondary)'
+const TEXT = 'var(--text-primary)'
 
 /* ─── Quantity stepper ────────────────────────────────────────────────────── */
 const QuantityStepper = ({ qty, onDecrement, onIncrement }) => (
@@ -156,7 +157,7 @@ const CartItemCard = ({ item, onRemove, onDecrement, onIncrement }) => {
               onMouseLeave={e => (e.currentTarget.style.color = '#777')}
             >✕</button>
           </div>
-          {variant?.attributes && Object.keys(variant.attributes).length > 0 && (
+          {variantId?.attributes && Object.keys(variant.attributes).length > 0 && (
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '8px' }}>
               {Object.entries(variant.attributes).map(([key, val]) => (
                 <span
@@ -214,7 +215,7 @@ const EmptyCart = () => (
       Looks like you haven't added any pieces yet. Explore the collection and find your next statement.
     </p>
     <Link
-      to="/"
+      to="/home"
       style={{ display: 'inline-block', padding: '16px 40px', backgroundColor: CORAL, color: '#000', fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '12px', letterSpacing: '0.15em', textTransform: 'uppercase', textDecoration: 'none', transition: 'transform 0.3s, box-shadow 0.3s' }}
       onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.02)'; e.currentTarget.style.boxShadow = '0 0 20px rgba(255,107,107,0.4)' }}
       onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = 'none' }}
@@ -227,6 +228,7 @@ const EmptyCart = () => (
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart?.items || [])
   const user = useSelector((state) => state.auth?.user)
+  const { theme, toggleTheme } = useTheme()
   const {
     handleGetCart,
     handleIncrementCartItem,
@@ -309,13 +311,13 @@ const Cart = () => {
       <div style={{ minHeight: '100vh', backgroundColor: BG, color: TEXT, fontFamily: 'Inter, sans-serif', overflowY: 'auto' }}>
 
         {/* ── Navbar ── */}
-        <header className="fynix-cart-header" style={{ backgroundColor: '#0e0e0e', borderBottom: `1px solid ${SURF2}`, position: 'sticky', top: 0, zIndex: 50 }}>
+        <header className="fynix-cart-header" style={{ backgroundColor: 'var(--bg-nav)', borderBottom: `1px solid ${SURF2}`, position: 'sticky', top: 0, zIndex: 50 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1440px', margin: '0 auto', padding: '14px 64px' }}>
             <Link to="/home" style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 800, fontSize: '26px', letterSpacing: '0.1em', textTransform: 'uppercase', color: TEXT, textDecoration: 'none', transition: 'transform 0.3s' }}
               onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.05)')}
               onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
             >Funky Fiber</Link>
-            <nav style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
+            <nav style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
               {['SHOP', 'COLLECTIONS', 'NEW ARRIVALS'].map(label => (
                 <Link key={label} to="/home" style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: TEXT, textDecoration: 'none', transition: 'color 0.3s' }}
                   onMouseEnter={e => (e.currentTarget.style.color = CORAL)}
@@ -327,6 +329,37 @@ const Cart = () => {
                   🛍 {itemCount > 0 && `(${itemCount})`}
                 </Link>
               )}
+              {/* Theme Toggle Button */}
+              <button
+                onClick={toggleTheme}
+                aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+                title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+                className="p-2 rounded-full transition-all duration-300 hover:scale-110 active:scale-95 focus:outline-none flex items-center justify-center cursor-pointer ml-2"
+                style={{
+                  backgroundColor: 'var(--bg-surface-elevated)',
+                  color: 'var(--text-primary)',
+                  border: '1px solid var(--border-color)',
+                  boxShadow: '0 2px 8px var(--shadow-color)'
+                }}
+              >
+                {theme === 'dark' ? (
+                  <svg className="w-4 h-4 transition-transform duration-500 hover:rotate-90 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="4" />
+                    <path d="M12 2v2" />
+                    <path d="M12 20v2" />
+                    <path d="m4.93 4.93 1.41 1.41" />
+                    <path d="m17.66 17.66 1.41 1.41" />
+                    <path d="M2 12h2" />
+                    <path d="M20 12h2" />
+                    <path d="m6.34 17.66-1.41 1.41" />
+                    <path d="m19.07 4.93-1.41 1.41" />
+                  </svg>
+                ) : (
+                  <svg className="w-4 h-4 transition-transform duration-500 hover:-rotate-45 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+                  </svg>
+                )}
+              </button>
             </nav>
           </div>
         </header>

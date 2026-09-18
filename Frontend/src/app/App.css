@@ -1,15 +1,54 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @import "tailwindcss";
 
+:root,
+[data-theme="dark"] {
+    --bg-main: #121212;
+    --bg-surface: #1B1B1B;
+    --bg-surface-elevated: #242424;
+    --bg-nav: rgba(27, 27, 27, 0.85);
+    --bg-input: #141414;
+    --text-primary: #E2E2E2;
+    --text-secondary: #C8C6C5;
+    --text-muted: #A0A0A0;
+    --border-color: #2E2E2E;
+    --border-subtle: #2A2A2A;
+    --border-input: #383838;
+    --accent-primary: #FF6B6B;
+    --accent-hover: #FFFFFF;
+    --accent-subtle: rgba(255, 107, 107, 0.15);
+    --shadow-color: rgba(255, 107, 107, 0.15);
+    color-scheme: dark;
+}
+
+[data-theme="light"] {
+    --bg-main: #F7F5F0;
+    --bg-surface: #FFFFFF;
+    --bg-surface-elevated: #EFECE6;
+    --bg-nav: rgba(255, 255, 255, 0.88);
+    --bg-input: #FFFFFF;
+    --text-primary: #1C1917;
+    --text-secondary: #44403C;
+    --text-muted: #78716C;
+    --border-color: #E2DDD5;
+    --border-subtle: #EADFD0;
+    --border-input: #D6D0C4;
+    --accent-primary: #FF6B6B;
+    --accent-hover: #1C1917;
+    --accent-subtle: rgba(255, 107, 107, 0.12);
+    --shadow-color: rgba(0, 0, 0, 0.08);
+    color-scheme: light;
+}
+
 @theme {
-    /* ===== FYNIX — CORAL & NOIR GRADIENT PALETTE ===== */
-    --color-background: #1B1B1B;
-    --color-surface: #2A2A2A;
-    --color-primary-container: #FF6B6B;
-    --color-on-surface: #E2E2E2;
-    --color-on-surface-variant: #C8C6C5;
-    --color-outline: #3A3A3A;
+    /* ===== FYNIX — CORAL & NOIR DYNAMIC PALETTE ===== */
+    --color-background: var(--bg-main);
+    --color-surface: var(--bg-surface);
+    --color-primary-container: var(--accent-primary);
+    --color-on-surface: var(--text-primary);
+    --color-on-surface-variant: var(--text-secondary);
+    --color-outline: var(--border-color);
 }
 
 /* ===== GLOBAL ===== */
@@ -26,9 +65,9 @@ body,
     margin: 0;
     padding: 0;
     overflow-y: auto;
-    background: linear-gradient(135deg, #FF6B6B 0%, #2A2A2A 45%, #1B1B1B 100%);
-    background-attachment: fixed;
-    color: #e2e2e2;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
     -webkit-font-smoothing: antialiased;
 }
 

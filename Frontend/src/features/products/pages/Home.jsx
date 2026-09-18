@@ -23,23 +23,23 @@ const Home = () => {
             />
 
             <div
-                className="min-h-screen selection:bg-[#FF6B6B]/30"
-                style={{ fontFamily: "'Inter', sans-serif", backgroundColor: '#121212', color: '#E2E2E2' }}
+                className="min-h-screen selection:bg-[#FF6B6B]/30 transition-colors duration-300"
+                style={{ fontFamily: "'Inter', sans-serif", backgroundColor: 'var(--bg-main)', color: 'var(--text-primary)' }}
             >
                 <div className="max-w-7xl mx-auto px-6 lg:px-12 xl:px-20">
 
                     {/* ── Hero / Header ── */}
                     <div className="pt-16 pb-12 text-center flex flex-col items-center">
-                        <span className="text-[11px] uppercase tracking-[0.28em] font-bold mb-4" style={{ color: '#FF6B6B' }}>
+                        <span className="text-[11px] uppercase tracking-[0.28em] font-bold mb-4" style={{ color: 'var(--accent-primary)' }}>
                             The Collection
                         </span>
                         <h1
                             className="text-3xl lg:text-5xl font-bold leading-tight mb-4 tracking-tight"
-                            style={{ fontFamily: "'Montserrat', sans-serif", color: '#E2E2E2' }}
+                            style={{ fontFamily: "'Montserrat', sans-serif", color: 'var(--text-primary)' }}
                         >
                             Redefining Everyday Style
                         </h1>
-                        <p className="max-w-xl mx-auto text-sm leading-relaxed" style={{ color: '#C8C6C5' }}>
+                        <p className="max-w-xl mx-auto text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
                             Discover the newest from FYNIX — modern silhouettes, expressive details, and effortless style designed for the way you dress today.
                         </p>
                     </div>
@@ -56,10 +56,11 @@ const Home = () => {
                                     <div
                                         onClick={() => navigate(`/product/${product._id}`)}
                                         key={product._id}
-                                        className="group cursor-pointer flex flex-col bg-[#1B1B1B] border border-[#2E2E2E] p-4 relative transition-all duration-400 hover:border-[#FF6B6B] hover:shadow-[0_10px_30px_rgba(255,107,107,0.15)]"
+                                        className="group cursor-pointer flex flex-col p-4 relative transition-all duration-400 hover:border-[#FF6B6B] hover:shadow-[0_10px_30px_var(--shadow-color)]"
+                                        style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-color)' }}
                                     >
                                         {/* Image Container */}
-                                        <div className="aspect-[4/5] overflow-hidden mb-4 bg-[#242424] relative">
+                                        <div className="aspect-[4/5] overflow-hidden mb-4 relative" style={{ backgroundColor: 'var(--bg-surface-elevated)' }}>
                                             <img
                                                 src={imageUrl}
                                                 alt={product.title}
@@ -73,27 +74,36 @@ const Home = () => {
                                             <div>
                                                 <h3
                                                     className="text-base font-bold leading-snug transition-colors duration-300 group-hover:text-[#FF6B6B] uppercase tracking-wide"
-                                                    style={{ fontFamily: "'Montserrat', sans-serif", color: '#E2E2E2' }}
+                                                    style={{ fontFamily: "'Montserrat', sans-serif", color: 'var(--text-primary)' }}
                                                 >
                                                     {product.title}
                                                 </h3>
 
                                                 <p
                                                     className="text-[12px] line-clamp-2 leading-relaxed mt-1"
-                                                    style={{ color: '#A0A0A0' }}
+                                                    style={{ color: 'var(--text-muted)' }}
                                                 >
                                                     {product.description}
                                                 </p>
+
+                                                {/* Variant Badge / Available Sizes & Colors */}
+                                                {product.variants && product.variants.length > 0 && (
+                                                    <div className="mt-2.5 flex items-center gap-1.5 flex-wrap">
+                                                        <span className="text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 border" style={{ backgroundColor: 'var(--bg-surface-elevated)', borderColor: 'var(--border-color)', color: 'var(--accent-primary)' }}>
+                                                            {product.variants.length} {product.variants.length === 1 ? 'Variant' : 'Variants'} (Size / Color)
+                                                        </span>
+                                                    </div>
+                                                )}
                                             </div>
 
-                                            <div className="mt-4 pt-3 border-t border-[#2E2E2E] flex justify-between items-center">
+                                            <div className="mt-4 pt-3 border-t flex justify-between items-center" style={{ borderColor: 'var(--border-color)' }}>
                                                 <span
                                                     className="text-[13px] uppercase tracking-[0.15em] font-bold"
-                                                    style={{ color: '#FF6B6B' }}
+                                                    style={{ color: 'var(--accent-primary)' }}
                                                 >
                                                     {product.price?.currency || 'USD'} {Number(product.price?.amount || 0).toLocaleString()}
                                                 </span>
-                                                <span className="text-[11px] text-[#A0A0A0] group-hover:text-[#FF6B6B] transition-colors font-medium">
+                                                <span className="text-[11px] group-hover:text-[#FF6B6B] transition-colors font-medium" style={{ color: 'var(--text-muted)' }}>
                                                     View Piece →
                                                 </span>
                                             </div>
@@ -103,11 +113,11 @@ const Home = () => {
                             })}
                         </div>
                     ) : (
-                        <div className="py-24 text-center flex flex-col items-center bg-[#1B1B1B] border border-[#2E2E2E] p-12 mb-20">
-                            <h2 className="text-2xl mb-4 uppercase tracking-widest font-bold" style={{ fontFamily: "'Montserrat', sans-serif", color: '#E2E2E2' }}>
+                        <div className="py-24 text-center flex flex-col items-center p-12 mb-20" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-color)' }}>
+                            <h2 className="text-2xl mb-4 uppercase tracking-widest font-bold" style={{ fontFamily: "'Montserrat', sans-serif", color: 'var(--text-primary)' }}>
                                 No pieces available.
                             </h2>
-                            <p className="max-w-md mx-auto text-sm leading-relaxed" style={{ color: '#C8C6C5' }}>
+                            <p className="max-w-md mx-auto text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
                                 We are currently preparing our next collection. Please check back shortly.
                             </p>
                         </div>
@@ -115,10 +125,10 @@ const Home = () => {
                 </div>
 
                 {/* ── Footer ── */}
-                <footer className="border-t py-12 text-center bg-[#1B1B1B]/80 backdrop-blur-md" style={{ borderColor: '#2A2A2A' }}>
+                <footer className="border-t py-12 text-center backdrop-blur-md" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border-subtle)' }}>
                     <span
                         className="text-[11px] uppercase tracking-[0.35em] font-bold"
-                        style={{ fontFamily: "'Montserrat', sans-serif", color: '#FF6B6B' }}
+                        style={{ fontFamily: "'Montserrat', sans-serif", color: 'var(--accent-primary)' }}
                     >
                         Fynix. © {new Date().getFullYear()}
                     </span>

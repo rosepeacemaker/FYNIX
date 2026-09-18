@@ -125,8 +125,8 @@ const Dashboard = () => {
             )}
 
             <div
-                className="min-h-screen selection:bg-[#FF6B6B]/30"
-                style={{ backgroundColor: '#121212', fontFamily: "'Inter', sans-serif", color: '#E2E2E2' }}
+                className="min-h-screen selection:bg-[#FF6B6B]/30 transition-colors duration-300"
+                style={{ backgroundColor: 'var(--bg-main)', fontFamily: "'Inter', sans-serif", color: 'var(--text-primary)' }}
             >
                 <div className="w-full max-w-[100rem] mx-auto px-6 lg:px-12 xl:px-16">
 
@@ -135,7 +135,8 @@ const Dashboard = () => {
                         <div className="flex items-center gap-4">
                             <button
                                 onClick={() => navigate('/home')}
-                                className="text-sm transition-colors duration-200 text-[#AAA] hover:text-[#FF6B6B] flex items-center gap-2 cursor-pointer font-medium"
+                                className="text-sm transition-colors duration-200 hover:text-[#FF6B6B] flex items-center gap-2 cursor-pointer font-medium"
+                                style={{ color: 'var(--text-muted)' }}
                                 aria-label="Go to Home"
                             >
                                 <span>←</span> Customer Storefront
@@ -146,13 +147,13 @@ const Dashboard = () => {
                                 width: '8px',
                                 height: '8px',
                                 borderRadius: '50%',
-                                backgroundColor: '#FF6B6B',
+                                backgroundColor: 'var(--accent-primary)',
                                 display: 'inline-block',
-                                boxShadow: '0 0 8px #FF6B6B'
+                                boxShadow: '0 0 8px var(--accent-primary)'
                             }} />
                             <span
                                 className="text-xs font-bold tracking-[0.2em] uppercase"
-                                style={{ fontFamily: "'Montserrat', sans-serif", color: '#FF6B6B' }}
+                                style={{ fontFamily: "'Montserrat', sans-serif", color: 'var(--accent-primary)' }}
                             >
                                 Seller Portal {user?.fullname ? `• ${user.fullname}` : ''}
                             </span>
@@ -160,18 +161,18 @@ const Dashboard = () => {
                     </div>
 
                     {/* ── Page Header & Action Controls ── */}
-                    <div className="pt-8 pb-8 flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-[#2E2E2E]">
+                    <div className="pt-8 pb-8 flex flex-col md:flex-row md:items-end justify-between gap-6 border-b" style={{ borderColor: 'var(--border-color)' }}>
                         <div>
-                            <span className="text-[11px] uppercase tracking-[0.25em] font-bold" style={{ color: '#FF6B6B' }}>
+                            <span className="text-[11px] uppercase tracking-[0.25em] font-bold" style={{ color: 'var(--accent-primary)' }}>
                                 Inventory Management
                             </span>
                             <h1
                                 className="text-3xl lg:text-5xl font-bold uppercase tracking-tight leading-tight mt-1"
-                                style={{ fontFamily: "'Montserrat', sans-serif", color: '#E2E2E2' }}
+                                style={{ fontFamily: "'Montserrat', sans-serif", color: 'var(--text-primary)' }}
                             >
                                 Your Vault
                             </h1>
-                            <p className="text-xs text-[#888] mt-2">
+                            <p className="text-xs mt-2" style={{ color: 'var(--text-muted)' }}>
                                 Manage listed pieces, update pricing, remove outdated inventory, or create new listings.
                             </p>
                         </div>
@@ -182,8 +183,8 @@ const Dashboard = () => {
                             <button
                                 onClick={handleReset}
                                 disabled={isRefreshing}
-                                className="py-3 px-5 text-[11px] uppercase tracking-[0.15em] font-bold border border-[#444] bg-[#1E1E1E] text-[#E2E2E2] hover:border-[#FF6B6B] hover:text-[#FF6B6B] transition-all cursor-pointer flex items-center gap-2"
-                                style={{ fontFamily: "'Montserrat', sans-serif" }}
+                                className="py-3 px-5 text-[11px] uppercase tracking-[0.15em] font-bold border transition-all cursor-pointer flex items-center gap-2"
+                                style={{ fontFamily: "'Montserrat', sans-serif", backgroundColor: 'var(--bg-surface-elevated)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
                                 title="Reset/Reload items from server database"
                             >
                                 <span style={{ display: 'inline-block', transform: isRefreshing ? 'rotate(180deg)' : 'none', transition: 'transform 0.5s' }}>
@@ -213,9 +214,9 @@ const Dashboard = () => {
                     </div>
 
                     {/* ── Status Bar ── */}
-                    <div className="py-4 flex justify-between items-center text-xs text-[#888]">
+                    <div className="py-4 flex justify-between items-center text-xs" style={{ color: 'var(--text-muted)' }}>
                         <div>
-                            Showing <span className="text-[#FF6B6B] font-bold">{sellerProducts?.length || 0}</span> products in your vault
+                            Showing <span className="font-bold" style={{ color: 'var(--accent-primary)' }}>{sellerProducts?.length || 0}</span> products in your vault
                         </div>
                     </div>
 
@@ -231,7 +232,8 @@ const Dashboard = () => {
                                     <div
                                         onClick={() => { navigate(`/seller/product/${product._id}`) }}
                                         key={product._id}
-                                        className="group cursor-pointer flex flex-col bg-[#1B1B1B] border border-[#2E2E2E] p-4 relative transition-all duration-400 hover:border-[#FF6B6B] hover:shadow-[0_10px_30px_rgba(255,107,107,0.15)]"
+                                        className="group cursor-pointer flex flex-col p-4 relative transition-all duration-400 hover:border-[#FF6B6B] hover:shadow-[0_10px_30px_var(--shadow-color)]"
+                                        style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-color)' }}
                                     >
                                         {/* Floating Action Controls (Edit & Remove) */}
                                         <div
@@ -259,9 +261,9 @@ const Dashboard = () => {
                                                 }}
                                                 title="Edit Product"
                                                 style={{
-                                                    backgroundColor: 'rgba(0,0,0,0.85)',
-                                                    border: '1px solid #444',
-                                                    color: '#E2E2E2',
+                                                    backgroundColor: 'var(--bg-surface-elevated)',
+                                                    border: '1px solid var(--border-color)',
+                                                    color: 'var(--text-primary)',
                                                     width: '26px',
                                                     height: '26px',
                                                     display: 'flex',
@@ -276,8 +278,8 @@ const Dashboard = () => {
                                                     e.currentTarget.style.color = '#FF6B6B';
                                                 }}
                                                 onMouseLeave={e => {
-                                                    e.currentTarget.style.borderColor = '#444';
-                                                    e.currentTarget.style.color = '#E2E2E2';
+                                                    e.currentTarget.style.borderColor = 'var(--border-color)';
+                                                    e.currentTarget.style.color = 'var(--text-primary)';
                                                 }}
                                             >
                                                 ✎
@@ -316,7 +318,7 @@ const Dashboard = () => {
                                         </div>
 
                                         {/* Image Container */}
-                                        <div className="aspect-[4/5] overflow-hidden mb-4 bg-[#242424] relative">
+                                        <div className="aspect-[4/5] overflow-hidden mb-4 relative" style={{ backgroundColor: 'var(--bg-surface-elevated)' }}>
                                             <img
                                                 src={imageUrl}
                                                 alt={product.title}
@@ -345,23 +347,23 @@ const Dashboard = () => {
                                             <div>
                                                 <h3
                                                     className="text-base font-bold leading-snug transition-colors duration-300 group-hover:text-[#FF6B6B] uppercase tracking-wide"
-                                                    style={{ fontFamily: "'Montserrat', sans-serif", color: '#E2E2E2' }}
+                                                    style={{ fontFamily: "'Montserrat', sans-serif", color: 'var(--text-primary)' }}
                                                 >
                                                     {product.title}
                                                 </h3>
 
                                                 <p
                                                     className="text-[12px] line-clamp-2 leading-relaxed mt-1"
-                                                    style={{ color: '#A0A0A0' }}
+                                                    style={{ color: 'var(--text-muted)' }}
                                                 >
                                                     {product.description}
                                                 </p>
                                             </div>
 
-                                            <div className="mt-4 pt-3 border-t border-[#2E2E2E] flex justify-between items-center">
+                                            <div className="mt-4 pt-3 border-t flex justify-between items-center" style={{ borderColor: 'var(--border-color)' }}>
                                                 <span
                                                     className="text-[13px] uppercase tracking-[0.15em] font-bold"
-                                                    style={{ color: '#FF6B6B' }}
+                                                    style={{ color: 'var(--accent-primary)' }}
                                                 >
                                                     {product.price?.currency || 'USD'} {Number(product.price?.amount || 0).toLocaleString()}
                                                 </span>
@@ -381,14 +383,14 @@ const Dashboard = () => {
                             })}
                         </div>
                     ) : (
-                        <div className="py-24 text-center flex flex-col items-center bg-[#1B1B1B] border border-[#2E2E2E] p-12 mb-24">
-                            <span className="text-[11px] uppercase tracking-[0.25em] font-bold mb-3" style={{ color: '#FF6B6B' }}>
+                        <div className="py-24 text-center flex flex-col items-center p-12 mb-24" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-color)' }}>
+                            <span className="text-[11px] uppercase tracking-[0.25em] font-bold mb-3" style={{ color: 'var(--accent-primary)' }}>
                                 Empty Vault
                             </span>
-                            <h2 className="text-2xl mb-4 uppercase tracking-widest font-bold" style={{ fontFamily: "'Montserrat', sans-serif", color: '#E2E2E2' }}>
+                            <h2 className="text-2xl mb-4 uppercase tracking-widest font-bold" style={{ fontFamily: "'Montserrat', sans-serif", color: 'var(--text-primary)' }}>
                                 No products in your archive yet.
                             </h2>
-                            <p className="max-w-md mx-auto text-sm leading-relaxed mb-6" style={{ color: '#A0A0A0' }}>
+                            <p className="max-w-md mx-auto text-sm leading-relaxed mb-6" style={{ color: 'var(--text-muted)' }}>
                                 You haven't added any curated pieces to your archive yet. Begin by adding an item or syncing from the database.
                             </p>
                             <div className="flex gap-4">
@@ -401,8 +403,8 @@ const Dashboard = () => {
                                 </button>
                                 <button
                                     onClick={handleReset}
-                                    className="py-3 px-6 text-[11px] uppercase tracking-[0.15em] font-bold border border-[#444] bg-[#242424] text-[#E2E2E2] hover:border-[#FF6B6B] transition-all cursor-pointer"
-                                    style={{ fontFamily: "'Montserrat', sans-serif" }}
+                                    className="py-3 px-6 text-[11px] uppercase tracking-[0.15em] font-bold border transition-all cursor-pointer"
+                                    style={{ fontFamily: "'Montserrat', sans-serif", backgroundColor: 'var(--bg-surface-elevated)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
                                 >
                                     ↺ Sync Database
                                 </button>
@@ -629,10 +631,10 @@ const Dashboard = () => {
                 )}
 
                 {/* ── Footer ── */}
-                <footer className="border-t py-12 text-center bg-[#1B1B1B]/80 backdrop-blur-md mt-16" style={{ borderColor: '#2A2A2A' }}>
+                <footer className="border-t py-12 text-center backdrop-blur-md mt-16" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border-subtle)' }}>
                     <span
                         className="text-[11px] uppercase tracking-[0.35em] font-bold"
-                        style={{ fontFamily: "'Montserrat', sans-serif", color: '#FF6B6B' }}
+                        style={{ fontFamily: "'Montserrat', sans-serif", color: 'var(--accent-primary)' }}
                     >
                         Fynix. Seller Studio © {new Date().getFullYear()}
                     </span>

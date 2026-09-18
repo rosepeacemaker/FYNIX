@@ -1,59 +1,68 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router';
+import { useSelector } from 'react-redux';
 import { useProduct } from '../hooks/useProduct';
 import { useCart } from '../../cart/hook/useCart';
 
-// Helper to normalize attributes from various backend serialization formats (Objects, Maps, Arrays, JSON strings)
+// Helper to normalize attributes from various backend serialization formats (Objects, Maps, Arrays, JSON strings, direct props)
 const getNormalizedAttributes = (variant) => {
   if (!variant) return {};
-  let attrs = variant.attributes;
-  if (!attrs) return {};
+  let attrs = variant.attributes || variant.options || variant.attribute;
 
+  const result = {};
+
+  const addPair = (k, v) => {
+    if (!k || v === undefined || v === null || v === '') return;
+    const cleanKey = String(k).trim();
+    if (!cleanKey) return;
+    const formattedKey = cleanKey.charAt(0).toUpperCase() + cleanKey.slice(1);
+    result[formattedKey] = String(v).trim();
+  };
+
+  // If attributes is a JSON string
   if (typeof attrs === 'string') {
     try {
       attrs = JSON.parse(attrs);
     } catch {
-      return {};
+      attrs = null;
     }
   }
 
   if (Array.isArray(attrs)) {
-    const result = {};
     attrs.forEach(item => {
       if (item && typeof item === 'object') {
-        const k = item.key || item.name || item.attribute || item.title || item.type;
-        const v = item.value || item.val || item.name;
-        if (k && v !== undefined && v !== null) {
-          result[String(k)] = String(v);
-        }
+        const k = item.key || item.name || item.attribute || item.title || item.type || item.trait_type;
+        const v = item.value || item.val || item.name || item.option;
+        addPair(k, v);
+      } else if (typeof item === 'string') {
+        const parts = item.split(':');
+        if (parts.length === 2) addPair(parts[0], parts[1]);
       }
     });
-    return result;
-  }
-
-  if (attrs instanceof Map || (typeof attrs === 'object' && typeof attrs.entries === 'function' && !Object.keys(attrs).length)) {
-    const result = {};
-    try {
-      attrs.forEach((value, key) => {
-        if (key && value !== undefined && value !== null) {
-          result[String(key)] = String(value);
-        }
-      });
-      return result;
-    } catch {}
-  }
-
-  if (typeof attrs === 'object') {
-    const result = {};
-    Object.entries(attrs).forEach(([key, value]) => {
-      if (key && value !== undefined && value !== null) {
-        result[String(key)] = String(value);
+  } else if (attrs && typeof attrs === 'object') {
+    if (typeof attrs.entries === 'function' && !(attrs instanceof Array)) {
+      try {
+        attrs.forEach((v, k) => addPair(k, v));
+      } catch {
+        Object.entries(attrs).forEach(([k, v]) => addPair(k, v));
       }
-    });
-    return result;
+    } else {
+      Object.entries(attrs).forEach(([k, v]) => addPair(k, v));
+    }
   }
 
-  return {};
+  // Fallback: Check direct properties on variant object (e.g. variant.size, variant.color)
+  const systemKeys = new Set(['_id', 'id', 'stock', 'price', 'image', 'images', 'attributes', 'options', 'attribute', 'createdAt', 'updatedAt', '__v']);
+  Object.entries(variant).forEach(([k, v]) => {
+    if (!systemKeys.has(k) && v !== undefined && v !== null && typeof v !== 'object') {
+      const formattedKey = k.charAt(0).toUpperCase() + k.slice(1);
+      if (!result[formattedKey]) {
+        addPair(k, v);
+      }
+    }
+  });
+
+  return result;
 };
 
 const ProductDetail = () => {
@@ -65,6 +74,8 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const { handleGetProductById } = useProduct();
   const { handleAddItem } = useCart();
+  const allProducts = useSelector(state => state.product?.products || []);
+  const sellerProducts = useSelector(state => state.product?.sellerProducts || []);
 
   const triggerToast = (msg) => {
     setToastMessage(msg);
@@ -74,9 +85,18 @@ const ProductDetail = () => {
   async function fetchProductDetails() {
     try {
       const data = await handleGetProductById(productId);
-      setProduct(data?.product || data);
+      if (data) {
+        setProduct(data?.product || data);
+        return;
+      }
     } catch (error) {
-      console.error("Failed to fetch product details", error);
+      console.error("Failed to fetch product details from API", error);
+    }
+
+    // Fallback to Redux store if API fails or item is locally added
+    const localMatch = [...allProducts, ...sellerProducts].find(p => String(p._id) === String(productId));
+    if (localMatch) {
+      setProduct(localMatch);
     }
   }
 
@@ -238,31 +258,32 @@ const ProductDetail = () => {
       )}
 
       <div
-        className="w-full min-h-[calc(100vh-75px)] flex flex-col items-center justify-center py-4 px-4 md:px-8 bg-[#121212] selection:bg-[#FF6B6B]/30"
-        style={{ fontFamily: "'Inter', sans-serif", color: '#E2E2E2' }}
+        className="w-full min-h-[calc(100vh-75px)] flex flex-col items-center justify-center py-4 px-4 md:px-8 selection:bg-[#FF6B6B]/30 transition-colors duration-300"
+        style={{ fontFamily: "'Inter', sans-serif", backgroundColor: 'var(--bg-main)', color: 'var(--text-primary)' }}
       >
         <div className="w-full max-w-3xl">
           {/* Breadcrumb / Back Link */}
           <div className="mb-2.5 flex items-center justify-between">
             <button
               onClick={() => navigate(-1)}
-              className="text-[11px] transition-colors duration-200 text-[#AAA] hover:text-[#FF6B6B] flex items-center gap-1.5 cursor-pointer font-medium uppercase tracking-wider"
+              className="text-[11px] transition-colors duration-200 hover:text-[#FF6B6B] flex items-center gap-1.5 cursor-pointer font-medium uppercase tracking-wider"
+              style={{ color: 'var(--text-muted)' }}
             >
               <span>←</span> Back
             </button>
-            <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-[#FF6B6B]">
+            <span className="text-[9px] font-bold tracking-[0.2em] uppercase" style={{ color: 'var(--accent-primary)' }}>
               FYNIX Exclusive
             </span>
           </div>
 
           {/* ── Compact Product Card Container ── */}
-          <div className="w-full bg-[#1B1B1B] border border-[#2E2E2E] p-4 md:p-5 shadow-[0_15px_40px_rgba(0,0,0,0.8)]">
+          <div className="w-full p-4 md:p-5 shadow-[0_15px_40px_var(--shadow-color)]" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-color)' }}>
             <div className="flex flex-col md:flex-row gap-5 lg:gap-6 items-center md:items-stretch">
 
               {/* ── LEFT: Image Column ── */}
               <div className="w-full md:w-[42%] flex flex-col justify-between">
                 {/* Main Image */}
-                <div className="relative w-full aspect-[4/5] max-h-[300px] bg-[#141414] border border-[#2A2A2A] overflow-hidden group">
+                <div className="relative w-full aspect-[4/5] max-h-[300px] overflow-hidden group" style={{ backgroundColor: 'var(--bg-surface-elevated)', border: '1px solid var(--border-color)' }}>
                   <img
                     src={currentMainImage}
                     alt={product.title}
@@ -274,14 +295,16 @@ const ProductDetail = () => {
                     <>
                       <button
                         onClick={() => setSelectedImage(prev => prev === 0 ? displayImages.length - 1 : prev - 1)}
-                        className="absolute left-1.5 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 bg-[#1B1B1B]/80 border border-[#3A3A3A] text-white hover:border-[#FF6B6B]"
+                        className="absolute left-1.5 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:border-[#FF6B6B]"
+                        style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-color)', color: 'var(--text-primary)' }}
                         aria-label="Previous image"
                       >
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
                       </button>
                       <button
                         onClick={() => setSelectedImage(prev => prev === displayImages.length - 1 ? 0 : prev + 1)}
-                        className="absolute right-1.5 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 bg-[#1B1B1B]/80 border border-[#3A3A3A] text-white hover:border-[#FF6B6B]"
+                        className="absolute right-1.5 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:border-[#FF6B6B]"
+                        style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-color)', color: 'var(--text-primary)' }}
                         aria-label="Next image"
                       >
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
@@ -299,7 +322,8 @@ const ProductDetail = () => {
                         <button
                           key={idx}
                           onClick={() => setSelectedImage(idx)}
-                          className={`w-10 h-11 flex-shrink-0 border overflow-hidden transition-all duration-200 ${selectedImage === idx ? 'border-[#FF6B6B] opacity-100 scale-105' : 'border-[#333] opacity-50 hover:opacity-100'}`}
+                          className={`w-10 h-11 flex-shrink-0 border overflow-hidden transition-all duration-200 ${selectedImage === idx ? 'border-[#FF6B6B] opacity-100 scale-105' : 'opacity-60 hover:opacity-100'}`}
+                          style={{ borderColor: selectedImage === idx ? 'var(--accent-primary)' : 'var(--border-color)' }}
                         >
                           <img
                             src={thumbUrl}
@@ -318,14 +342,14 @@ const ProductDetail = () => {
               <div className="w-full md:w-[58%] flex flex-col justify-between gap-3">
                 <div>
                   {/* Category / Badge */}
-                  <span className="text-[9px] uppercase tracking-[0.25em] font-bold text-[#FF6B6B] block mb-0.5">
+                  <span className="text-[9px] uppercase tracking-[0.25em] font-bold block mb-0.5" style={{ color: 'var(--accent-primary)' }}>
                     Authentic FYNIX
                   </span>
 
                   {/* Title */}
                   <h1
                     className="text-lg md:text-xl font-bold uppercase tracking-tight leading-snug"
-                    style={{ fontFamily: "'Montserrat', sans-serif", color: '#E2E2E2' }}
+                    style={{ fontFamily: "'Montserrat', sans-serif", color: 'var(--text-primary)' }}
                   >
                     {product.title}
                   </h1>
@@ -334,7 +358,7 @@ const ProductDetail = () => {
                   <div className="mt-1 flex items-center gap-2.5">
                     <span
                       className="text-base md:text-lg uppercase tracking-[0.15em] font-bold"
-                      style={{ color: '#FF6B6B' }}
+                      style={{ color: 'var(--accent-primary)' }}
                     >
                       {displayPrice?.currency || 'USD'} {Number(displayPrice?.amount || (typeof displayPrice === 'number' ? displayPrice : 0)).toLocaleString()}
                     </span>
@@ -351,13 +375,13 @@ const ProductDetail = () => {
                     )}
                   </div>
 
-                  <div className="h-px w-full my-2 bg-[#2E2E2E]" />
+                  <div className="h-px w-full my-2" style={{ backgroundColor: 'var(--border-color)' }} />
 
                   {/* Attribute Selectors (Size, Color, etc.) */}
                   {hasVariants && Object.keys(availableAttributes).length > 0 ? (
                     Object.entries(availableAttributes).map(([attrName, values]) => (
                       <div key={attrName} className="mb-2">
-                        <span className="text-[9px] uppercase tracking-[0.2em] font-bold text-[#AAA] block mb-1">
+                        <span className="text-[9px] uppercase tracking-[0.2em] font-bold block mb-1" style={{ color: 'var(--text-muted)' }}>
                           Select {attrName}
                         </span>
                         <div className="flex flex-wrap gap-1.5">
@@ -367,7 +391,8 @@ const ProductDetail = () => {
                               <button
                                 key={val}
                                 onClick={() => handleAttributeChange(attrName, val)}
-                                className={`px-2.5 py-0.5 text-[10px] uppercase tracking-[0.1em] font-bold transition-all duration-200 border cursor-pointer ${isSelected ? 'border-[#FF6B6B] bg-[#FF6B6B] text-black shadow-[0_0_8px_rgba(255,107,107,0.3)]' : 'border-[#383838] bg-[#141414] text-[#C8C6C5] hover:border-[#FF6B6B]'}`}
+                                className={`px-2.5 py-0.5 text-[10px] uppercase tracking-[0.1em] font-bold transition-all duration-200 border cursor-pointer ${isSelected ? 'border-[#FF6B6B] bg-[#FF6B6B] text-black shadow-[0_0_8px_rgba(255,107,107,0.3)]' : 'hover:border-[#FF6B6B]'}`}
+                                style={!isSelected ? { backgroundColor: 'var(--bg-surface-elevated)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' } : {}}
                               >
                                 {val}
                               </button>
@@ -378,10 +403,10 @@ const ProductDetail = () => {
                     ))
                   ) : (
                     <div className="mb-2">
-                      <span className="text-[9px] uppercase tracking-[0.2em] font-bold text-[#888] block mb-1">
+                      <span className="text-[9px] uppercase tracking-[0.2em] font-bold block mb-1" style={{ color: 'var(--text-muted)' }}>
                         Edition / Size
                       </span>
-                      <span className="inline-block px-2.5 py-0.5 text-[10px] uppercase tracking-[0.1em] font-bold border border-[#383838] bg-[#141414] text-[#AAA]">
+                      <span className="inline-block px-2.5 py-0.5 text-[10px] uppercase tracking-[0.1em] font-bold border" style={{ backgroundColor: 'var(--bg-surface-elevated)', borderColor: 'var(--border-color)', color: 'var(--text-secondary)' }}>
                         Standard Edition (One Size)
                       </span>
                     </div>
@@ -389,14 +414,14 @@ const ProductDetail = () => {
 
                   {/* Description */}
                   <div className="mt-1">
-                    <p className="text-[11px] text-[#A0A0A0] leading-relaxed line-clamp-2">
+                    <p className="text-[11px] leading-relaxed line-clamp-2" style={{ color: 'var(--text-muted)' }}>
                       {product.description || 'Exclusive designer piece crafted with high precision and premium tailoring.'}
                     </p>
                   </div>
                 </div>
 
                 {/* ── Action Buttons ── */}
-                <div className="flex flex-col gap-2 pt-1.5 border-t border-[#2E2E2E]">
+                <div className="flex flex-col gap-2 pt-1.5 border-t" style={{ borderColor: 'var(--border-color)' }}>
                   <div className="grid grid-cols-2 gap-2.5">
                     <button
                       onClick={handleAddToCart}
@@ -423,9 +448,9 @@ const ProductDetail = () => {
                   </div>
 
                   {/* Quick Feature Guarantees */}
-                  <div className="grid grid-cols-3 text-center text-[8.5px] uppercase tracking-[0.08em] text-[#888] pt-0.5">
-                    <div className="border-r border-[#2E2E2E] pr-1">Free Shipping $150+</div>
-                    <div className="border-r border-[#2E2E2E] pr-1">14-Day Returns</div>
+                  <div className="grid grid-cols-3 text-center text-[8.5px] uppercase tracking-[0.08em] pt-0.5" style={{ color: 'var(--text-muted)' }}>
+                    <div className="border-r pr-1" style={{ borderColor: 'var(--border-color)' }}>Free Shipping $150+</div>
+                    <div className="border-r pr-1" style={{ borderColor: 'var(--border-color)' }}>14-Day Returns</div>
                     <div>100% Authentic</div>
                   </div>
                 </div>
