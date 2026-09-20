@@ -1,54 +1,94 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate, Link } from 'react-router'
+import { useNavigate, Link, useLocation } from 'react-router'
 import { useTheme } from '../../../context/ThemeContext'
 
 const Nav = () => {
     const navigate = useNavigate()
+    const location = useLocation()
     const user = useSelector(state => state.auth.user)
     const cartItems = useSelector(state => state.cart?.items)
     const { theme, toggleTheme } = useTheme()
 
+    const navLinks = [
+        { label: 'Shop', path: '/home' },
+        { label: 'Collections', path: '/home?filter=collections' },
+        { label: 'New Arrivals', path: '/home?filter=new-arrivals' },
+        { label: 'Best Sellers', path: '/home?filter=best-sellers' },
+    ]
+
     return (
         <nav
-            className="px-8 lg:px-16 xl:px-24 py-5 flex items-center justify-between border-b backdrop-blur-md sticky top-0 z-50 transition-colors duration-300"
+            className="fixed top-0 left-0 right-0 z-50 px-6 lg:px-12 xl:px-16 py-4 flex items-center justify-between border-b backdrop-blur-lg shadow-sm transition-all duration-300"
             style={{ backgroundColor: 'var(--bg-nav)', borderColor: 'var(--border-subtle)' }}
         >
-            <Link to="/home"
-                className="text-lg font-black tracking-[0.35em] uppercase hover:opacity-80 transition-opacity"
-                style={{ fontFamily: "'Montserrat', sans-serif", color: 'var(--accent-primary)' }}
-            >
-                Funky Fiber
-            </Link>
-            <div className="flex gap-5 sm:gap-6 items-center text-[11px] uppercase tracking-[0.2em] font-bold" style={{ color: 'var(--text-primary)' }}>
+            {/* Left: Brand Logo & Navigation Links */}
+            <div className="flex items-center gap-8 lg:gap-12">
+                <Link to="/home"
+                    className="text-lg lg:text-xl font-black tracking-[0.35em] uppercase hover:opacity-80 transition-opacity whitespace-nowrap"
+                    style={{ fontFamily: "'Montserrat', sans-serif", color: 'var(--accent-primary)' }}
+                >
+                    Funky Fiber
+                </Link>
+
+                {/* Center / Category Links */}
+                <div className="hidden md:flex items-center gap-6 text-[11px] uppercase tracking-[0.2em] font-bold" style={{ color: 'var(--text-primary)' }}>
+                    {navLinks.map((link) => {
+                        const isActive = location.pathname + location.search === link.path;
+                        return (
+                            <Link
+                                key={link.label}
+                                to={link.path}
+                                className={`transition-all duration-200 hover:text-[var(--accent-primary)] relative py-1 ${isActive ? 'text-[var(--accent-primary)] font-extrabold' : ''}`}
+                            >
+                                {link.label}
+                                {isActive && (
+                                    <span className="absolute bottom-0 left-0 w-full h-[2px] bg-[var(--accent-primary)] rounded-full" />
+                                )}
+                            </Link>
+                        );
+                    })}
+                </div>
+            </div>
+
+            {/* Right: User Profile, Cart & Theme Toggle Controls */}
+            <div className="flex gap-4 sm:gap-6 items-center text-[11px] uppercase tracking-[0.2em] font-bold" style={{ color: 'var(--text-primary)' }}>
                 {user ? (
                     <>
-                        <span style={{ color: 'var(--accent-primary)' }}>{user.fullname}</span>
+                        <span className="hidden sm:inline-block font-semibold" style={{ color: 'var(--accent-primary)' }}>
+                            {user.fullname}
+                        </span>
                         {user.role === 'seller' && (
-                            <Link to="/seller/dashboard" className="transition-colors hover:text-[var(--accent-primary)]">Seller Dashboard</Link>
+                            <Link
+                                to="/seller/dashboard"
+                                className="px-3 py-1.5 rounded border transition-all hover:bg-[var(--accent-primary)] hover:text-black"
+                                style={{ borderColor: 'var(--accent-primary)', color: 'var(--accent-primary)' }}
+                            >
+                                Seller Studio
+                            </Link>
                         )}
                         <Link
                             to="/cart"
-                            className="relative flex items-center hover:opacity-70 transition-opacity"
+                            className="relative flex items-center p-1.5 hover:opacity-80 transition-opacity"
                             style={{ color: 'var(--accent-primary)' }}
                             aria-label="Shopping cart"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
                                 <line x1="3" y1="6" x2="21" y2="6" />
                                 <path d="M16 10a4 4 0 0 1-8 0" />
                             </svg>
                             {cartItems?.length > 0 && (
                                 <span
-                                    className="absolute -top-2 -right-2 flex items-center justify-center rounded-full text-black"
+                                    className="absolute -top-1 -right-1 flex items-center justify-center rounded-full text-black font-extrabold"
                                     style={{
                                         backgroundColor: 'var(--accent-primary)',
-                                        width: '16px',
-                                        height: '16px',
+                                        width: '17px',
+                                        height: '17px',
                                         fontSize: '9px',
                                         fontFamily: "'Inter', sans-serif",
-                                        fontWeight: 800,
                                         letterSpacing: 0,
+                                        boxShadow: '0 0 6px var(--accent-primary)'
                                     }}
                                 >
                                     {cartItems.length > 9 ? '9+' : cartItems.length}

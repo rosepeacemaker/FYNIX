@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useCart } from '../hook/useCart'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useTheme } from '../../../context/ThemeContext'
 
 /* ─── Design tokens (FYNIX Dynamic Palette) ─────────────────────────── */
@@ -229,6 +229,7 @@ const Cart = () => {
   const cartItems = useSelector((state) => state.cart?.items || [])
   const user = useSelector((state) => state.auth?.user)
   const { theme, toggleTheme } = useTheme()
+  const navigate = useNavigate()
   const {
     handleGetCart,
     handleIncrementCartItem,
@@ -426,6 +427,7 @@ const Cart = () => {
                 </div>
 
                 <button
+                  onClick={() => navigate('/order-success')}
                   style={{ width: '100%', padding: '18px', backgroundColor: CORAL, color: '#000', fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '12px', letterSpacing: '0.15em', textTransform: 'uppercase', border: 'none', cursor: 'pointer', transition: 'transform 0.3s, box-shadow 0.3s', marginBottom: '12px' }}
                   onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.02)'; e.currentTarget.style.boxShadow = '0 0 20px rgba(255,107,107,0.4)' }}
                   onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = 'none' }}

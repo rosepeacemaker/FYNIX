@@ -2,19 +2,12 @@ import React from 'react'
 import { useLocation, Link } from 'react-router'
 
 const tokens = {
-    surface: '#fbf9f6',
-    surfaceLow: '#f5f3f0',
-    surfaceLowest: '#ffffff',
-    surfaceHigh: '#eae8e5',
-    surfaceHighest: '#e4e2df',
-    onSurface: '#1b1c1a',
-    onSurfaceVariant: '#4d463a',
-    secondary: '#7A6E63',
-    muted: '#B5ADA3',
-    primary: '#C9A96E',
-    primaryDark: '#745a27',
-    outlineVariant: '#d0c5b5',
-    outline: '#7f7668',
+    CORAL: 'var(--accent-primary)',
+    BG: 'var(--bg-main)',
+    SURF: 'var(--bg-surface)',
+    SURF2: 'var(--border-color)',
+    GRAY: 'var(--text-secondary)',
+    TEXT: 'var(--text-primary)'
 }
 
 const OrderSuccess = () => {

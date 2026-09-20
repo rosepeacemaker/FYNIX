@@ -4,10 +4,12 @@ import { Outlet } from 'react-router'
 
 const AppLayout = () => {
     return (
-        <>
+        <div className="min-h-screen flex flex-col pt-[68px] sm:pt-[72px]">
             <Nav />
-            <Outlet />
-        </>
+            <main className="flex-1">
+                <Outlet />
+            </main>
+        </div>
     )
 }
 

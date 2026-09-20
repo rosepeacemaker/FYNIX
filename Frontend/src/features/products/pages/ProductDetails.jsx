@@ -84,9 +84,11 @@ const ProductDetail = () => {
 
   async function fetchProductDetails() {
     try {
-      const data = await handleGetProductById(productId);
-      if (data) {
-        setProduct(data?.product || data);
+      // handleGetProductById already returns data.product from the API
+      const productData = await handleGetProductById(productId);
+      if (productData) {
+        console.log("Product variants from API:", productData?.variants);
+        setProduct(productData);
         return;
       }
     } catch (error) {
@@ -96,6 +98,7 @@ const ProductDetail = () => {
     // Fallback to Redux store if API fails or item is locally added
     const localMatch = [...allProducts, ...sellerProducts].find(p => String(p._id) === String(productId));
     if (localMatch) {
+      console.log("Loaded product from Redux store (variants may be missing):", localMatch?.variants);
       setProduct(localMatch);
     }
   }
