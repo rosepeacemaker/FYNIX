@@ -80,7 +80,7 @@ const OrderSuccess = () => {
                                         <img
                                             className="w-full h-full object-cover grayscale-[20%]"
                                             alt="Close-up of a high-end luxury wool coat"
-                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2RecxLWsxoaJynjbfvLhuprDTMGsixBfioU4mbbHAwGqbpMf6F_huInjecTUxna_Zu_L7Gi4m-t0JDR9fsydoDl1zu3a-c0YusFQtRSFCdag1T6MBqd8acu7PunJfNXzTc5uK4eBNrw1lh0lgL_9CbR2AZs24nUxgGwKlUYjOEqEof9FSZrlOpzDmxlNMsvGmGAEPWFT42HixJtHAGEYo2R4TR2b-IV0kxjCslE4okGTbl-Ikc7WyUMQtSnfcurwHAc1qshFN3Ho"
+                                            src="/cart_img.jpg"
                                         />
                                     </div>
                                     <div className="flex-grow space-y-1">

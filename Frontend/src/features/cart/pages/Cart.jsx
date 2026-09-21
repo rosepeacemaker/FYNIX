@@ -12,6 +12,7 @@ const SURF2 = 'var(--border-color)'
 const GRAY = 'var(--text-secondary)'
 const TEXT = 'var(--text-primary)'
 
+
 /* ─── Quantity stepper ────────────────────────────────────────────────────── */
 const QuantityStepper = ({ qty, onDecrement, onIncrement }) => (
   <div style={{ display: 'inline-flex', alignItems: 'center', border: `1px solid ${SURF2}`, backgroundColor: BG, flexShrink: 0 }}>
