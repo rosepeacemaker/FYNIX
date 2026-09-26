@@ -105,7 +105,7 @@ const CreateProduct = () => {
                             className="text-[10px] font-bold tracking-[0.32em] uppercase text-[#ff6b6b]"
                             style={{ fontFamily: "Montserrat, sans-serif" }}
                         >
-                            FYNIX
+                            Funky Fiber
                         </span>
                     </div>
 
