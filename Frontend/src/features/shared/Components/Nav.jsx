@@ -61,7 +61,7 @@ const Nav = () => {
                         {user.role === 'seller' && (
                             <Link
                                 to="/seller/dashboard"
-                                className="px-3 py-1.5 rounded border transition-all hover:bg-[var(--accent-primary)] hover:text-black"
+                                className="px-3 py-1.5 rounded border transition-all hover:bg-(--accent-primary) hover:text-shadow-black"
                                 style={{ borderColor: 'var(--accent-primary)', color: 'var(--accent-primary)' }}
                             >
                                 Seller Studio

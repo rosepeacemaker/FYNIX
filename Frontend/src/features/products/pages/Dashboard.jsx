@@ -636,7 +636,7 @@ const Dashboard = () => {
                         className="text-[11px] uppercase tracking-[0.35em] font-bold"
                         style={{ fontFamily: "'Montserrat', sans-serif", color: 'var(--accent-primary)' }}
                     >
-                        Fynix. Seller Studio © {new Date().getFullYear()}
+                        Funky Fiber. Seller Studio © {new Date().getFullYear()}
                     </span>
                 </footer>
             </div>
